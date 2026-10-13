@@ -1,0 +1,546 @@
+@extends('layouts.fa.master')
+
+@section('title')
+    فرم همکاری با تأمین‌کنندگان | اکسپرس ندیمی
+@endsection
+
+@section('description')
+    کشاورزان، باغداران، گلخانه‌داران و تأمین‌کنندگان: محصول خود را برای صادرات با ندیمی ثبت کنید.
+@endsection
+
+@section('meta')
+    <link rel="canonical" href="{{ route('supplier', ['lang' => 'fa']) }}">
+    <link rel="alternate" hreflang="en" href="{{ route('supplier', ['lang' => 'en']) }}">
+    <link rel="alternate" hreflang="fa" href="{{ route('supplier', ['lang' => 'fa']) }}">
+    <link rel="alternate" hreflang="ar" href="{{ route('supplier', ['lang' => 'ar']) }}">
+    <link rel="alternate" hreflang="x-default" href="{{ route('supplier', ['lang' => 'en']) }}">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="اکسپرس ندیمی">
+    <meta property="og:title" content="فرم همکاری با تأمین‌کنندگان | اکسپرس ندیمی">
+    <meta property="og:description"
+        content="کشاورزان، باغداران، گلخانه‌داران و تأمین‌کنندگان: محصول خود را برای صادرات با ندیمی ثبت کنید.">
+    <meta property="og:url" content="{{ route('supplier', ['lang' => 'fa']) }}">
+    <meta property="og:image" content="{{ asset('assets/images/scenes/field-sunrise-1600.webp') }}">
+    <meta property="og:locale" content="fa_IR">
+    <meta name="twitter:card" content="summary_large_image">
+    <script type="application/ld+json">{"@@context":"https://schema.org","@type":"Organization","name":"Nadimi International LLC","alternateName":["Express Nadimi","اکسپرس ندیمی"],"url":"{{ url('/') }}","logo":"{{ asset('assets/images/logo/nadimi-logo-512.png') }}","email":"info@nadimi.example","telephone":"+968 9948 2094","address":[{"@type":"PostalAddress","addressLocality":"Tabriz","addressCountry":"IR"},{"@type":"PostalAddress","addressLocality":"Muscat","addressCountry":"OM"}]}</script>
+@endsection
+
+@section('content')
+    <main id="main" tabindex="-1">
+        <section class="phead phead-panel">
+            <div class="container">
+                <div class="phead-in phead-sup">
+                    <div>
+                        <nav class="crumbs" aria-label="Breadcrumb"><a
+                                href="{{ route('home', ['lang' => 'fa']) }}">خانه</a><i></i><span aria-current="page">همکاری
+                                تأمین‌کنندگان</span></nav>
+                        <span class="label">کشاورزان، باغداران، گلخانه‌داران و تأمین‌کنندگان محصولات کشاورزی</span>
+                        <h1 class="display" style="margin-top: 16px">فرم همکاری با تأمین‌کنندگان</h1>
+                        <p>شرکت ندیمی آماده همکاری با کشاورزان، باغداران، گلخانه‌داران، سردخانه‌ها و تأمین‌کنندگان معتبر در
+                            ایران است. اگر محصول مناسب بازار صادراتی دارید، فرم زیر را با اطلاعات دقیق تکمیل کنید تا پس از
+                            بررسی نمونه، کیفیت، ظرفیت تأمین، بسته‌بندی و شرایط همکاری با شما تماس بگیریم.</p>
+                        <ol class="sflow">
+                            <li><span class="ic-wrap"><svg class="ic flip">
+                                        <use href="#i-arrow" />
+                                    </svg></span>ارسال فرم</li>
+                            <li><span class="ic-wrap"><svg class="ic">
+                                        <use href="#i-search" />
+                                    </svg></span>بررسی اطلاعات و تصاویر</li>
+                            <li><span class="ic-wrap"><svg class="ic">
+                                        <use href="#i-phone" />
+                                    </svg></span>تماس کارشناسان</li>
+                        </ol>
+                    </div>
+                    <figure class="phead-fig"><img class="phead-img"
+                            src="{{ asset('assets/images/scenes/seedlings-800.webp') }}" alt="" width="800"
+                            height="1000" fetchpriority="high" decoding="async"></figure>
+                </div>
+            </div>
+        </section>
+
+        <div class="container">
+            <div class="slayout">
+                <aside class="srail" data-rail-box>
+                    <div class="srail-top">
+                        <div class="ring">
+                            <svg viewBox="0 0 76 76" aria-hidden="true">
+                                <circle class="track" cx="38" cy="38" r="34" />
+                                <circle class="bar" cx="38" cy="38" r="34" data-ring />
+                            </svg>
+                            <span data-pct>۰٪</span>
+                        </div>
+                        <small>تکمیل شده<br>فیلدهای ستاره‌دار الزامی هستند.</small>
+                    </div>
+                    <nav class="ssteps" aria-label="فرم همکاری با تأمین‌کنندگان">
+                        <a class="sstep" href="#s-personal"><b>۱</b><span>اطلاعات شخصی و تماس</span></a>
+                        <a class="sstep" href="#s-product"><b>۲</b><span>اطلاعات محصول</span></a>
+                        <a class="sstep" href="#s-quality"><b>۳</b><span>مشخصات و کیفیت بار</span></a>
+                        <a class="sstep" href="#s-packaging"><b>۴</b><span>بسته‌بندی</span></a>
+                        <a class="sstep" href="#s-price"><b>۵</b><span>قیمت و شرایط فروش</span></a>
+                        <a class="sstep" href="#s-media"><b>۶</b><span>تصاویر و ویدئوی محصول</span></a>
+                        <a class="sstep" href="#s-history"><b>۷</b><span>سابقه فعالیت</span></a>
+                        <a class="sstep" href="#s-notes"><b>۸</b><span>توضیحات تکمیلی</span></a>
+                    </nav>
+                </aside>
+
+                <div>
+
+                    <form method="post" action="" enctype="multipart/form-data" novalidate data-supplier
+                        data-busy-text="در حال ارسال…">
+                        <!-- backend: set action + @@csrf -->
+
+
+                        <section class="ssec" id="s-personal">
+                            <div class="ssec-h"><span class="num">۰۱</span>
+                                <h2>اطلاعات شخصی و تماس</h2>
+                            </div>
+                            <div class="sgrid">
+                                <div class="field">
+                                    <label for="s-name">نام و نام خانوادگی <b class="req">*</b></label>
+                                    <div class="">
+                                        <input id="s-name" name="name" type="text" class="input"
+                                            value="" required data-req maxlength="120" autocomplete="name">
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label for="s-mobile">شماره موبایل <b class="req">*</b></label>
+                                    <div class="">
+                                        <input id="s-mobile" name="mobile" type="tel" class="input"
+                                            value="" required data-req maxlength="40" inputmode="tel"
+                                            autocomplete="tel">
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label for="s-whatsapp">شماره واتساپ</label>
+                                    <div class="">
+                                        <input id="s-whatsapp" name="whatsapp" type="tel" class="input"
+                                            value="" maxlength="40" inputmode="tel">
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label for="s-province">استان <b class="req">*</b></label>
+                                    <select id="s-province" name="province" class="input" required data-req>
+                                        <option value="">انتخاب استان</option>
+                                        <option value="east_azerbaijan">آذربایجان شرقی</option>
+                                        <option value="west_azerbaijan">آذربایجان غربی</option>
+                                        <option value="ardabil">اردبیل</option>
+                                        <option value="isfahan">اصفهان</option>
+                                        <option value="alborz">البرز</option>
+                                        <option value="ilam">ایلام</option>
+                                        <option value="bushehr">بوشهر</option>
+                                        <option value="tehran">تهران</option>
+                                        <option value="chaharmahal">چهارمحال و بختیاری</option>
+                                        <option value="south_khorasan">خراسان جنوبی</option>
+                                        <option value="razavi_khorasan">خراسان رضوی</option>
+                                        <option value="north_khorasan">خراسان شمالی</option>
+                                        <option value="khuzestan">خوزستان</option>
+                                        <option value="zanjan">زنجان</option>
+                                        <option value="semnan">سمنان</option>
+                                        <option value="sistan">سیستان و بلوچستان</option>
+                                        <option value="fars">فارس</option>
+                                        <option value="qazvin">قزوین</option>
+                                        <option value="qom">قم</option>
+                                        <option value="kurdistan">کردستان</option>
+                                        <option value="kerman">کرمان</option>
+                                        <option value="kermanshah">کرمانشاه</option>
+                                        <option value="kohgiluyeh">کهگیلویه و بویراحمد</option>
+                                        <option value="golestan">گلستان</option>
+                                        <option value="gilan">گیلان</option>
+                                        <option value="lorestan">لرستان</option>
+                                        <option value="mazandaran">مازندران</option>
+                                        <option value="markazi">مرکزی</option>
+                                        <option value="hormozgan">هرمزگان</option>
+                                        <option value="hamadan">همدان</option>
+                                        <option value="yazd">یزد</option>
+                                    </select>
+                                </div>
+                                <div class="field w">
+                                    <label for="s-city">شهر / منطقه تولید <b class="req">*</b></label>
+                                    <div class="">
+                                        <input id="s-city" name="city" type="text" class="input"
+                                            value="" required data-req maxlength="120">
+                                    </div>
+                                </div>
+                                <fieldset class="field w">
+                                    <legend class="legend">نوع فعالیت شما <b class="req">*</b></legend>
+                                    <div class="chips">
+                                        <label class="chip"><input type="radio" name="role" value="farmer"
+                                                data-req><span>کشاورز</span></label>
+                                        <label class="chip"><input type="radio" name="role" value="orchard"
+                                                data-req><span>باغدار</span></label>
+                                        <label class="chip"><input type="radio" name="role" value="greenhouse"
+                                                data-req><span>گلخانه‌دار</span></label>
+                                        <label class="chip"><input type="radio" name="role" value="producer"
+                                                data-req><span>تولیدکننده</span></label>
+                                        <label class="chip"><input type="radio" name="role" value="cold_storage"
+                                                data-req><span>سردخانه‌دار</span></label>
+                                        <label class="chip"><input type="radio" name="role" value="wholesaler"
+                                                data-req><span>تأمین‌کننده / عمده‌فروش</span></label>
+                                        <label class="chip"><input type="radio" name="role" value="company"
+                                                data-req><span>شرکت یا مجموعه کشاورزی</span></label>
+                                        <label class="chip"><input type="radio" name="role" value="other"
+                                                data-req><span>سایر</span></label>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </section>
+
+
+                        <section class="ssec" id="s-product">
+                            <div class="ssec-h"><span class="num">۰۲</span>
+                                <h2>اطلاعات محصول</h2>
+                            </div>
+                            <div class="sgrid">
+                                <div class="field">
+                                    <label for="s-product">نام محصول <b class="req">*</b></label>
+                                    <div class="">
+                                        <input id="s-product" name="product" type="text" class="input"
+                                            value="" required data-req maxlength="120">
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label for="s-variety">رقم / نوع محصول</label>
+                                    <small class="hint">مثال: گوجه گلخانه‌ای، سیب قرمز، شلیل، گیلاس و…</small>
+                                    <div class="">
+                                        <input id="s-variety" name="variety" type="text" class="input"
+                                            value="" maxlength="160">
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label for="s-origin">محل تولید محصول <b class="req">*</b></label>
+                                    <small class="hint">استان / شهر / روستا</small>
+                                    <div class="">
+                                        <input id="s-origin" name="origin" type="text" class="input"
+                                            value="" required data-req maxlength="190">
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label for="s-quantity_tons">مقدار بار قابل تأمین <b class="req">*</b></label>
+                                    <div class="unit-wrap">
+                                        <input id="s-quantity_tons" name="quantity_tons" type="number" class="input"
+                                            value="" required data-req min="0.1" step="any"
+                                            inputmode="decimal">
+                                        <em class="unit">تن</em>
+                                    </div>
+                                </div>
+                                <fieldset class="field w">
+                                    <legend class="legend">میزان تأمین شما چگونه است؟</legend>
+                                    <div class="chips">
+                                        <label class="chip"><input type="radio" name="frequency"
+                                                value="single"><span>یک محموله</span></label>
+                                        <label class="chip"><input type="radio" name="frequency"
+                                                value="daily"><span>روزانه</span></label>
+                                        <label class="chip"><input type="radio" name="frequency"
+                                                value="weekly"><span>هفتگی</span></label>
+                                        <label class="chip"><input type="radio" name="frequency"
+                                                value="monthly"><span>ماهانه</span></label>
+                                        <label class="chip"><input type="radio" name="frequency"
+                                                value="season"><span>کل فصل برداشت</span></label>
+                                    </div>
+                                </fieldset>
+                                <div class="field w" data-if="frequency:daily,weekly,monthly,season">
+                                    <label for="s-capacity">در صورت تأمین مستمر، ظرفیت تقریبی</label>
+                                    <small class="hint">تن در روز / هفته / ماه</small>
+                                    <div class="">
+                                        <input id="s-capacity" name="capacity" type="text" class="input"
+                                            value="" maxlength="120">
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label for="s-ready_from">زمان شروع برداشت / آماده بودن بار <b
+                                            class="req">*</b></label>
+                                    <div class="">
+                                        <input id="s-ready_from" name="ready_from" type="date" class="input"
+                                            value="" required data-req>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label for="s-ready_until">تا چه زمانی امکان تأمین دارید؟</label>
+                                    <div class="">
+                                        <input id="s-ready_until" name="ready_until" type="date" class="input"
+                                            value="">
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+
+                        <section class="ssec" id="s-quality">
+                            <div class="ssec-h"><span class="num">۰۳</span>
+                                <h2>مشخصات و کیفیت بار</h2>
+                            </div>
+                            <div class="sgrid">
+                                <fieldset class="field w">
+                                    <legend class="legend">درجه کیفی محصول</legend>
+                                    <div class="chips">
+                                        <label class="chip"><input type="radio" name="grade"
+                                                value="premium"><span>ممتاز / صادراتی</span></label>
+                                        <label class="chip"><input type="radio" name="grade"
+                                                value="grade1"><span>درجه یک</span></label>
+                                        <label class="chip"><input type="radio" name="grade"
+                                                value="grade2"><span>درجه دو</span></label>
+                                        <label class="chip"><input type="radio" name="grade"
+                                                value="inspect"><span>نیازمند بررسی</span></label>
+                                    </div>
+                                </fieldset>
+                                <div class="field w">
+                                    <label for="s-size">سایز یا کالیبر محصول</label>
+                                    <div class="">
+                                        <input id="s-size" name="size" type="text" class="input"
+                                            value="" maxlength="120">
+                                    </div>
+                                </div>
+                                <fieldset class="field w">
+                                    <legend class="legend">محصول سورت شده است؟</legend>
+                                    <div class="chips">
+                                        <label class="chip"><input type="radio" name="sorted"
+                                                value="yes"><span>بله</span></label>
+                                        <label class="chip"><input type="radio" name="sorted"
+                                                value="no"><span>خیر</span></label>
+                                        <label class="chip"><input type="radio" name="sorted"
+                                                value="possible"><span>امکان سورت وجود دارد</span></label>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="field w">
+                                    <legend class="legend">وضعیت محصول</legend>
+                                    <div class="chips">
+                                        <label class="chip"><input type="radio" name="state"
+                                                value="fresh"><span>تازه برداشت‌شده</span></label>
+                                        <label class="chip"><input type="radio" name="state"
+                                                value="on_tree"><span>روی درخت / مزرعه</span></label>
+                                        <label class="chip"><input type="radio" name="state"
+                                                value="ready_harvest"><span>آماده برداشت</span></label>
+                                        <label class="chip"><input type="radio" name="state"
+                                                value="cold_storage"><span>در سردخانه</span></label>
+                                        <label class="chip"><input type="radio" name="state"
+                                                value="ready_load"><span>آماده بارگیری</span></label>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="field w">
+                                    <legend class="legend">آیا امکان بازدید از محصول یا محل تولید وجود دارد؟</legend>
+                                    <div class="chips">
+                                        <label class="chip"><input type="radio" name="visit"
+                                                value="yes"><span>بله</span></label>
+                                        <label class="chip"><input type="radio" name="visit"
+                                                value="no"><span>خیر</span></label>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </section>
+
+
+                        <section class="ssec" id="s-packaging">
+                            <div class="ssec-h"><span class="num">۰۴</span>
+                                <h2>بسته‌بندی</h2>
+                            </div>
+                            <div class="sgrid">
+                                <fieldset class="field w">
+                                    <legend class="legend">وضعیت فعلی محصول</legend>
+                                    <div class="chips">
+                                        <label class="chip"><input type="radio" name="packing"
+                                                value="bulk"><span>فله</span></label>
+                                        <label class="chip"><input type="radio" name="packing"
+                                                value="basket"><span>سبد</span></label>
+                                        <label class="chip"><input type="radio" name="packing"
+                                                value="carton"><span>کارتن</span></label>
+                                        <label class="chip"><input type="radio" name="packing"
+                                                value="export"><span>بسته‌بندی صادراتی</span></label>
+                                        <label class="chip"><input type="radio" name="packing"
+                                                value="other"><span>سایر</span></label>
+                                    </div>
+                                </fieldset>
+                                <div class="field">
+                                    <label for="s-pack_weight">وزن هر بسته / کارتن</label>
+                                    <div class="unit-wrap">
+                                        <input id="s-pack_weight" name="pack_weight" type="number" class="input"
+                                            value="" min="0" step="any" inputmode="decimal">
+                                        <em class="unit">کیلوگرم</em>
+                                    </div>
+                                </div>
+                                <fieldset class="field w">
+                                    <legend class="legend">آیا امکان بسته‌بندی طبق درخواست شرکت وجود دارد؟</legend>
+                                    <div class="chips">
+                                        <label class="chip"><input type="radio" name="custom_pack"
+                                                value="yes"><span>بله</span></label>
+                                        <label class="chip"><input type="radio" name="custom_pack"
+                                                value="no"><span>خیر</span></label>
+                                        <label class="chip"><input type="radio" name="custom_pack"
+                                                value="coordinate"><span>نیاز به هماهنگی دارد</span></label>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="field w">
+                                    <legend class="legend">آیا امکان تغییر کارتن، وزن یا نوع بسته‌بندی وجود دارد؟</legend>
+                                    <div class="chips">
+                                        <label class="chip"><input type="radio" name="change_pack"
+                                                value="yes"><span>بله</span></label>
+                                        <label class="chip"><input type="radio" name="change_pack"
+                                                value="no"><span>خیر</span></label>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </section>
+
+
+                        <section class="ssec" id="s-price">
+                            <div class="ssec-h"><span class="num">۰۵</span>
+                                <h2>قیمت و شرایط فروش</h2>
+                            </div>
+                            <div class="sgrid">
+                                <div class="field">
+                                    <label for="s-price">قیمت پیشنهادی شما</label>
+                                    <div class="unit-wrap">
+                                        <input id="s-price" name="price" type="number" class="input"
+                                            value="" min="0" step="any" inputmode="decimal">
+                                        <em class="unit">تومان / کیلوگرم</em>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label for="s-payment_terms">نحوه تسویه پیشنهادی</label>
+                                    <div class="">
+                                        <input id="s-payment_terms" name="payment_terms" type="text" class="input"
+                                            value="" maxlength="190">
+                                    </div>
+                                </div>
+                                <fieldset class="field w">
+                                    <legend class="legend">قیمت مربوط به چه شرایطی است؟</legend>
+                                    <div class="chips">
+                                        <label class="chip"><input type="radio" name="price_terms"
+                                                value="farm"><span>تحویل در محل تولید</span></label>
+                                        <label class="chip"><input type="radio" name="price_terms"
+                                                value="cold_storage"><span>تحویل سردخانه</span></label>
+                                        <label class="chip"><input type="radio" name="price_terms"
+                                                value="agreed"><span>تحویل محل مورد توافق</span></label>
+                                        <label class="chip"><input type="radio" name="price_terms"
+                                                value="negotiable"><span>قابل مذاکره</span></label>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </section>
+
+
+                        <section class="ssec" id="s-media">
+                            <div class="ssec-h"><span class="num">۰۶</span>
+                                <h2>تصاویر و ویدئوی محصول</h2>
+                            </div>
+                            <div class="sgrid">
+                                <p class="tip w"><svg class="ic">
+                                        <use href="#i-bulb" />
+                                    </svg>برای بررسی بهتر، لطفاً تصاویر واقعی و جدید محصول را ارسال کنید.</p>
+                                <div class="field w">
+                                    <label for="s-photos">آپلود عکس محصول <b class="req">*</b></label>
+                                    <small class="hint">حداکثر ۸ عکس، هر عکس تا ۸ مگابایت (JPG، PNG، WebP)</small>
+                                    <div class="drop"><input type="file" id="s-photos" name="photos[]"
+                                            accept="image/jpeg,image/png,image/webp" multiple data-req><svg
+                                            class="ic">
+                                            <use href="#i-image" />
+                                        </svg>افزودن تصاویر</div>
+                                    <div class="thumbs"></div>
+                                </div>
+                                <div class="field w">
+                                    <label for="s-packaging_photos">آپلود عکس بسته‌بندی</label>
+                                    <small class="hint">حداکثر ۸ عکس، هر عکس تا ۸ مگابایت (JPG، PNG، WebP)</small>
+                                    <div class="drop"><input type="file" id="s-packaging_photos"
+                                            name="packaging_photos[]" accept="image/jpeg,image/png,image/webp"
+                                            multiple><svg class="ic">
+                                            <use href="#i-box" />
+                                        </svg>افزودن تصاویر</div>
+                                    <div class="thumbs"></div>
+                                </div>
+                                <div class="field w">
+                                    <label for="s-video">آپلود ویدئوی کوتاه از بار</label>
+                                    <small class="hint">حداکثر ۵۰ مگابایت (MP4، MOV، WebM)</small>
+                                    <div class="drop"><input type="file" id="s-video" name="video"
+                                            accept="video/mp4,video/quicktime,video/webm"><svg class="ic">
+                                            <use href="#i-video" />
+                                        </svg>افزودن ویدئو</div>
+                                    <div class="thumbs"></div>
+                                </div>
+                                <p class="tip w"><svg class="ic">
+                                        <use href="#i-sprout" />
+                                    </svg>در صورت امکان، یک تصویر کلی از مزرعه، باغ، گلخانه یا محل نگهداری محصول نیز ارسال
+                                    کنید.</p>
+                            </div>
+                        </section>
+
+
+                        <section class="ssec" id="s-history">
+                            <div class="ssec-h"><span class="num">۰۷</span>
+                                <h2>سابقه فعالیت</h2>
+                            </div>
+                            <div class="sgrid">
+                                <div class="field">
+                                    <label for="s-years">چند سال در زمینه این محصول فعالیت دارید؟</label>
+                                    <div class="unit-wrap">
+                                        <input id="s-years" name="years" type="number" class="input"
+                                            value="" min="0" max="100" step="1"
+                                            inputmode="numeric">
+                                        <em class="unit">سال</em>
+                                    </div>
+                                </div>
+                                <fieldset class="field w">
+                                    <legend class="legend">آیا سابقه فروش محصول برای صادرات دارید؟</legend>
+                                    <div class="chips">
+                                        <label class="chip"><input type="radio" name="export_history"
+                                                value="yes"><span>بله</span></label>
+                                        <label class="chip"><input type="radio" name="export_history"
+                                                value="no"><span>خیر</span></label>
+                                    </div>
+                                </fieldset>
+                                <div class="field w" data-if="export_history:yes">
+                                    <label for="s-export_markets">سابقه صادرات به چه کشورها یا بازارهایی؟</label>
+                                    <small class="hint">در صورت پاسخ بله</small>
+                                    <div class="">
+                                        <input id="s-export_markets" name="export_markets" type="text" class="input"
+                                            value="" maxlength="190">
+                                    </div>
+                                </div>
+                                <fieldset class="field w">
+                                    <legend class="legend">آیا امکان تأمین مستمر و همکاری بلندمدت دارید؟</legend>
+                                    <div class="chips">
+                                        <label class="chip"><input type="radio" name="long_term"
+                                                value="yes"><span>بله</span></label>
+                                        <label class="chip"><input type="radio" name="long_term"
+                                                value="no"><span>خیر</span></label>
+                                        <label class="chip"><input type="radio" name="long_term"
+                                                value="seasonal"><span>بستگی به فصل محصول دارد</span></label>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </section>
+
+
+                        <section class="ssec" id="s-notes">
+                            <div class="ssec-h"><span class="num">۰۸</span>
+                                <h2>توضیحات تکمیلی</h2>
+                            </div>
+                            <div class="sgrid">
+                                <div class="field w">
+                                    <label for="s-notes" class="sr">توضیحات تکمیلی</label>
+                                    <p class="hint" style="font-size: .9rem">اگر اطلاعات دیگری درباره محصول، ظرفیت
+                                        تولید، کیفیت، شرایط فروش یا نحوه همکاری دارید، اینجا بنویسید.</p>
+                                    <textarea id="s-notes" name="notes" class="input" rows="5" maxlength="4000"></textarea>
+                                </div>
+                                <div class="field w">
+                                    <label class="check"><input type="checkbox" name="confirm" value="1"
+                                            data-req>تأیید می‌کنم اطلاعات و تصاویر ارسال‌شده مربوط به محصول معرفی‌شده بوده و
+                                        تا حد اطلاع من صحیح است.</label>
+                                </div>
+                            </div>
+                        </section>
+
+                        <div class="ssubmit">
+                            <button type="submit" class="btn btn-leaf">ارسال درخواست همکاری<svg class="ic flip">
+                                    <use href="#i-arrow" />
+                                </svg></button>
+                            <p class="notice notice-ok" data-upload-note hidden>در حال ارسال فایل‌ها… لطفاً صفحه را نبندید.
+                            </p>
+                            <p>پس از ثبت فرم، اطلاعات توسط تیم شرکت ندیمی بررسی شده و در صورت تناسب محصول با نیاز مجموعه،
+                                جهت ادامه همکاری با شما تماس گرفته خواهد شد.</p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+@endsection
