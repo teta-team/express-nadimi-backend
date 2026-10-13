@@ -16,4 +16,15 @@ class ProductCotrller extends Controller
             return view('en.product');
         }
     }
+
+    public function products($lang)
+    {
+        if ($lang == 'ar') {
+            return view('ar.products');
+        } elseif ($lang == 'fa') {
+            return view('fa.products');
+        } else {
+            return view('en.products');
+        }
+    }
 }
