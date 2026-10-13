@@ -107,7 +107,11 @@
     const search = $('[data-search]');
     const meta = $('[data-count]');
     const empty = $('[data-empty]');
-    let cat = buttons.find((b) => b.getAttribute('aria-pressed') === 'true')?.dataset.filter || '';
+    const requestedCategory = new URL(location.href).searchParams.get('category');
+    let cat = buttons.some((b) => b.dataset.filter === requestedCategory)
+      ? requestedCategory
+      : buttons.find((b) => b.getAttribute('aria-pressed') === 'true')?.dataset.filter || '';
+    buttons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.filter === cat)));
 
     const apply = () => {
       const q = (search?.value || '').trim().toLowerCase();

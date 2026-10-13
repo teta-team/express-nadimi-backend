@@ -55,7 +55,11 @@
     setMeta('meta[property="og:locale"]', 'content', t.locale);
 
     const home = document.querySelector('[data-home]');
-    if (home) { home.href = lang + '/index.html'; home.setAttribute('aria-label', t.home); }
+    if (home) {
+      const homeUrl = home.getAttribute('data-home-url-' + lang);
+      if (homeUrl) home.href = homeUrl;
+      home.setAttribute('aria-label', t.home);
+    }
     const group = document.querySelector('[data-lang-switch]');
     if (group) group.setAttribute('aria-label', t.langs);
     document.querySelectorAll('[data-theme-toggle]').forEach((b) => { b.setAttribute('aria-label', t.theme); b.title = t.theme; });
