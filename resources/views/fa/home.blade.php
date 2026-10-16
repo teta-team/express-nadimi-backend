@@ -113,7 +113,7 @@
                             فصل برداشت، میزان تولید، کیفیت و شرایط روز بازار تعیین می‌شود؛ برای دریافت قیمت روز با ما در
                             تماس باشید.</p>
                     </div>
-                    <a class="btn-all" href="{{ route('products', ['lang' => 'fa']) }}"><span>همه ۲۱ محصول</span><span
+                    <a class="btn-all" href="{{ route('products', ['lang' => 'fa']) }}"><span>همه ۲۳ محصول</span><span
                             class="btn-all-ic" aria-hidden="true"><svg class="ic flip">
                                 <use href="#i-arrow" />
                             </svg></span></a>
@@ -121,8 +121,8 @@
                 <div class="rail">
                     <article class="pcard">
                         <div class="pcard-media">
-                            <img src="{{ asset('assets/images/products/tomato-480.webp') }}" alt=""
-                                width="480" height="373" loading="lazy" decoding="async">
+                            <img src="{{ asset('assets/images/products/tomato.jpg') }}" alt="" width="480"
+                                height="373" loading="lazy" decoding="async">
                             <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
                                     <use href="#i-arrow" />
                                 </svg></span>
@@ -155,8 +155,8 @@
                     </article>
                     <article class="pcard">
                         <div class="pcard-media">
-                            <img src="{{ asset('assets/images/products/cucumber-480.webp') }}" alt=""
-                                width="480" height="373" loading="lazy" decoding="async">
+                            <img src="{{ asset('assets/images/products/cucumber.jpg') }}" alt="" width="480"
+                                height="373" loading="lazy" decoding="async">
                             <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
                                     <use href="#i-arrow" />
                                 </svg></span>
@@ -188,7 +188,7 @@
                     </article>
                     <article class="pcard">
                         <div class="pcard-media">
-                            <img src="{{ asset('assets/images/products/bell-pepper-480.webp') }}" alt=""
+                            <img src="{{ asset('assets/images/products/BellPepper.jpg') }}" alt=""
                                 width="480" height="373" loading="lazy" decoding="async">
                             <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
                                     <use href="#i-arrow" />
@@ -222,8 +222,8 @@
                     </article>
                     <article class="pcard">
                         <div class="pcard-media">
-                            <img src="{{ asset('assets/images/products/cabbage-480.webp') }}" alt=""
-                                width="480" height="373" loading="lazy" decoding="async">
+                            <img src="{{ asset('assets/images/products/cabbage.jpg') }}" alt="" width="480"
+                                height="373" loading="lazy" decoding="async">
                             <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
                                     <use href="#i-arrow" />
                                 </svg></span>
@@ -256,7 +256,7 @@
                     </article>
                     <article class="pcard">
                         <div class="pcard-media">
-                            <img src="{{ asset('assets/images/products/cauliflower-480.webp') }}" alt=""
+                            <img src="{{ asset('assets/images/products/Cauliflower.png') }}" alt=""
                                 width="480" height="373" loading="lazy" decoding="async">
                             <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
                                     <use href="#i-arrow" />
@@ -290,8 +290,8 @@
                     </article>
                     <article class="pcard">
                         <div class="pcard-media">
-                            <img src="{{ asset('assets/images/products/lettuce-480.webp') }}" alt=""
-                                width="480" height="373" loading="lazy" decoding="async">
+                            <img src="{{ asset('assets/images/products/Lettuce.png') }}" alt="" width="480"
+                                height="373" loading="lazy" decoding="async">
                             <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
                                     <use href="#i-arrow" />
                                 </svg></span>
@@ -323,8 +323,8 @@
                     </article>
                     <article class="pcard">
                         <div class="pcard-media">
-                            <img src="{{ asset('assets/images/products/potato-480.webp') }}" alt=""
-                                width="480" height="373" loading="lazy" decoding="async">
+                            <img src="{{ asset('assets/images/products/potato.jpg') }}" alt="" width="480"
+                                height="373" loading="lazy" decoding="async">
                             <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
                                     <use href="#i-arrow" />
                                 </svg></span>
@@ -357,8 +357,8 @@
                     </article>
                     <article class="pcard">
                         <div class="pcard-media">
-                            <img src="{{ asset('assets/images/products/onion-480.webp') }}" alt=""
-                                width="480" height="373" loading="lazy" decoding="async">
+                            <img src="{{ asset('assets/images/products/Redonion.png') }}" alt="" width="480"
+                                height="373" loading="lazy" decoding="async">
                             <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
                                     <use href="#i-arrow" />
                                 </svg></span>
