@@ -12,6 +12,7 @@ Route::view('/', 'index')->name('language.select');
 
 Route::group(['prefix' => '{lang}', 'where' => ['lang' => 'en|fa|ar']], function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
+    Route::post('/', [HomeController::class, 'form'])->name('home.post');
     Route::get('/about', [AboutController::class, 'index'])->name('about');
     Route::get('/contact', [ContactController::class, 'index'])->name('contact');
     Route::get('/product', [ProductCotrller::class, 'index'])->name('product');
