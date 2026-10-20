@@ -15,6 +15,7 @@ Route::group(['prefix' => '{lang}', 'where' => ['lang' => 'en|fa|ar']], function
     Route::post('/', [HomeController::class, 'form'])->name('home.post');
     Route::get('/about', [AboutController::class, 'index'])->name('about');
     Route::get('/contact', [ContactController::class, 'index'])->name('contact');
+    Route::post('/contact', [ContactController::class, 'form'])->name('contact.post');
     Route::get('/product', [ProductCotrller::class, 'index'])->name('product');
     Route::get('/products', [ProductCotrller::class, 'products'])->name('products');
     Route::get('/supplier', [SuplierController::class, 'index'])->name('supplier');

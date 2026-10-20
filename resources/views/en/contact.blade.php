@@ -205,8 +205,9 @@
                         </div>
 
 
-                        <form method="post" action="" novalidate data-busy-text="Sending…">
-                            <!-- backend: set action + @@csrf -->
+                        <form method="POST" action="{{ route('contact.post', ['lang' => app()->getLocale()]) }}"
+                            novalidate data-busy-text="Sending…">
+                            @csrf
 
                             <fieldset class="types">
                                 <legend class="sr">Type</legend>
@@ -248,31 +249,50 @@
                                 <div class="field">
                                     <label for="c-name">Full name <b class="req">*</b></label>
                                     <input id="c-name" name="name" class="input" maxlength="120"
-                                        autocomplete="name" value="" required>
+                                        autocomplete="name" value="{{ old('name') }}" required>
+                                    @error('name')
+                                        <p style="color:red">{{ $message }}</p>
+                                    @enderror
                                 </div>
                                 <div class="field">
                                     <label for="c-subject">Subject</label>
-                                    <input id="c-subject" name="subject" class="input" maxlength="190" value="">
+                                    <input id="c-subject" name="subject" class="input" maxlength="190"
+                                        value="{{ old('subject') }}">
+                                    @error('subject')
+                                        <p style="color:red">{{ $message }}</p>
+                                    @enderror
                                 </div>
                                 <div class="field">
                                     <label for="c-email">Email</label>
                                     <input id="c-email" name="email" type="email" class="input" maxlength="190"
-                                        autocomplete="email" value="">
+                                        autocomplete="email" value="{{ old('email') }}">
+                                    @error('email')
+                                        <p style="color:red">{{ $message }}</p>
+                                    @enderror
                                 </div>
                                 <div class="field">
                                     <label for="c-phone">Phone / WhatsApp</label>
                                     <input id="c-phone" name="phone" type="tel" class="input" maxlength="40"
-                                        autocomplete="tel" inputmode="tel" value="">
+                                        autocomplete="tel" inputmode="tel" value="{{ old('phone') }}">
+                                    @error('phone')
+                                        <p style="color:red">{{ $message }}</p>
+                                    @enderror
                                 </div>
                                 <div class="field w" data-show-for="complaint" hidden>
                                     <label for="c-ref">Order or invoice number <span
                                             class="opt">(optional)</span></label>
                                     <input id="c-ref" name="order_ref" class="input" maxlength="80"
-                                        value="">
+                                        value="{{ old('order_ref') }}">
+                                    @error('order_ref')
+                                        <p style="color:red">{{ $message }}</p>
+                                    @enderror
                                 </div>
                                 <div class="field w">
                                     <label for="c-body">Your message <b class="req">*</b></label>
                                     <textarea id="c-body" name="body" class="input" rows="6" maxlength="4000" required></textarea>
+                                    @error('body')
+                                        <p style="color:red">{{ $message }}</p>
+                                    @enderror
                                 </div>
                                 <div class="w iform-foot">
                                     <p class="iform-hint">Email or phone is enough; one of them is required.</p>
