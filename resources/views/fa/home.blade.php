@@ -102,7 +102,7 @@
                 </ol>
             </div>
         </section>
-
+@include('partials.export-cinema')
 
         <section class="section" aria-labelledby="week-h">
             <div class="container">

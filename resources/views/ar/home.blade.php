@@ -103,7 +103,7 @@
             </div>
         </section>
 
-
+@include('partials.export-cinema')
         <section class="section" aria-labelledby="week-h">
             <div class="container">
                 <div class="sec-head sec-head-row">
