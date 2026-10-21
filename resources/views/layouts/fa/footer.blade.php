@@ -91,7 +91,7 @@
 
                     <li><a href="{{ route('product', ['lang' => 'fa']) }}">شلیل</a></li>
 
-                    <li><a href="{{ route('product', ['lang' => 'fa']) }}">انار</a></li>
+                    <li><a href="{{ route('products', ['lang' => 'fa']) }}">همه محصولات</a></li>
 
                 </ul>
 

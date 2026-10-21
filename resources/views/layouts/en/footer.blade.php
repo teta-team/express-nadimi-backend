@@ -91,7 +91,7 @@
 
                     <li><a href="{{ route('product', ['lang' => 'en']) }}">Nectarine</a></li>
 
-                    <li><a href="{{ route('product', ['lang' => 'en']) }}">Pomegranate</a></li>
+                    <li><a href="{{ route('products', ['lang' => 'en']) }}">All Products</a></li>
 
                 </ul>
 

@@ -91,7 +91,7 @@
 
                     <li><a href="{{ route('product', ['lang' => 'ar']) }}">نكتارين</a></li>
 
-                    <li><a href="{{ route('product', ['lang' => 'ar']) }}">رمان</a></li>
+                    <li><a href="{{ route('products', ['lang' => 'ar']) }}">جميع المنتجات</a></li>
 
                 </ul>
 

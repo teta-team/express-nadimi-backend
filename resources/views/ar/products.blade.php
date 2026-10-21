@@ -75,15 +75,15 @@
 
         <section class="section" style="padding-top: 0">
             <div class="container">
-                <p class="results-meta" aria-live="polite" data-count data-one="منتج واحد" data-many="5 منتجات">21 منتجاً
+                <p class="results-meta" aria-live="polite" data-count data-one="منتج واحد" data-many="5 منتجات">23 منتجاً
                 </p>
 
                 <div class="pgrid" data-products>
                     <div data-product data-category="vegetables" data-name="tomato گوجه‌فرنگی طماطم">
                         <article class="pcard">
                             <div class="pcard-media">
-                                <img src="{{ asset('assets/images/products/tomato-480.webp') }}" alt=""
-                                    width="480" height="373" decoding="async">
+                                <img src="{{ asset('assets/images/products/tomato.jpg') }}" alt="" width="480"
+                                    height="373" decoding="async">
                                 <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
                                         <use href="#i-arrow" />
                                     </svg></span>
@@ -118,7 +118,7 @@
                     <div data-product data-category="vegetables" data-name="cucumber خیار خيار">
                         <article class="pcard">
                             <div class="pcard-media">
-                                <img src="{{ asset('assets/images/products/cucumber-480.webp') }}" alt=""
+                                <img src="{{ asset('assets/images/products/cucumber.jpg') }}" alt=""
                                     width="480" height="373" decoding="async">
                                 <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
                                         <use href="#i-arrow" />
@@ -154,7 +154,7 @@
                     <div data-product data-category="vegetables" data-name="bell pepper فلفل دلمه‌ای فلفل رومي">
                         <article class="pcard">
                             <div class="pcard-media">
-                                <img src="{{ asset('assets/images/products/bell-pepper-480.webp') }}" alt=""
+                                <img src="{{ asset('assets/images/products/BellPepper.jpg') }}" alt=""
                                     width="480" height="373" decoding="async">
                                 <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
                                         <use href="#i-arrow" />
@@ -190,7 +190,7 @@
                     <div data-product data-category="vegetables" data-name="cabbage کلم‌پیچ ملفوف">
                         <article class="pcard">
                             <div class="pcard-media">
-                                <img src="{{ asset('assets/images/products/cabbage-480.webp') }}" alt=""
+                                <img src="{{ asset('assets/images/products/cabbage.jpg') }}" alt=""
                                     width="480" height="373" decoding="async">
                                 <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
                                         <use href="#i-arrow" />
@@ -226,7 +226,7 @@
                     <div data-product data-category="vegetables" data-name="cauliflower گل‌کلم قرنبيط">
                         <article class="pcard">
                             <div class="pcard-media">
-                                <img src="{{ asset('assets/images/products/cauliflower-480.webp') }}" alt=""
+                                <img src="{{ asset('assets/images/products/Cauliflower.png') }}" alt=""
                                     width="480" height="373" loading="lazy" decoding="async">
                                 <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
                                         <use href="#i-arrow" />
@@ -262,7 +262,7 @@
                     <div data-product data-category="vegetables" data-name="lettuce کاهو خس">
                         <article class="pcard">
                             <div class="pcard-media">
-                                <img src="{{ asset('assets/images/products/lettuce-480.webp') }}" alt=""
+                                <img src="{{ asset('assets/images/products/Lettuce.png') }}" alt=""
                                     width="480" height="373" loading="lazy" decoding="async">
                                 <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
                                         <use href="#i-arrow" />
@@ -298,7 +298,7 @@
                     <div data-product data-category="vegetables" data-name="potato سیب‌زمینی بطاطا">
                         <article class="pcard">
                             <div class="pcard-media">
-                                <img src="{{ asset('assets/images/products/potato-480.webp') }}" alt=""
+                                <img src="{{ asset('assets/images/products/potato.jpg') }}" alt=""
                                     width="480" height="373" loading="lazy" decoding="async">
                                 <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
                                         <use href="#i-arrow" />
@@ -334,7 +334,7 @@
                     <div data-product data-category="vegetables" data-name="onion پیاز بصل">
                         <article class="pcard">
                             <div class="pcard-media">
-                                <img src="{{ asset('assets/images/products/onion-480.webp') }}" alt=""
+                                <img src="{{ asset('assets/images/products/Redonion.png') }}" alt=""
                                     width="480" height="373" loading="lazy" decoding="async">
                                 <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
                                         <use href="#i-arrow" />
@@ -370,7 +370,7 @@
                     <div data-product data-category="stone-fruits" data-name="apricot زردآلو مشمش">
                         <article class="pcard">
                             <div class="pcard-media">
-                                <img src="{{ asset('assets/images/products/apricot-480.webp') }}" alt=""
+                                <img src="{{ asset('assets/images/products/apricot.png') }}" alt=""
                                     width="480" height="373" loading="lazy" decoding="async">
                                 <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
                                         <use href="#i-arrow" />
@@ -406,7 +406,7 @@
                     <div data-product data-category="stone-fruits" data-name="cherry گیلاس كرز">
                         <article class="pcard">
                             <div class="pcard-media">
-                                <img src="{{ asset('assets/images/products/cherry-480.webp') }}" alt=""
+                                <img src="{{ asset('assets/images/products/Cherry.jpg') }}" alt=""
                                     width="480" height="373" loading="lazy" decoding="async">
                                 <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
                                         <use href="#i-arrow" />
@@ -442,8 +442,8 @@
                     <div data-product data-category="stone-fruits" data-name="peach هلو خوخ">
                         <article class="pcard">
                             <div class="pcard-media">
-                                <img src="{{ asset('assets/images/products/peach-480.webp') }}" alt=""
-                                    width="480" height="373" loading="lazy" decoding="async">
+                                <img src="{{ asset('assets/images/products/peach.jpg') }}" alt="" width="480"
+                                    height="373" loading="lazy" decoding="async">
                                 <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
                                         <use href="#i-arrow" />
                                     </svg></span>
@@ -478,7 +478,7 @@
                     <div data-product data-category="stone-fruits" data-name="nectarine شلیل نكتارين">
                         <article class="pcard">
                             <div class="pcard-media">
-                                <img src="{{ asset('assets/images/products/nectarine-480.webp') }}" alt=""
+                                <img src="{{ asset('assets/images/products/nectarine.png') }}" alt=""
                                     width="480" height="373" loading="lazy" decoding="async">
                                 <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
                                         <use href="#i-arrow" />
@@ -514,8 +514,8 @@
                     <div data-product data-category="orchard-fruits" data-name="apple سیب تفاح">
                         <article class="pcard">
                             <div class="pcard-media">
-                                <img src="{{ asset('assets/images/products/apple-480.webp') }}" alt=""
-                                    width="480" height="373" loading="lazy" decoding="async">
+                                <img src="{{ asset('assets/images/products/apple.jpg') }}" alt="" width="480"
+                                    height="373" loading="lazy" decoding="async">
                                 <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
                                         <use href="#i-arrow" />
                                     </svg></span>
@@ -547,82 +547,10 @@
                             </div>
                         </article>
                     </div>
-                    <div data-product data-category="orchard-fruits" data-name="pomegranate انار رمان">
-                        <article class="pcard">
-                            <div class="pcard-media">
-                                <img src="{{ asset('assets/images/products/pomegranate-480.webp') }}" alt=""
-                                    width="480" height="373" loading="lazy" decoding="async">
-                                <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
-                                        <use href="#i-arrow" />
-                                    </svg></span>
-                            </div>
-                            <div class="pcard-body">
-                                <div class="pcard-top">
-                                    <h3 class="pcard-title"><a href="{{ route('product', ['lang' => 'ar']) }}">رمان</a>
-                                    </h3>
-                                    <span class="dot-badge is-available">متوفر</span>
-                                </div>
-                                <p class="pcard-origin">ساوة، يزد، فارس</p>
-                                <div class="season" role="img" aria-label="الموسم: أكتوبر – يناير">
-                                    <ol class="season-bar" aria-hidden="true">
-                                        <li class="on" title="يناير"></li>
-                                        <li class="" title="فبراير"></li>
-                                        <li class="" title="مارس"></li>
-                                        <li class="" title="أبريل"></li>
-                                        <li class="" title="مايو"></li>
-                                        <li class="" title="يونيو"></li>
-                                        <li class="" title="يوليو"></li>
-                                        <li class="" title="أغسطس"></li>
-                                        <li class="" title="سبتمبر"></li>
-                                        <li class="on now" title="أكتوبر"></li>
-                                        <li class="on" title="نوفمبر"></li>
-                                        <li class="on" title="ديسمبر"></li>
-                                    </ol>
-                                    <span class="season-label">أكتوبر – يناير</span>
-                                </div>
-                            </div>
-                        </article>
-                    </div>
-                    <div data-product data-category="orchard-fruits" data-name="kiwi کیوی كيوي">
-                        <article class="pcard">
-                            <div class="pcard-media">
-                                <img src="{{ asset('assets/images/products/kiwi-480.webp') }}" alt=""
-                                    width="480" height="373" loading="lazy" decoding="async">
-                                <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
-                                        <use href="#i-arrow" />
-                                    </svg></span>
-                            </div>
-                            <div class="pcard-body">
-                                <div class="pcard-top">
-                                    <h3 class="pcard-title"><a href="{{ route('product', ['lang' => 'ar']) }}">كيوي</a>
-                                    </h3>
-                                    <span class="dot-badge is-off_season">خارج الموسم</span>
-                                </div>
-                                <p class="pcard-origin">مازندران، گيلان</p>
-                                <div class="season" role="img" aria-label="الموسم: نوفمبر – أبريل">
-                                    <ol class="season-bar" aria-hidden="true">
-                                        <li class="on" title="يناير"></li>
-                                        <li class="on" title="فبراير"></li>
-                                        <li class="on" title="مارس"></li>
-                                        <li class="on" title="أبريل"></li>
-                                        <li class="" title="مايو"></li>
-                                        <li class="" title="يونيو"></li>
-                                        <li class="" title="يوليو"></li>
-                                        <li class="" title="أغسطس"></li>
-                                        <li class="" title="سبتمبر"></li>
-                                        <li class="now" title="أكتوبر"></li>
-                                        <li class="on" title="نوفمبر"></li>
-                                        <li class="on" title="ديسمبر"></li>
-                                    </ol>
-                                    <span class="season-label">نوفمبر – أبريل</span>
-                                </div>
-                            </div>
-                        </article>
-                    </div>
                     <div data-product data-category="orchard-fruits" data-name="grape انگور عنب">
                         <article class="pcard">
                             <div class="pcard-media">
-                                <img src="{{ asset('assets/images/products/grape-480.webp') }}" alt=""
+                                <img src="{{ asset('assets/images/products/GrapeCrate.png') }}" alt=""
                                     width="480" height="373" loading="lazy" decoding="async">
                                 <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
                                         <use href="#i-arrow" />
@@ -655,118 +583,10 @@
                             </div>
                         </article>
                     </div>
-                    <div data-product data-category="citrus-melons" data-name="orange پرتقال برتقال">
-                        <article class="pcard">
-                            <div class="pcard-media">
-                                <img src="{{ asset('assets/images/products/orange-480.webp') }}" alt=""
-                                    width="480" height="373" loading="lazy" decoding="async">
-                                <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
-                                        <use href="#i-arrow" />
-                                    </svg></span>
-                            </div>
-                            <div class="pcard-body">
-                                <div class="pcard-top">
-                                    <h3 class="pcard-title"><a href="{{ route('product', ['lang' => 'ar']) }}">برتقال</a>
-                                    </h3>
-                                    <span class="dot-badge is-off_season">خارج الموسم</span>
-                                </div>
-                                <p class="pcard-origin">مازندران، جيرفت</p>
-                                <div class="season" role="img" aria-label="الموسم: نوفمبر – أبريل">
-                                    <ol class="season-bar" aria-hidden="true">
-                                        <li class="on" title="يناير"></li>
-                                        <li class="on" title="فبراير"></li>
-                                        <li class="on" title="مارس"></li>
-                                        <li class="on" title="أبريل"></li>
-                                        <li class="" title="مايو"></li>
-                                        <li class="" title="يونيو"></li>
-                                        <li class="" title="يوليو"></li>
-                                        <li class="" title="أغسطس"></li>
-                                        <li class="" title="سبتمبر"></li>
-                                        <li class="now" title="أكتوبر"></li>
-                                        <li class="on" title="نوفمبر"></li>
-                                        <li class="on" title="ديسمبر"></li>
-                                    </ol>
-                                    <span class="season-label">نوفمبر – أبريل</span>
-                                </div>
-                            </div>
-                        </article>
-                    </div>
-                    <div data-product data-category="citrus-melons" data-name="tangerine نارنگی يوسفي">
-                        <article class="pcard">
-                            <div class="pcard-media">
-                                <img src="{{ asset('assets/images/products/tangerine-480.webp') }}" alt=""
-                                    width="480" height="373" loading="lazy" decoding="async">
-                                <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
-                                        <use href="#i-arrow" />
-                                    </svg></span>
-                            </div>
-                            <div class="pcard-body">
-                                <div class="pcard-top">
-                                    <h3 class="pcard-title"><a href="{{ route('product', ['lang' => 'ar']) }}">يوسفي</a>
-                                    </h3>
-                                    <span class="dot-badge is-off_season">خارج الموسم</span>
-                                </div>
-                                <p class="pcard-origin">مازندران، جيرفت</p>
-                                <div class="season" role="img" aria-label="الموسم: نوفمبر – مارس">
-                                    <ol class="season-bar" aria-hidden="true">
-                                        <li class="on" title="يناير"></li>
-                                        <li class="on" title="فبراير"></li>
-                                        <li class="on" title="مارس"></li>
-                                        <li class="" title="أبريل"></li>
-                                        <li class="" title="مايو"></li>
-                                        <li class="" title="يونيو"></li>
-                                        <li class="" title="يوليو"></li>
-                                        <li class="" title="أغسطس"></li>
-                                        <li class="" title="سبتمبر"></li>
-                                        <li class="now" title="أكتوبر"></li>
-                                        <li class="on" title="نوفمبر"></li>
-                                        <li class="on" title="ديسمبر"></li>
-                                    </ol>
-                                    <span class="season-label">نوفمبر – مارس</span>
-                                </div>
-                            </div>
-                        </article>
-                    </div>
-                    <div data-product data-category="citrus-melons" data-name="lemon لیمو ليمون">
-                        <article class="pcard">
-                            <div class="pcard-media">
-                                <img src="{{ asset('assets/images/products/lemon-480.webp') }}" alt=""
-                                    width="480" height="373" loading="lazy" decoding="async">
-                                <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
-                                        <use href="#i-arrow" />
-                                    </svg></span>
-                            </div>
-                            <div class="pcard-body">
-                                <div class="pcard-top">
-                                    <h3 class="pcard-title"><a
-                                            href="{{ route('product', ['lang' => 'ar']) }}">ليمون</a></h3>
-                                    <span class="dot-badge is-available">متوفر</span>
-                                </div>
-                                <p class="pcard-origin">جيرفت، مازندران، فارس</p>
-                                <div class="season" role="img" aria-label="الموسم: أكتوبر – أبريل">
-                                    <ol class="season-bar" aria-hidden="true">
-                                        <li class="on" title="يناير"></li>
-                                        <li class="on" title="فبراير"></li>
-                                        <li class="on" title="مارس"></li>
-                                        <li class="on" title="أبريل"></li>
-                                        <li class="" title="مايو"></li>
-                                        <li class="" title="يونيو"></li>
-                                        <li class="" title="يوليو"></li>
-                                        <li class="" title="أغسطس"></li>
-                                        <li class="" title="سبتمبر"></li>
-                                        <li class="on now" title="أكتوبر"></li>
-                                        <li class="on" title="نوفمبر"></li>
-                                        <li class="on" title="ديسمبر"></li>
-                                    </ol>
-                                    <span class="season-label">أكتوبر – أبريل</span>
-                                </div>
-                            </div>
-                        </article>
-                    </div>
                     <div data-product data-category="citrus-melons" data-name="watermelon هندوانه بطيخ">
                         <article class="pcard">
                             <div class="pcard-media">
-                                <img src="{{ asset('assets/images/products/watermelon-480.webp') }}" alt=""
+                                <img src="{{ asset('assets/images/products/Watermelon.png') }}" alt=""
                                     width="480" height="373" loading="lazy" decoding="async">
                                 <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
                                         <use href="#i-arrow" />
@@ -802,8 +622,8 @@
                     <div data-product data-category="citrus-melons" data-name="melon خربزه و طالبی شمام">
                         <article class="pcard">
                             <div class="pcard-media">
-                                <img src="{{ asset('assets/images/products/melon-480.webp') }}" alt=""
-                                    width="480" height="373" loading="lazy" decoding="async">
+                                <img src="{{ asset('assets/images/products/Melon.png') }}" alt="" width="480"
+                                    height="373" loading="lazy" decoding="async">
                                 <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
                                         <use href="#i-arrow" />
                                     </svg></span>
@@ -831,6 +651,78 @@
                                         <li class="" title="ديسمبر"></li>
                                     </ol>
                                     <span class="season-label">مايو – أكتوبر</span>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                    <div data-product data-category="orchard-fruits" data-name="pear گلابی كمثرى">
+                        <article class="pcard">
+                            <div class="pcard-media">
+                                <img src="{{ asset('assets/images/products/pear.jpg') }}" alt="" width="480"
+                                    height="373" loading="lazy" decoding="async">
+                                <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
+                                        <use href="#i-arrow" />
+                                    </svg></span>
+                            </div>
+                            <div class="pcard-body">
+                                <div class="pcard-top">
+                                    <h3 class="pcard-title"><a href="{{ route('product', ['lang' => 'ar']) }}">كمثرى</a>
+                                    </h3>
+                                    <span class="dot-badge is-available">متوفر</span>
+                                </div>
+                                <p class="pcard-origin">ساوة، يزد، فارس</p>
+                                <div class="season" role="img" aria-label="الموسم: أكتوبر – يناير">
+                                    <ol class="season-bar" aria-hidden="true">
+                                        <li class="on" title="يناير"></li>
+                                        <li class="" title="فبراير"></li>
+                                        <li class="" title="مارس"></li>
+                                        <li class="" title="أبريل"></li>
+                                        <li class="" title="مايو"></li>
+                                        <li class="" title="يونيو"></li>
+                                        <li class="" title="يوليو"></li>
+                                        <li class="" title="أغسطس"></li>
+                                        <li class="" title="سبتمبر"></li>
+                                        <li class="on now" title="أكتوبر"></li>
+                                        <li class="on" title="نوفمبر"></li>
+                                        <li class="on" title="ديسمبر"></li>
+                                    </ol>
+                                    <span class="season-label">أكتوبر – يناير</span>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                    <div data-product data-category="orchard-fruits" data-name="carrot هویج جزر">
+                        <article class="pcard">
+                            <div class="pcard-media">
+                                <img src="{{ asset('assets/images/products/carrut.jpg') }}" alt=""
+                                    width="480" height="373" loading="lazy" decoding="async">
+                                <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
+                                        <use href="#i-arrow" />
+                                    </svg></span>
+                            </div>
+                            <div class="pcard-body">
+                                <div class="pcard-top">
+                                    <h3 class="pcard-title"><a href="{{ route('product', ['lang' => 'ar']) }}">جزر</a>
+                                    </h3>
+                                    <span class="dot-badge is-off_season">خارج الموسم</span>
+                                </div>
+                                <p class="pcard-origin">مازندران، گيلان</p>
+                                <div class="season" role="img" aria-label="الموسم: نوفمبر – أبريل">
+                                    <ol class="season-bar" aria-hidden="true">
+                                        <li class="on" title="يناير"></li>
+                                        <li class="on" title="فبراير"></li>
+                                        <li class="on" title="مارس"></li>
+                                        <li class="on" title="أبريل"></li>
+                                        <li class="" title="مايو"></li>
+                                        <li class="" title="يونيو"></li>
+                                        <li class="" title="يوليو"></li>
+                                        <li class="" title="أغسطس"></li>
+                                        <li class="" title="سبتمبر"></li>
+                                        <li class="now" title="أكتوبر"></li>
+                                        <li class="on" title="نوفمبر"></li>
+                                        <li class="on" title="ديسمبر"></li>
+                                    </ol>
+                                    <span class="season-label">نوفمبر – أبريل</span>
                                 </div>
                             </div>
                         </article>
@@ -1150,6 +1042,38 @@
                             <span class="cal-cell on now" aria-hidden="true"></span>
                             <span class="cal-cell" aria-hidden="true"></span>
                             <span class="cal-cell" aria-hidden="true"></span>
+                        </div>
+                        <div class="cal-row">
+                            <a class="cal-name" href="{{ route('product', ['lang' => 'ar']) }}">كمثرى<span
+                                    class="sr">: أكتوبر – يناير</span></a>
+                            <span class="cal-cell on" aria-hidden="true"></span>
+                            <span class="cal-cell" aria-hidden="true"></span>
+                            <span class="cal-cell" aria-hidden="true"></span>
+                            <span class="cal-cell" aria-hidden="true"></span>
+                            <span class="cal-cell" aria-hidden="true"></span>
+                            <span class="cal-cell" aria-hidden="true"></span>
+                            <span class="cal-cell" aria-hidden="true"></span>
+                            <span class="cal-cell" aria-hidden="true"></span>
+                            <span class="cal-cell" aria-hidden="true"></span>
+                            <span class="cal-cell on now" aria-hidden="true"></span>
+                            <span class="cal-cell on" aria-hidden="true"></span>
+                            <span class="cal-cell on" aria-hidden="true"></span>
+                        </div>
+                        <div class="cal-row">
+                            <a class="cal-name" href="{{ route('product', ['lang' => 'ar']) }}">جزر<span
+                                    class="sr">: نوفمبر – أبريل</span></a>
+                            <span class="cal-cell on" aria-hidden="true"></span>
+                            <span class="cal-cell on" aria-hidden="true"></span>
+                            <span class="cal-cell on" aria-hidden="true"></span>
+                            <span class="cal-cell on" aria-hidden="true"></span>
+                            <span class="cal-cell" aria-hidden="true"></span>
+                            <span class="cal-cell" aria-hidden="true"></span>
+                            <span class="cal-cell" aria-hidden="true"></span>
+                            <span class="cal-cell" aria-hidden="true"></span>
+                            <span class="cal-cell" aria-hidden="true"></span>
+                            <span class="cal-cell now" aria-hidden="true"></span>
+                            <span class="cal-cell on" aria-hidden="true"></span>
+                            <span class="cal-cell on" aria-hidden="true"></span>
                         </div>
                     </div>
                     <div data-cal-group="citrus-melons">

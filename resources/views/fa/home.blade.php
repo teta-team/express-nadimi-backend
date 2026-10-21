@@ -102,7 +102,7 @@
                 </ol>
             </div>
         </section>
-
+@include('partials.export-cinema')
 
         <section class="section" aria-labelledby="week-h">
             <div class="container">
@@ -113,7 +113,7 @@
                             فصل برداشت، میزان تولید، کیفیت و شرایط روز بازار تعیین می‌شود؛ برای دریافت قیمت روز با ما در
                             تماس باشید.</p>
                     </div>
-                    <a class="btn-all" href="{{ route('products', ['lang' => 'fa']) }}"><span>همه ۲۱ محصول</span><span
+                    <a class="btn-all" href="{{ route('products', ['lang' => 'fa']) }}"><span>همه ۲۳ محصول</span><span
                             class="btn-all-ic" aria-hidden="true"><svg class="ic flip">
                                 <use href="#i-arrow" />
                             </svg></span></a>
@@ -121,8 +121,8 @@
                 <div class="rail">
                     <article class="pcard">
                         <div class="pcard-media">
-                            <img src="{{ asset('assets/images/products/tomato-480.webp') }}" alt=""
-                                width="480" height="373" loading="lazy" decoding="async">
+                            <img src="{{ asset('assets/images/products/tomato.jpg') }}" alt="" width="480"
+                                height="373" loading="lazy" decoding="async">
                             <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
                                     <use href="#i-arrow" />
                                 </svg></span>
@@ -155,8 +155,8 @@
                     </article>
                     <article class="pcard">
                         <div class="pcard-media">
-                            <img src="{{ asset('assets/images/products/cucumber-480.webp') }}" alt=""
-                                width="480" height="373" loading="lazy" decoding="async">
+                            <img src="{{ asset('assets/images/products/cucumber.jpg') }}" alt="" width="480"
+                                height="373" loading="lazy" decoding="async">
                             <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
                                     <use href="#i-arrow" />
                                 </svg></span>
@@ -188,7 +188,7 @@
                     </article>
                     <article class="pcard">
                         <div class="pcard-media">
-                            <img src="{{ asset('assets/images/products/bell-pepper-480.webp') }}" alt=""
+                            <img src="{{ asset('assets/images/products/BellPepper.jpg') }}" alt=""
                                 width="480" height="373" loading="lazy" decoding="async">
                             <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
                                     <use href="#i-arrow" />
@@ -222,8 +222,8 @@
                     </article>
                     <article class="pcard">
                         <div class="pcard-media">
-                            <img src="{{ asset('assets/images/products/cabbage-480.webp') }}" alt=""
-                                width="480" height="373" loading="lazy" decoding="async">
+                            <img src="{{ asset('assets/images/products/cabbage.jpg') }}" alt="" width="480"
+                                height="373" loading="lazy" decoding="async">
                             <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
                                     <use href="#i-arrow" />
                                 </svg></span>
@@ -256,7 +256,7 @@
                     </article>
                     <article class="pcard">
                         <div class="pcard-media">
-                            <img src="{{ asset('assets/images/products/cauliflower-480.webp') }}" alt=""
+                            <img src="{{ asset('assets/images/products/Cauliflower.png') }}" alt=""
                                 width="480" height="373" loading="lazy" decoding="async">
                             <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
                                     <use href="#i-arrow" />
@@ -290,8 +290,8 @@
                     </article>
                     <article class="pcard">
                         <div class="pcard-media">
-                            <img src="{{ asset('assets/images/products/lettuce-480.webp') }}" alt=""
-                                width="480" height="373" loading="lazy" decoding="async">
+                            <img src="{{ asset('assets/images/products/Lettuce.png') }}" alt="" width="480"
+                                height="373" loading="lazy" decoding="async">
                             <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
                                     <use href="#i-arrow" />
                                 </svg></span>
@@ -323,8 +323,8 @@
                     </article>
                     <article class="pcard">
                         <div class="pcard-media">
-                            <img src="{{ asset('assets/images/products/potato-480.webp') }}" alt=""
-                                width="480" height="373" loading="lazy" decoding="async">
+                            <img src="{{ asset('assets/images/products/potato.jpg') }}" alt="" width="480"
+                                height="373" loading="lazy" decoding="async">
                             <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
                                     <use href="#i-arrow" />
                                 </svg></span>
@@ -357,8 +357,8 @@
                     </article>
                     <article class="pcard">
                         <div class="pcard-media">
-                            <img src="{{ asset('assets/images/products/onion-480.webp') }}" alt=""
-                                width="480" height="373" loading="lazy" decoding="async">
+                            <img src="{{ asset('assets/images/products/Redonion.png') }}" alt="" width="480"
+                                height="373" loading="lazy" decoding="async">
                             <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
                                     <use href="#i-arrow" />
                                 </svg></span>
@@ -477,9 +477,11 @@
 
 
 
-                        <form class="iform" method="post" action="" novalidate data-busy-text="در حال ارسال…">
+                        <form class="iform" method="POST"
+                            action="{{ route('home.post', ['lang' => app()->getLocale()]) }}" novalidate
+                            data-busy-text="در حال ارسال…" id="inquiry-form">
                             <!-- backend: set action + @@csrf -->
-
+                            @csrf
 
                             <div class="iform-grid">
 
@@ -489,7 +491,7 @@
 
                                     <select id="iq-product" name="product" class="input">
 
-                                        <option value="">ترکیبی / چند محصول</option>
+                                        <option value="{{ old('product') }}">ترکیبی / چند محصول</option>
 
                                         <optgroup label="صیفی‌جات">
 
@@ -550,7 +552,9 @@
                                         </optgroup>
 
                                     </select>
-
+                                    @error('product')
+                                        <p style="color:red">{{ $message }}</p>
+                                    @enderror
                                 </div>
 
                                 <div class="field">
@@ -558,8 +562,10 @@
                                     <label for="iq-qty">مقدار <b class="req">*</b></label>
 
                                     <input id="iq-qty" name="quantity" class="input" required maxlength="80"
-                                        value="" placeholder="مثلاً یک کانتینر ۴۰ فوت، ۲۰ تن">
-
+                                        value="{{ old('quantity') }}" placeholder="مثلاً یک کانتینر ۴۰ فوت، ۲۰ تن">
+                                    @error('quantity')
+                                        <p style="color:red">{{ $message }}</p>
+                                    @enderror
                                 </div>
 
                                 <div class="field">
@@ -587,7 +593,9 @@
                                         <option value="private_label">با برند خریدار</option>
 
                                     </select>
-
+                                    @error('packaging')
+                                        <p style="color:red">{{ $message }}</p>
+                                    @enderror
                                 </div>
 
                                 <div class="field">
@@ -609,7 +617,9 @@
                                         <option value="DAP">DAP</option>
 
                                     </select>
-
+                                    @error('incoterm')
+                                        <p style="color:red">{{ $message }}</p>
+                                    @enderror
                                 </div>
 
                                 <div class="field w" style="grid-column: 1 / -1">
@@ -617,8 +627,11 @@
                                     <label for="iq-dest">کشور / بندر مقصد <b class="req">*</b></label>
 
                                     <input id="iq-dest" name="destination" class="input" required maxlength="120"
-                                        value="" placeholder="مثلاً عمان – مسقط">
+                                        value="{{ old('destination') }}" placeholder="مثلاً عمان – مسقط">
 
+                                    @error('destination')
+                                        <p style="color:red">{{ $message }}</p>
+                                    @enderror
                                 </div>
 
                                 <div class="field">
@@ -626,8 +639,10 @@
                                     <label for="iq-name">نام شما <b class="req">*</b></label>
 
                                     <input id="iq-name" name="name" class="input" required maxlength="120"
-                                        autocomplete="name" value="">
-
+                                        autocomplete="name" value="{{ old('name') }}">
+                                    @error('name')
+                                        <p style="color:red">{{ $message }}</p>
+                                    @enderror
                                 </div>
 
                                 <div class="field">
@@ -635,8 +650,10 @@
                                     <label for="iq-co">شرکت</label>
 
                                     <input id="iq-co" name="company" class="input" maxlength="160"
-                                        autocomplete="organization" value="" placeholder="نام شرکت">
-
+                                        autocomplete="organization" value="{{ old('company') }}" placeholder="نام شرکت">
+                                    @error('company')
+                                        <p style="color:red">{{ $message }}</p>
+                                    @enderror
                                 </div>
 
                                 <div class="field">
@@ -644,8 +661,10 @@
                                     <label for="iq-email">ایمیل</label>
 
                                     <input id="iq-email" name="email" type="email" class="input" maxlength="190"
-                                        autocomplete="email" value="" placeholder="name@company.com">
-
+                                        autocomplete="email" value="{{ old('email') }}" placeholder="name@company.com">
+                                    @error('email')
+                                        <p style="color:red">{{ $message }}</p>
+                                    @enderror
                                 </div>
 
                                 <div class="field">
@@ -653,8 +672,12 @@
                                     <label for="iq-phone">تلفن / واتساپ</label>
 
                                     <input id="iq-phone" name="phone" type="tel" class="input" maxlength="40"
-                                        autocomplete="tel" inputmode="tel" value="" placeholder="+968 …">
+                                        autocomplete="tel" inputmode="tel" value="{{ old('phone') }}"
+                                        placeholder="+968 …">
 
+                                    @error('phone')
+                                        <p style="color:red">{{ $message }}</p>
+                                    @enderror
                                 </div>
 
                                 <div class="field" style="grid-column: 1 / -1">
@@ -662,8 +685,10 @@
                                     <label for="iq-msg">توضیحات <span class="opt">(اختیاری)</span></label>
 
                                     <textarea id="iq-msg" name="message" class="input" rows="3" maxlength="2000"
-                                        placeholder="رقم، سایز، زمان تحویل…"></textarea>
-
+                                        placeholder="رقم، سایز، زمان تحویل…" value="{{ old('message') }}"></textarea>
+                                    @error('message')
+                                        <p style="color:red">{{ $message }}</p>
+                                    @enderror
                                 </div>
 
                             </div>

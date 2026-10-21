@@ -75,15 +75,15 @@
 
         <section class="section" style="padding-top: 0">
             <div class="container">
-                <p class="results-meta" aria-live="polite" data-count data-one="1 product" data-many="5 products">21
+                <p class="results-meta" aria-live="polite" data-count data-one="1 product" data-many="5 products">23
                     products</p>
 
                 <div class="pgrid" data-products>
                     <div data-product data-category="vegetables" data-name="tomato گوجه‌فرنگی طماطم">
                         <article class="pcard">
                             <div class="pcard-media">
-                                <img src="{{ asset('assets/images/products/tomato-480.webp') }}" alt=""
-                                    width="480" height="373" decoding="async">
+                                <img src="{{ asset('assets/images/products/tomato.jpg') }}" alt="" width="480"
+                                    height="373" decoding="async">
                                 <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
                                         <use href="#i-arrow" />
                                     </svg></span>
@@ -118,7 +118,7 @@
                     <div data-product data-category="vegetables" data-name="cucumber خیار خيار">
                         <article class="pcard">
                             <div class="pcard-media">
-                                <img src="{{ asset('assets/images/products/cucumber-480.webp') }}" alt=""
+                                <img src="{{ asset('assets/images/products/cucumber.jpg') }}" alt=""
                                     width="480" height="373" decoding="async">
                                 <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
                                         <use href="#i-arrow" />
@@ -154,7 +154,7 @@
                     <div data-product data-category="vegetables" data-name="bell pepper فلفل دلمه‌ای فلفل رومي">
                         <article class="pcard">
                             <div class="pcard-media">
-                                <img src="{{ asset('assets/images/products/bell-pepper-480.webp') }}" alt=""
+                                <img src="{{ asset('assets/images/products/BellPepper.jpg') }}" alt=""
                                     width="480" height="373" decoding="async">
                                 <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
                                         <use href="#i-arrow" />
@@ -190,7 +190,7 @@
                     <div data-product data-category="vegetables" data-name="cabbage کلم‌پیچ ملفوف">
                         <article class="pcard">
                             <div class="pcard-media">
-                                <img src="{{ asset('assets/images/products/cabbage-480.webp') }}" alt=""
+                                <img src="{{ asset('assets/images/products/cabbage.jpg') }}" alt=""
                                     width="480" height="373" decoding="async">
                                 <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
                                         <use href="#i-arrow" />
@@ -226,7 +226,7 @@
                     <div data-product data-category="vegetables" data-name="cauliflower گل‌کلم قرنبيط">
                         <article class="pcard">
                             <div class="pcard-media">
-                                <img src="{{ asset('assets/images/products/cauliflower-480.webp') }}" alt=""
+                                <img src="{{ asset('assets/images/products/Cauliflower.png') }}" alt=""
                                     width="480" height="373" loading="lazy" decoding="async">
                                 <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
                                         <use href="#i-arrow" />
@@ -262,7 +262,7 @@
                     <div data-product data-category="vegetables" data-name="lettuce کاهو خس">
                         <article class="pcard">
                             <div class="pcard-media">
-                                <img src="{{ asset('assets/images/products/lettuce-480.webp') }}" alt=""
+                                <img src="{{ asset('assets/images/products/Lettuce.png') }}" alt=""
                                     width="480" height="373" loading="lazy" decoding="async">
                                 <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
                                         <use href="#i-arrow" />
@@ -298,7 +298,7 @@
                     <div data-product data-category="vegetables" data-name="potato سیب‌زمینی بطاطا">
                         <article class="pcard">
                             <div class="pcard-media">
-                                <img src="{{ asset('assets/images/products/potato-480.webp') }}" alt=""
+                                <img src="{{ asset('assets/images/products/potato.jpg') }}" alt=""
                                     width="480" height="373" loading="lazy" decoding="async">
                                 <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
                                         <use href="#i-arrow" />
@@ -334,7 +334,7 @@
                     <div data-product data-category="vegetables" data-name="onion پیاز بصل">
                         <article class="pcard">
                             <div class="pcard-media">
-                                <img src="{{ asset('assets/images/products/onion-480.webp') }}" alt=""
+                                <img src="{{ asset('assets/images/products/Redonion.png') }}" alt=""
                                     width="480" height="373" loading="lazy" decoding="async">
                                 <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
                                         <use href="#i-arrow" />
@@ -370,7 +370,7 @@
                     <div data-product data-category="stone-fruits" data-name="apricot زردآلو مشمش">
                         <article class="pcard">
                             <div class="pcard-media">
-                                <img src="{{ asset('assets/images/products/apricot-480.webp') }}" alt=""
+                                <img src="{{ asset('assets/images/products/apricot.png') }}" alt=""
                                     width="480" height="373" loading="lazy" decoding="async">
                                 <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
                                         <use href="#i-arrow" />
@@ -406,7 +406,7 @@
                     <div data-product data-category="stone-fruits" data-name="cherry گیلاس كرز">
                         <article class="pcard">
                             <div class="pcard-media">
-                                <img src="{{ asset('assets/images/products/cherry-480.webp') }}" alt=""
+                                <img src="{{ asset('assets/images/products/Cherry.jpg') }}" alt=""
                                     width="480" height="373" loading="lazy" decoding="async">
                                 <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
                                         <use href="#i-arrow" />
@@ -442,8 +442,8 @@
                     <div data-product data-category="stone-fruits" data-name="peach هلو خوخ">
                         <article class="pcard">
                             <div class="pcard-media">
-                                <img src="{{ asset('assets/images/products/peach-480.webp') }}" alt=""
-                                    width="480" height="373" loading="lazy" decoding="async">
+                                <img src="{{ asset('assets/images/products/peach.jpg') }}" alt="" width="480"
+                                    height="373" loading="lazy" decoding="async">
                                 <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
                                         <use href="#i-arrow" />
                                     </svg></span>
@@ -478,7 +478,7 @@
                     <div data-product data-category="stone-fruits" data-name="nectarine شلیل نكتارين">
                         <article class="pcard">
                             <div class="pcard-media">
-                                <img src="{{ asset('assets/images/products/nectarine-480.webp') }}" alt=""
+                                <img src="{{ asset('assets/images/products/nectarine.png') }}" alt=""
                                     width="480" height="373" loading="lazy" decoding="async">
                                 <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
                                         <use href="#i-arrow" />
@@ -514,8 +514,8 @@
                     <div data-product data-category="orchard-fruits" data-name="apple سیب تفاح">
                         <article class="pcard">
                             <div class="pcard-media">
-                                <img src="{{ asset('assets/images/products/apple-480.webp') }}" alt=""
-                                    width="480" height="373" loading="lazy" decoding="async">
+                                <img src="{{ asset('assets/images/products/apple.jpg') }}" alt="" width="480"
+                                    height="373" loading="lazy" decoding="async">
                                 <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
                                         <use href="#i-arrow" />
                                     </svg></span>
@@ -547,19 +547,19 @@
                             </div>
                         </article>
                     </div>
-                    <div data-product data-category="orchard-fruits" data-name="pomegranate انار رمان">
+                    <div data-product data-category="orchard-fruits" data-name="گلابی كُمَّثرَى pear">
                         <article class="pcard">
                             <div class="pcard-media">
-                                <img src="{{ asset('assets/images/products/pomegranate-480.webp') }}" alt=""
-                                    width="480" height="373" loading="lazy" decoding="async">
+                                <img src="{{ asset('assets/images/products/pear.jpg') }}" alt="" width="480"
+                                    height="373" loading="lazy" decoding="async">
                                 <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
                                         <use href="#i-arrow" />
                                     </svg></span>
                             </div>
                             <div class="pcard-body">
                                 <div class="pcard-top">
-                                    <h3 class="pcard-title"><a
-                                            href="{{ route('product', ['lang' => 'en']) }}">Pomegranate</a></h3>
+                                    <h3 class="pcard-title"><a href="{{ route('product', ['lang' => 'en']) }}">Pear</a>
+                                    </h3>
                                     <span class="dot-badge is-available">Available</span>
                                 </div>
                                 <p class="pcard-origin">Saveh, Yazd, Fars</p>
@@ -583,10 +583,10 @@
                             </div>
                         </article>
                     </div>
-                    <div data-product data-category="orchard-fruits" data-name="kiwi کیوی كيوي">
+                    <div data-product data-category="orchard-fruits" data-name="carrot هویج جزر">
                         <article class="pcard">
                             <div class="pcard-media">
-                                <img src="{{ asset('assets/images/products/kiwi-480.webp') }}" alt=""
+                                <img src="{{ asset('assets/images/products/carrut.jpg') }}" alt=""
                                     width="480" height="373" loading="lazy" decoding="async">
                                 <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
                                         <use href="#i-arrow" />
@@ -594,7 +594,7 @@
                             </div>
                             <div class="pcard-body">
                                 <div class="pcard-top">
-                                    <h3 class="pcard-title"><a href="{{ route('product', ['lang' => 'en']) }}">Kiwi</a>
+                                    <h3 class="pcard-title"><a href="{{ route('product', ['lang' => 'en']) }}">Carrot</a>
                                     </h3>
                                     <span class="dot-badge is-off_season">Off season</span>
                                 </div>
@@ -622,7 +622,7 @@
                     <div data-product data-category="orchard-fruits" data-name="grape انگور عنب">
                         <article class="pcard">
                             <div class="pcard-media">
-                                <img src="{{ asset('assets/images/products/grape-480.webp') }}" alt=""
+                                <img src="{{ asset('assets/images/products/GrapeCrate.png') }}" alt=""
                                     width="480" height="373" loading="lazy" decoding="async">
                                 <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
                                         <use href="#i-arrow" />
@@ -655,118 +655,10 @@
                             </div>
                         </article>
                     </div>
-                    <div data-product data-category="citrus-melons" data-name="orange پرتقال برتقال">
-                        <article class="pcard">
-                            <div class="pcard-media">
-                                <img src="{{ asset('assets/images/products/orange-480.webp') }}" alt=""
-                                    width="480" height="373" loading="lazy" decoding="async">
-                                <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
-                                        <use href="#i-arrow" />
-                                    </svg></span>
-                            </div>
-                            <div class="pcard-body">
-                                <div class="pcard-top">
-                                    <h3 class="pcard-title"><a href="{{ route('product', ['lang' => 'en']) }}">Orange</a>
-                                    </h3>
-                                    <span class="dot-badge is-off_season">Off season</span>
-                                </div>
-                                <p class="pcard-origin">Mazandaran, Jiroft</p>
-                                <div class="season" role="img" aria-label="Season: Nov – Apr">
-                                    <ol class="season-bar" aria-hidden="true">
-                                        <li class="on" title="Jan"></li>
-                                        <li class="on" title="Feb"></li>
-                                        <li class="on" title="Mar"></li>
-                                        <li class="on" title="Apr"></li>
-                                        <li class="" title="May"></li>
-                                        <li class="" title="Jun"></li>
-                                        <li class="" title="Jul"></li>
-                                        <li class="" title="Aug"></li>
-                                        <li class="" title="Sep"></li>
-                                        <li class="now" title="Oct"></li>
-                                        <li class="on" title="Nov"></li>
-                                        <li class="on" title="Dec"></li>
-                                    </ol>
-                                    <span class="season-label">Nov – Apr</span>
-                                </div>
-                            </div>
-                        </article>
-                    </div>
-                    <div data-product data-category="citrus-melons" data-name="tangerine نارنگی يوسفي">
-                        <article class="pcard">
-                            <div class="pcard-media">
-                                <img src="{{ asset('assets/images/products/tangerine-480.webp') }}" alt=""
-                                    width="480" height="373" loading="lazy" decoding="async">
-                                <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
-                                        <use href="#i-arrow" />
-                                    </svg></span>
-                            </div>
-                            <div class="pcard-body">
-                                <div class="pcard-top">
-                                    <h3 class="pcard-title"><a
-                                            href="{{ route('product', ['lang' => 'en']) }}">Tangerine</a></h3>
-                                    <span class="dot-badge is-off_season">Off season</span>
-                                </div>
-                                <p class="pcard-origin">Mazandaran, Jiroft</p>
-                                <div class="season" role="img" aria-label="Season: Nov – Mar">
-                                    <ol class="season-bar" aria-hidden="true">
-                                        <li class="on" title="Jan"></li>
-                                        <li class="on" title="Feb"></li>
-                                        <li class="on" title="Mar"></li>
-                                        <li class="" title="Apr"></li>
-                                        <li class="" title="May"></li>
-                                        <li class="" title="Jun"></li>
-                                        <li class="" title="Jul"></li>
-                                        <li class="" title="Aug"></li>
-                                        <li class="" title="Sep"></li>
-                                        <li class="now" title="Oct"></li>
-                                        <li class="on" title="Nov"></li>
-                                        <li class="on" title="Dec"></li>
-                                    </ol>
-                                    <span class="season-label">Nov – Mar</span>
-                                </div>
-                            </div>
-                        </article>
-                    </div>
-                    <div data-product data-category="citrus-melons" data-name="lemon لیمو ليمون">
-                        <article class="pcard">
-                            <div class="pcard-media">
-                                <img src="{{ asset('assets/images/products/lemon-480.webp') }}" alt=""
-                                    width="480" height="373" loading="lazy" decoding="async">
-                                <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
-                                        <use href="#i-arrow" />
-                                    </svg></span>
-                            </div>
-                            <div class="pcard-body">
-                                <div class="pcard-top">
-                                    <h3 class="pcard-title"><a
-                                            href="{{ route('product', ['lang' => 'en']) }}">Lemon</a></h3>
-                                    <span class="dot-badge is-available">Available</span>
-                                </div>
-                                <p class="pcard-origin">Jiroft, Mazandaran, Fars</p>
-                                <div class="season" role="img" aria-label="Season: Oct – Apr">
-                                    <ol class="season-bar" aria-hidden="true">
-                                        <li class="on" title="Jan"></li>
-                                        <li class="on" title="Feb"></li>
-                                        <li class="on" title="Mar"></li>
-                                        <li class="on" title="Apr"></li>
-                                        <li class="" title="May"></li>
-                                        <li class="" title="Jun"></li>
-                                        <li class="" title="Jul"></li>
-                                        <li class="" title="Aug"></li>
-                                        <li class="" title="Sep"></li>
-                                        <li class="on now" title="Oct"></li>
-                                        <li class="on" title="Nov"></li>
-                                        <li class="on" title="Dec"></li>
-                                    </ol>
-                                    <span class="season-label">Oct – Apr</span>
-                                </div>
-                            </div>
-                        </article>
-                    </div>
                     <div data-product data-category="citrus-melons" data-name="watermelon هندوانه بطيخ">
                         <article class="pcard">
                             <div class="pcard-media">
-                                <img src="{{ asset('assets/images/products/watermelon-480.webp') }}" alt=""
+                                <img src="{{ asset('assets/images/products/Watermelon.png') }}" alt=""
                                     width="480" height="373" loading="lazy" decoding="async">
                                 <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
                                         <use href="#i-arrow" />
@@ -802,16 +694,16 @@
                     <div data-product data-category="citrus-melons" data-name="melon خربزه و طالبی شمام">
                         <article class="pcard">
                             <div class="pcard-media">
-                                <img src="{{ asset('assets/images/products/melon-480.webp') }}" alt=""
-                                    width="480" height="373" loading="lazy" decoding="async">
+                                <img src="{{ asset('assets/images/products/Melon.png') }}" alt="" width="480"
+                                    height="373" loading="lazy" decoding="async">
                                 <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
                                         <use href="#i-arrow" />
                                     </svg></span>
                             </div>
                             <div class="pcard-body">
                                 <div class="pcard-top">
-                                    <h3 class="pcard-title"><a
-                                            href="{{ route('product', ['lang' => 'en']) }}">Melon</a></h3>
+                                    <h3 class="pcard-title"><a href="{{ route('product', ['lang' => 'en']) }}">Melon</a>
+                                    </h3>
                                     <span class="dot-badge is-available">Available</span>
                                 </div>
                                 <p class="pcard-origin">Khorasan, Isfahan, Varamin</p>
@@ -1104,7 +996,7 @@
                             <span class="cal-cell on" aria-hidden="true"></span>
                         </div>
                         <div class="cal-row">
-                            <a class="cal-name" href="{{ route('product', ['lang' => 'en']) }}">Pomegranate<span
+                            <a class="cal-name" href="{{ route('product', ['lang' => 'en']) }}">Pear<span
                                     class="sr">: Oct – Jan</span></a>
                             <span class="cal-cell on" aria-hidden="true"></span>
                             <span class="cal-cell" aria-hidden="true"></span>
@@ -1150,6 +1042,38 @@
                             <span class="cal-cell on now" aria-hidden="true"></span>
                             <span class="cal-cell" aria-hidden="true"></span>
                             <span class="cal-cell" aria-hidden="true"></span>
+                        </div>
+                        <div class="cal-row">
+                            <a class="cal-name" href="{{ route('product', ['lang' => 'en']) }}">Pomegranate<span
+                                    class="sr">: Oct – Jan</span></a>
+                            <span class="cal-cell on" aria-hidden="true"></span>
+                            <span class="cal-cell" aria-hidden="true"></span>
+                            <span class="cal-cell" aria-hidden="true"></span>
+                            <span class="cal-cell" aria-hidden="true"></span>
+                            <span class="cal-cell" aria-hidden="true"></span>
+                            <span class="cal-cell" aria-hidden="true"></span>
+                            <span class="cal-cell" aria-hidden="true"></span>
+                            <span class="cal-cell" aria-hidden="true"></span>
+                            <span class="cal-cell" aria-hidden="true"></span>
+                            <span class="cal-cell on now" aria-hidden="true"></span>
+                            <span class="cal-cell on" aria-hidden="true"></span>
+                            <span class="cal-cell on" aria-hidden="true"></span>
+                        </div>
+                        <div class="cal-row">
+                            <a class="cal-name" href="{{ route('product', ['lang' => 'en']) }}">Carrot<span
+                                    class="sr">: Nov – Apr</span></a>
+                            <span class="cal-cell on" aria-hidden="true"></span>
+                            <span class="cal-cell on" aria-hidden="true"></span>
+                            <span class="cal-cell on" aria-hidden="true"></span>
+                            <span class="cal-cell on" aria-hidden="true"></span>
+                            <span class="cal-cell" aria-hidden="true"></span>
+                            <span class="cal-cell" aria-hidden="true"></span>
+                            <span class="cal-cell" aria-hidden="true"></span>
+                            <span class="cal-cell" aria-hidden="true"></span>
+                            <span class="cal-cell" aria-hidden="true"></span>
+                            <span class="cal-cell now" aria-hidden="true"></span>
+                            <span class="cal-cell on" aria-hidden="true"></span>
+                            <span class="cal-cell on" aria-hidden="true"></span>
                         </div>
                     </div>
                     <div data-cal-group="citrus-melons">
