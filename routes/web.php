@@ -6,9 +6,12 @@ use App\Http\Controllers\FallBackController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductCotrller;
 use App\Http\Controllers\SuplierController;
+use App\Http\Controllers\PanelController;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'index')->name('language.select');
+Route::get('/panel', [PanelController::class, 'index'])->name('panel');
+
 
 Route::group(['prefix' => '{lang}', 'where' => ['lang' => 'en|fa|ar']], function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
