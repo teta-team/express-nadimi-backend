@@ -120,3 +120,154 @@ test('server validation errors are translated and rendered for the modal', funct
         ->assertSee('data-server-errors', false)
         ->assertSee('شماره موبایل');
 });
+
+test('supplier submission stores when the optional frequency is not selected', function () {
+    $data = requiredSupplierData();
+    unset($data['frequency']);
+
+    $this->post(route('supplier.store', ['lang' => 'en']), $data)
+        ->assertRedirect()
+        ->assertSessionHasNoErrors();
+
+    expect(SupplierSubmission::first()->frequency)->toBeNull();
+});
+
+test('supplier submission converts the change packaging answer to a boolean', function (string $answer, ?bool $expected) {
+    $data = requiredSupplierData();
+    $data['change_pack'] = $answer;
+
+    $this->post(route('supplier.store', ['lang' => 'en']), $data)->assertRedirect();
+
+    expect(SupplierSubmission::first()->change_pack)->toBe($expected);
+})->with([
+    ['yes', true],
+    ['no', false],
+    ['', null],
+]);
+
+test('supplier submission stores photos, packaging photos and a video', function () {
+    Storage::fake('public');
+
+    $data = requiredSupplierData();
+    $data['photos'] = [
+        UploadedFile::fake()->image('front.jpg'),
+        UploadedFile::fake()->image('back.png'),
+    ];
+    $data['packaging_photos'] = [UploadedFile::fake()->image('box.webp')];
+    $data['video'] = UploadedFile::fake()->create('clip.mp4', 256, 'video/mp4');
+
+    $this->post(route('supplier.store', ['lang' => 'en']), $data)->assertRedirect();
+
+    $submission = SupplierSubmission::first();
+
+    expect($submission->photos)->toHaveCount(2)
+        ->and($submission->packaging_photos)->toHaveCount(1)
+        ->and($submission->video)->not->toBeNull();
+
+    foreach ($submission->photos as $path) {
+        Storage::disk('public')->assertExists($path);
+    }
+
+    Storage::disk('public')->assertExists($submission->packaging_photos[0]);
+    Storage::disk('public')->assertExists($submission->video);
+});
+
+test('supplier submission rejects more than eight photos', function () {
+    Storage::fake('public');
+
+    $data = requiredSupplierData();
+    $data['photos'] = collect(range(1, 9))
+        ->map(fn (int $i) => UploadedFile::fake()->image("photo-{$i}.jpg"))
+        ->all();
+
+    $this->post(route('supplier.store', ['lang' => 'en']), $data)
+        ->assertSessionHasErrors(['photos']);
+
+    expect(SupplierSubmission::count())->toBe(0);
+});
+
+test('supplier submission rejects non image photo uploads', function () {
+    Storage::fake('public');
+
+    $data = requiredSupplierData();
+    $data['photos'] = [UploadedFile::fake()->create('document.pdf', 10, 'application/pdf')];
+
+    $this->post(route('supplier.store', ['lang' => 'en']), $data)
+        ->assertSessionHasErrors(['photos.0']);
+
+    expect(SupplierSubmission::count())->toBe(0);
+});
+
+test('supplier submission rejects unsupported video formats', function () {
+    Storage::fake('public');
+
+    $data = requiredSupplierData();
+    $data['video'] = UploadedFile::fake()->create('clip.avi', 256, 'video/x-msvideo');
+
+    $this->post(route('supplier.store', ['lang' => 'en']), $data)
+        ->assertSessionHasErrors(['video']);
+
+    expect(SupplierSubmission::count())->toBe(0);
+});
+
+test('supplier submission validates optional numeric fields', function () {
+    $data = requiredSupplierData();
+    $data['price'] = -1;
+    $data['pack_weight'] = -1;
+    $data['years'] = 101;
+
+    $this->post(route('supplier.store', ['lang' => 'en']), $data)
+        ->assertSessionHasErrors(['price', 'pack_weight', 'years']);
+
+    expect(SupplierSubmission::count())->toBe(0);
+});
+
+test('supplier submission validates the whatsapp format', function () {
+    $data = requiredSupplierData();
+    $data['whatsapp'] = 'call me';
+
+    $this->post(route('supplier.store', ['lang' => 'en']), $data)
+        ->assertSessionHasErrors(['whatsapp']);
+
+    expect(SupplierSubmission::count())->toBe(0);
+});
+
+test('supplier submission requires an accepted confirmation', function () {
+    $data = requiredSupplierData();
+    $data['confirm'] = '0';
+
+    $this->post(route('supplier.store', ['lang' => 'en']), $data)
+        ->assertSessionHasErrors(['confirm']);
+
+    expect(SupplierSubmission::count())->toBe(0);
+});
+
+test('supplier submission rejects an invalid ready date', function () {
+    $data = requiredSupplierData();
+    $data['ready_from'] = 'not-a-date';
+
+    $this->post(route('supplier.store', ['lang' => 'en']), $data)
+        ->assertSessionHasErrors(['ready_from']);
+
+    expect(SupplierSubmission::count())->toBe(0);
+});
+
+test('supplier submission validates the notes length', function () {
+    $data = requiredSupplierData();
+    $data['notes'] = str_repeat('a', 4001);
+
+    $this->post(route('supplier.store', ['lang' => 'en']), $data)
+        ->assertSessionHasErrors(['notes']);
+
+    expect(SupplierSubmission::count())->toBe(0);
+});
+
+test('supplier submission returns a success message in the request language', function (string $lang, string $message) {
+    $this->post(route('supplier.store', ['lang' => $lang]), requiredSupplierData())
+        ->assertRedirect()
+        ->assertSessionHas('success', $message);
+})->with([
+    ['en', 'Your submission has been received. Our team will contact you soon.'],
+    ['fa', 'فرم شما با موفقیت ثبت شد. کارشناسان ما به‌زودی با شما تماس می‌گیرند.'],
+    ['ar', 'تم استلام نموذجكم بنجاح. سيتواصل معكم فريقنا قريباً.'],
+]);

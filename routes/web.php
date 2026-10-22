@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 Route::view('/', 'index')->name('language.select');
 Route::get('/panel', [PanelController::class, 'index'])->name('panel');
 
-Route::group(['prefix' => '{lang}', 'where' => ['lang' => 'en|fa|ar'], 'middleware' => ['web']], function () {
+Route::group(['prefix' => '{lang}', 'where' => ['lang' => 'en|fa|ar'], 'middleware' => ['web', 'locale']], function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
     Route::post('/', [HomeController::class, 'form'])->name('home.post');
     Route::get('/about', [AboutController::class, 'index'])->name('about');

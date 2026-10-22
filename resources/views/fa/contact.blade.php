@@ -205,7 +205,7 @@
                         </div>
 
 
-                        <form method="POST" action="{{ route('contact.store', ['lang' => app()->getLocale()]) }}"
+                        <form method="POST" action="{{ route('contact.post', ['lang' => app()->getLocale()]) }}"
                             novalidate data-busy-text="در حال ارسال…">
                             @csrf
 
