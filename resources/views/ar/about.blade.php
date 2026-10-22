@@ -91,10 +91,10 @@
             <div class="container">
                 <div class="founder reveal">
                     <figure class="founder-photo">
-                        <img src="{{ asset('assets/images/people/sajjad-nadimi-founder-753.webp') }}"
-                            srcset="{{ asset('assets/images/people/sajjad-nadimi-founder-480.webp') }} 480w, {{ asset('assets/images/people/sajjad-nadimi-founder-753.webp') }} 753w"
+                        <img src="{{ asset('assets/images/scenes/about.jpg') }}"
+                            srcset="{{ asset('assets/images/people/sajjad-nadimi-founder-480.webp') }} 480w, {{ asset('assets/images/scenes/about.jpg') }} 753w"
                             sizes="(max-width: 899px) 100vw, 42vw"
-                            alt="المهندس سجاد نديمي، مؤسس شركة نديمي ومديرها العام، في مكتبه" width="753" height="941"
+                            alt="Eng. Sajjad Nadimi, Founder and CEO of Nadimi, at his desk" width="753" height="941"
                             loading="lazy" decoding="async">
                     </figure>
                     <div class="founder-body">
