@@ -71,28 +71,51 @@
                             </svg>
                             <span data-pct>0%</span>
                         </div>
-                        <small>مكتمل<br>الحقول المميزة بنجمة مطلوبة.</small>
+                        <small>المرحلة <span data-step-num>1</span> من 8<br>الحقول المميزة بنجمة مطلوبة.</small>
                     </div>
                     <nav class="ssteps" aria-label="نموذج التعاون مع الموردين">
-                        <a class="sstep" href="#s-personal"><b>1</b><span>المعلومات الشخصية والتواصل</span></a>
-                        <a class="sstep" href="#s-product"><b>2</b><span>معلومات المنتج</span></a>
-                        <a class="sstep" href="#s-quality"><b>3</b><span>مواصفات الحمولة وجودتها</span></a>
-                        <a class="sstep" href="#s-packaging"><b>4</b><span>التعبئة</span></a>
-                        <a class="sstep" href="#s-price"><b>5</b><span>السعر وشروط البيع</span></a>
-                        <a class="sstep" href="#s-media"><b>6</b><span>صور المنتج والفيديو</span></a>
-                        <a class="sstep" href="#s-history"><b>7</b><span>سجل الخبرة</span></a>
-                        <a class="sstep" href="#s-notes"><b>8</b><span>ملاحظات إضافية</span></a>
+                        <button type="button" class="sstep" data-step="0"><b>1</b><span>المعلومات الشخصية والتواصل</span></button>
+                        <button type="button" class="sstep" data-step="1"><b>2</b><span>معلومات المنتج</span></button>
+                        <button type="button" class="sstep" data-step="2"><b>3</b><span>مواصفات الحمولة وجودتها</span></button>
+                        <button type="button" class="sstep" data-step="3"><b>4</b><span>التعبئة</span></button>
+                        <button type="button" class="sstep" data-step="4"><b>5</b><span>السعر وشروط البيع</span></button>
+                        <button type="button" class="sstep" data-step="5"><b>6</b><span>صور المنتج والفيديو</span></button>
+                        <button type="button" class="sstep" data-step="6"><b>7</b><span>سجل الخبرة</span></button>
+                        <button type="button" class="sstep" data-step="7"><b>8</b><span>ملاحظات إضافية</span></button>
                     </nav>
                 </aside>
 
                 <div>
 
-                    <form method="post" action="" enctype="multipart/form-data" novalidate data-supplier
-                        data-busy-text="جارٍ الإرسال…">
-                        <!-- backend: set action + @@csrf -->
+                    <form method="post" action="{{ route('supplier.store', ['lang' => 'ar']) }}" enctype="multipart/form-data" novalidate data-supplier
+                        data-busy-text="جارٍ الإرسال…" data-multistep>
+                        @csrf
+                        <input type="hidden" name="grade" value="">
+                        <input type="hidden" name="state" value="">
+                        <input type="hidden" name="sorted" value="">
+                        <input type="hidden" name="visit" value="">
+                        <input type="hidden" name="packing" value="">
+                        <input type="hidden" name="price_terms" value="">
+                        <input type="hidden" name="export_history" value="">
+                        <input type="hidden" name="long_term" value="">
+                        <input type="hidden" name="custom_pack" value="">
+                        <input type="hidden" name="change_pack" value="">
 
+                        @if ($errors->any())
+                            <script type="application/json" data-server-errors>@json($errors->all())</script>
+                        @endif
+                        @if (session('success'))
+                            <div class="notice notice-ok" data-autofocus role="status">
+                                <div><strong>{{ session('success') }}</strong></div>
+                            </div>
+                        @endif
+                        @if (session('error'))
+                            <div class="notice notice-err" data-autofocus role="alert">
+                                <div><strong>{{ session('error') }}</strong></div>
+                            </div>
+                        @endif
 
-                        <section class="ssec" id="s-personal">
+                        <section class="ssec" id="s-personal" data-step-section="0">
                             <div class="ssec-h"><span class="num">01</span>
                                 <h2>المعلومات الشخصية والتواصل</h2>
                             </div>
@@ -100,14 +123,14 @@
                                 <div class="field">
                                     <label for="s-name">الاسم الكامل <b class="req">*</b></label>
                                     <div class="">
-                                        <input id="s-name" name="name" type="text" class="input"
+                                        <input id="s-name" data-label="الاسم الأول والأخير" name="name" type="text" class="input"
                                             value="" required data-req maxlength="120" autocomplete="name">
                                     </div>
                                 </div>
                                 <div class="field">
                                     <label for="s-mobile">رقم الجوال <b class="req">*</b></label>
                                     <div class="">
-                                        <input id="s-mobile" name="mobile" type="tel" class="input"
+                                        <input id="s-mobile" data-label="الهاتف المحمول" name="mobile" type="tel" class="input"
                                             value="" required data-req maxlength="40" inputmode="tel"
                                             autocomplete="tel">
                                     </div>
@@ -121,7 +144,7 @@
                                 </div>
                                 <div class="field">
                                     <label for="s-province">المحافظة <b class="req">*</b></label>
-                                    <select id="s-province" name="province" class="input" required data-req>
+                                    <select id="s-province" name="province" class="input" required data-req data-label="المحافظة">
                                         <option value="">اختر المحافظة</option>
                                         <option value="east_azerbaijan">أذربيجان الشرقية</option>
                                         <option value="west_azerbaijan">أذربيجان الغربية</option>
@@ -159,14 +182,14 @@
                                 <div class="field w">
                                     <label for="s-city">المدينة / منطقة الإنتاج <b class="req">*</b></label>
                                     <div class="">
-                                        <input id="s-city" name="city" type="text" class="input"
+                                        <input id="s-city" data-label="المدينة" name="city" type="text" class="input"
                                             value="" required data-req maxlength="120">
                                     </div>
                                 </div>
                                 <fieldset class="field w">
                                     <legend class="legend">نوع نشاطكم <b class="req">*</b></legend>
                                     <div class="chips">
-                                        <label class="chip"><input type="radio" name="role" value="farmer"
+                                        <label class="chip"><input type="radio" name="role" value="farmer" data-label="الدور"
                                                 data-req><span>مزارع</span></label>
                                         <label class="chip"><input type="radio" name="role" value="orchard"
                                                 data-req><span>صاحب بستان</span></label>
@@ -187,8 +210,9 @@
                             </div>
                         </section>
 
+                        
 
-                        <section class="ssec" id="s-product">
+<section class="ssec" id="s-product" data-step-section="1" hidden>
                             <div class="ssec-h"><span class="num">02</span>
                                 <h2>معلومات المنتج</h2>
                             </div>
@@ -196,7 +220,7 @@
                                 <div class="field">
                                     <label for="s-product">اسم المنتج <b class="req">*</b></label>
                                     <div class="">
-                                        <input id="s-product" name="product" type="text" class="input"
+                                        <input id="s-product" name="product" type="text" class="input" data-label="المنتج"
                                             value="" required data-req maxlength="120">
                                     </div>
                                 </div>
@@ -212,14 +236,14 @@
                                     <label for="s-origin">موقع إنتاج المنتج <b class="req">*</b></label>
                                     <small class="hint">المحافظة / المدينة / القرية</small>
                                     <div class="">
-                                        <input id="s-origin" name="origin" type="text" class="input"
+                                        <input id="s-origin" name="origin" type="text" class="input" data-label="المنشأ"
                                             value="" required data-req maxlength="190">
                                     </div>
                                 </div>
                                 <div class="field">
                                     <label for="s-quantity_tons">الكمية المتاحة للتوريد <b class="req">*</b></label>
                                     <div class="unit-wrap">
-                                        <input id="s-quantity_tons" name="quantity_tons" type="number" class="input"
+                                        <input id="s-quantity_tons" name="quantity_tons" type="number" class="input" data-label="الكمية"
                                             value="" required data-req min="0.1" step="any"
                                             inputmode="decimal">
                                         <em class="unit">طن</em>
@@ -252,7 +276,7 @@
                                     <label for="s-ready_from">بداية الحصاد / جاهزية الحمولة <b
                                             class="req">*</b></label>
                                     <div class="">
-                                        <input id="s-ready_from" name="ready_from" type="date" class="input"
+                                        <input id="s-ready_from" name="ready_from" type="date" class="input" data-label="جاهز من التاريخ"
                                             value="" required data-req>
                                     </div>
                                 </div>
@@ -266,8 +290,9 @@
                             </div>
                         </section>
 
+                        
 
-                        <section class="ssec" id="s-quality">
+<section class="ssec" id="s-quality" data-step-section="2" hidden>
                             <div class="ssec-h"><span class="num">03</span>
                                 <h2>مواصفات الحمولة وجودتها</h2>
                             </div>
@@ -330,8 +355,9 @@
                             </div>
                         </section>
 
+                        
 
-                        <section class="ssec" id="s-packaging">
+<section class="ssec" id="s-packaging" data-step-section="3" hidden>
                             <div class="ssec-h"><span class="num">04</span>
                                 <h2>التعبئة</h2>
                             </div>
@@ -382,8 +408,9 @@
                             </div>
                         </section>
 
+                        
 
-                        <section class="ssec" id="s-price">
+<section class="ssec" id="s-price" data-step-section="4" hidden>
                             <div class="ssec-h"><span class="num">05</span>
                                 <h2>السعر وشروط البيع</h2>
                             </div>
@@ -419,8 +446,9 @@
                             </div>
                         </section>
 
+                        
 
-                        <section class="ssec" id="s-media">
+<section class="ssec" id="s-media" data-step-section="5" hidden>
                             <div class="ssec-h"><span class="num">06</span>
                                 <h2>صور المنتج والفيديو</h2>
                             </div>
@@ -431,7 +459,7 @@
                                 <div class="field w">
                                     <label for="s-photos">صور المنتج <b class="req">*</b></label>
                                     <small class="hint">حتى 8 صور، كل صورة حتى 8 ميغابايت (JPG، PNG، WebP)</small>
-                                    <div class="drop"><input type="file" id="s-photos" name="photos[]"
+                                    <div class="drop"><input type="file" id="s-photos" name="photos[]" data-label="الصور"
                                             accept="image/jpeg,image/png,image/webp" multiple data-req><svg
                                             class="ic">
                                             <use href="#i-image" />
@@ -464,8 +492,9 @@
                             </div>
                         </section>
 
+                        
 
-                        <section class="ssec" id="s-history">
+<section class="ssec" id="s-history" data-step-section="6" hidden>
                             <div class="ssec-h"><span class="num">07</span>
                                 <h2>سجل الخبرة</h2>
                             </div>
@@ -510,8 +539,9 @@
                             </div>
                         </section>
 
+                        
 
-                        <section class="ssec" id="s-notes">
+<section class="ssec" id="s-notes" data-step-section="7" hidden>
                             <div class="ssec-h"><span class="num">08</span>
                                 <h2>ملاحظات إضافية</h2>
                             </div>
@@ -523,18 +553,21 @@
                                     <textarea id="s-notes" name="notes" class="input" rows="5" maxlength="4000"></textarea>
                                 </div>
                                 <div class="field w">
-                                    <label class="check"><input type="checkbox" name="confirm" value="1"
+                                    <label class="check" style="display: flex; align-items: center; gap: 8px;"><input type="checkbox" style="margin: 0;" name="confirm" value="1"
                                             data-req>أؤكد أن المعلومات والصور المرسلة تخص المنتج المذكور وأنها صحيحة بحسب
                                         علمي.</label>
                                 </div>
                             </div>
                         </section>
 
-                        <div class="ssubmit">
-                            <button type="submit" class="btn btn-leaf">إرسال طلب التعاون<svg class="ic flip">
-                                    <use href="#i-arrow" />
-                                </svg></button>
-                            <p class="notice notice-ok" data-upload-note hidden>جارٍ رفع الملفات… يرجى إبقاء الصفحة مفتوحة.
+                        
+
+<div class="ssubmit">
+                            <div style="display: flex; gap: 12px; align-items: center;">
+                                <button type="button" class="btn" data-prev-step style="flex: 1;">رجوع</button>
+                                <button type="button" class="btn btn-leaf" data-next-step style="flex: 1;">التالي</button>
+                                <button type="submit" class="btn btn-leaf" data-submit-step style="flex: 1;">إرسال</button>
+                            </div>
                             </p>
                             <p>بعد إرسال النموذج، سيراجع فريق نديمي المعلومات، وإذا ناسب المنتج احتياجاتنا فسيتم التواصل
                                 معكم لمتابعة التعاون.</p>
