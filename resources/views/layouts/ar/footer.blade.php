@@ -160,6 +160,8 @@
 
             <p>إكسبرس نديمي علامة تجارية لشركة Nadimi International LLC.</p>
 
+            <p>تم إنشاؤه بواسطة <a href="https://tetateam.com" target="_blank" rel="noopener">TETA Team</a></p>
+
         </div>
 
     </div>

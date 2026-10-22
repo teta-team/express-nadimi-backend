@@ -4,10 +4,10 @@
    Persian and Arabic (RTL) versions mirror themselves.
    ========================================================================== */
 
-@font-face { font-family: "Manrope"; src: url("../fonts/manrope-var-latin.woff2") format("woff2"); font-weight: 200 800; font-display: swap; }
-@font-face { font-family: "DM Serif Display"; src: url("../fonts/dm-serif-display-latin.woff2") format("woff2"); font-weight: 400; font-display: swap; }
-@font-face { font-family: "DM Serif Display"; src: url("../fonts/dm-serif-display-latin-italic.woff2") format("woff2"); font-weight: 400; font-style: italic; font-display: swap; }
-@font-face { font-family: "Vazirmatn"; src: url("../fonts/vazirmatn-var.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
+@font-face { font-family: "Manrope"; src: url("/assets/fonts/manrope-var-latin.woff2") format("woff2"); font-weight: 200 800; font-display: swap; }
+@font-face { font-family: "DM Serif Display"; src: url("/assets/fonts/dm-serif-display-latin.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "DM Serif Display"; src: url("/assets/fonts/dm-serif-display-latin-italic.woff2") format("woff2"); font-weight: 400; font-style: italic; font-display: swap; }
+@font-face { font-family: "Vazirmatn"; src: url("/assets/fonts/vazirmatn-var.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
 
 :root {
   --forest: #1e2823;
@@ -214,7 +214,7 @@ main { display: block; outline: none; }
 .nav ul { display: flex; gap: 6px; padding: 5px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); }
 .nav a { display: block; padding: 8px 18px; border-radius: 999px; font-weight: 700; font-size: .92rem; color: var(--ink-2); transition: background-color .2s, color .2s; }
 .nav a:hover { background: var(--mint); color: var(--forest); }
-.nav a[aria-current] { background: var(--solid); color: var(--on-solid); }
+.nav a[aria-current="page"] { background: var(--solid); color: var(--on-solid); }
 
 .header-actions { display: flex; align-items: center; gap: 10px; }
 .header-quote { display: none; }

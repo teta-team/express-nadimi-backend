@@ -9,7 +9,20 @@
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const fmt = new Intl.NumberFormat(lang === 'fa' ? 'fa-IR' : 'en-US');
 
-  /* ---------- Header: shadow once scrolled; slides away going down, comes back going up ---------- */
+  /* ---------- Set active menu item based on current route ---------- */
+  const setActiveMenu = () => {
+    const normalize = (url) => url.replace(/\/$/, '');
+    const currentPath = normalize(location.pathname);
+    $$('nav.nav a, .mnav-links a').forEach((link) => {
+      const href = link.getAttribute('href');
+      const linkPath = normalize(new URL(href, location.origin).pathname);
+      const isActive = currentPath === linkPath;
+      link.setAttribute('aria-current', isActive ? 'page' : '');
+    });
+  };
+  setActiveMenu();
+
+
   const header = $('[data-header]');
   const mnav = $('[data-mnav]');
   const menuBtn = $('[data-menu-toggle]');
@@ -194,87 +207,136 @@
     });
   });
 
-  /* ---------- Supplier form: progress, conditional questions, previews ---------- */
-  const sform = $('[data-supplier]');
-  if (sform) {
-    const ring = $('[data-ring]');
-    const pct = $('[data-pct]');
-    const rail = $('[data-rail-box]');
-    const sections = $$('.ssec', sform);
-    const steps = $$('.sstep');
-    const pfmt = new Intl.NumberFormat(lang === 'fa' ? 'fa-IR' : 'en-US', { style: 'percent' });
+   /* ---------- Supplier form: progress, conditional questions, previews ---------- */
+   const sform = $('[data-supplier]');
+   if (sform) {
+     const isMultistep = sform.dataset.multistep !== undefined;
+     const ring = $('[data-ring]');
+     const pct = $('[data-pct]');
+     const rail = $('[data-rail-box]');
+     const sections = $$('.ssec', sform);
+     const steps = $$('.sstep');
+     const stepNum = $('[data-step-num]');
+     const prevBtn = $('[data-prev-step]');
+     const nextBtn = $('[data-next-step]');
+     const submitBtn = $('[data-submit-step]');
+     const pfmt = new Intl.NumberFormat(lang === 'fa' ? 'fa-IR' : 'en-US', { style: 'percent' });
+     let currentStep = 0;
 
-    const filled = (el) => {
-      if (el.type === 'file') return el.files.length > 0;
-      if (el.type === 'checkbox') return el.checked;
-      if (el.type === 'radio') return !!$(`input[name="${el.name}"]:checked`, sform);
-      return el.value.trim() !== '';
-    };
-    const required = () => {
-      const seen = new Set();
-      return $$('[data-req]', sform).filter((el) => {
-        if (el.type === 'radio') { if (seen.has(el.name)) return false; seen.add(el.name); }
-        return true;
-      });
-    };
-    const update = () => {
-      const req = required();
-      const p = req.length ? req.filter(filled).length / req.length : 0;
-      ring.style.strokeDashoffset = String(214 * (1 - p));
-      pct.textContent = pfmt.format(p);
-      rail.classList.toggle('is-full', p === 1);
-      sections.forEach((s, i) => {
-        const r = $$('[data-req]', s);
-        const any = $$('input, select, textarea', s).some((el) => el.type !== 'hidden' && filled(el));
-        const done = r.length ? r.every(filled) : any;
-        steps[i]?.classList.toggle('is-done', done);
-      });
-    };
-    const conditions = () => {
-      $$('[data-if]', sform).forEach((el) => {
-        const [name, vals] = el.dataset.if.split(':');
-        const c = $(`input[name="${name}"]:checked`, sform);
-        el.hidden = !(c && vals.split(',').includes(c.value));
-      });
-    };
-    ['input', 'change'].forEach((ev) => sform.addEventListener(ev, (e) => {
-      e.target.closest('.field')?.classList.remove('bad');
-      conditions();
-      update();
-    }));
+     const filled = (el) => {
+       if (el.type === 'file') return el.files.length > 0;
+       if (el.type === 'checkbox') return el.checked;
+       if (el.type === 'radio') return !!$(`input[name="${el.name}"]:checked`, sform);
+       return el.value.trim() !== '';
+     };
+     const required = () => {
+       const seen = new Set();
+       return $$('[data-req]', sform).filter((el) => {
+         if (el.type === 'radio') { if (seen.has(el.name)) return false; seen.add(el.name); }
+         return true;
+       });
+     };
+     const getStepRequired = (stepIdx) => {
+       const section = sections[stepIdx];
+       if (!section) return [];
+       const seen = new Set();
+       return $$('[data-req]', section).filter((el) => {
+         if (el.type === 'radio') { if (seen.has(el.name)) return false; seen.add(el.name); }
+         return true;
+       });
+     };
+     const validateStep = (stepIdx) => {
+       const req = getStepRequired(stepIdx);
+       if (!req.length) return true;
+       return req.every(filled);
+     };
+     const update = () => {
+       const req = required();
+       const p = req.length ? req.filter(filled).length / req.length : 0;
+       ring.style.strokeDashoffset = String(214 * (1 - p));
+       pct.textContent = pfmt.format(p);
+       rail.classList.toggle('is-full', p === 1);
+       sections.forEach((s, i) => {
+         const r = $$('[data-req]', s);
+         const any = $$('input, select, textarea', s).some((el) => el.type !== 'hidden' && filled(el));
+         const done = r.length ? r.every(filled) : any;
+         steps[i]?.classList.toggle('is-done', done);
+       });
+     };
+     const conditions = () => {
+       $$('[data-if]', sform).forEach((el) => {
+         const [name, vals] = el.dataset.if.split(':');
+         const c = $(`input[name="${name}"]:checked`, sform);
+         el.hidden = !(c && vals.split(',').includes(c.value));
+       });
+     };
+     const showStep = (idx) => {
+       if (idx < 0 || idx >= sections.length) return;
+       sections.forEach((s, i) => s.hidden = i !== idx);
+       steps.forEach((s, i) => s.classList.toggle('is-on', i === idx));
+       currentStep = idx;
+       if (stepNum) stepNum.textContent = String(idx + 1);
+       const isLast = idx === sections.length - 1;
+       const isFirst = idx === 0;
+       if (prevBtn) prevBtn.hidden = isFirst;
+       if (nextBtn) nextBtn.hidden = isLast;
+       if (submitBtn) submitBtn.hidden = !isLast;
+       conditions();
+       sform.scrollIntoView({ block: 'start', behavior: 'smooth' });
+     };
 
-    $$('.drop input[type="file"]', sform).forEach((inp) => inp.addEventListener('change', () => {
-      const box = inp.closest('.field').querySelector('.thumbs');
-      box.textContent = '';
-      [...inp.files].slice(0, 12).forEach((f) => {
-        if (f.type.startsWith('image/')) {
-          const img = new Image();
-          img.alt = f.name;
-          img.src = URL.createObjectURL(f);
-          img.onload = () => URL.revokeObjectURL(img.src);
-          box.append(img);
-        } else {
-          const s = document.createElement('span');
-          s.className = 'fn';
-          s.textContent = f.name;
-          box.append(s);
-        }
-      });
-    }));
+     ['input', 'change'].forEach((ev) => sform.addEventListener(ev, (e) => {
+       e.target.closest('.field')?.classList.remove('bad');
+       conditions();
+       update();
+     }));
 
-    // highlight the section being read
-    if ('IntersectionObserver' in window) {
-      const so = new IntersectionObserver((entries) => {
-        entries.forEach((en) => {
-          if (!en.isIntersecting) return;
-          const i = sections.indexOf(en.target);
-          steps.forEach((s, j) => s.classList.toggle('is-on', j === i));
-        });
-      }, { rootMargin: '-35% 0px -55% 0px' });
-      sections.forEach((s) => so.observe(s));
-    }
+     $$('.drop input[type="file"]', sform).forEach((inp) => inp.addEventListener('change', () => {
+       const box = inp.closest('.field').querySelector('.thumbs');
+       box.textContent = '';
+       [...inp.files].slice(0, 12).forEach((f) => {
+         if (f.type.startsWith('image/')) {
+           const img = new Image();
+           img.alt = f.name;
+           img.src = URL.createObjectURL(f);
+           img.onload = () => URL.revokeObjectURL(img.src);
+           box.append(img);
+         } else {
+           const s = document.createElement('span');
+           s.className = 'fn';
+           s.textContent = f.name;
+           box.append(s);
+         }
+       });
+     }));
 
-    conditions();
-    update();
-  }
+     if (isMultistep) {
+       if (nextBtn) nextBtn.addEventListener('click', () => {
+         if (validateStep(currentStep)) {
+           showStep(currentStep + 1);
+         }
+       });
+       if (prevBtn) prevBtn.addEventListener('click', () => showStep(currentStep - 1));
+       steps.forEach((s) => s.addEventListener('click', () => {
+         const idx = parseInt(s.dataset.step, 10);
+         showStep(idx);
+       }));
+       showStep(0);
+     } else {
+       // highlight the section being read (original behavior)
+       if ('IntersectionObserver' in window) {
+         const so = new IntersectionObserver((entries) => {
+           entries.forEach((en) => {
+             if (!en.isIntersecting) return;
+             const i = sections.indexOf(en.target);
+             steps.forEach((s, j) => s.classList.toggle('is-on', j === i));
+           });
+         }, { rootMargin: '-35% 0px -55% 0px' });
+         sections.forEach((s) => so.observe(s));
+       }
+     }
+
+     conditions();
+     update();
+   }
 })();

@@ -160,6 +160,8 @@
 
             <p>Express Nadimi is a brand of Nadimi International LLC.</p>
 
+            <p>Powered by <a href="https://tetateam.com" target="_blank" rel="noopener">TETA Team</a></p>
+
         </div>
 
     </div>

@@ -70,28 +70,27 @@
                             </svg>
                             <span data-pct>۰٪</span>
                         </div>
-                        <small>تکمیل شده<br>فیلدهای ستاره‌دار الزامی هستند.</small>
+                        <small>مرحله <span data-step-num>1</span> از ۸<br>فیلدهای ستاره‌دار الزامی هستند.</small>
                     </div>
                     <nav class="ssteps" aria-label="فرم همکاری با تأمین‌کنندگان">
-                        <a class="sstep" href="#s-personal"><b>۱</b><span>اطلاعات شخصی و تماس</span></a>
-                        <a class="sstep" href="#s-product"><b>۲</b><span>اطلاعات محصول</span></a>
-                        <a class="sstep" href="#s-quality"><b>۳</b><span>مشخصات و کیفیت بار</span></a>
-                        <a class="sstep" href="#s-packaging"><b>۴</b><span>بسته‌بندی</span></a>
-                        <a class="sstep" href="#s-price"><b>۵</b><span>قیمت و شرایط فروش</span></a>
-                        <a class="sstep" href="#s-media"><b>۶</b><span>تصاویر و ویدئوی محصول</span></a>
-                        <a class="sstep" href="#s-history"><b>۷</b><span>سابقه فعالیت</span></a>
-                        <a class="sstep" href="#s-notes"><b>۸</b><span>توضیحات تکمیلی</span></a>
+                        <button type="button" class="sstep" data-step="0"><b>۱</b><span>اطلاعات شخصی و تماس</span></button>
+                        <button type="button" class="sstep" data-step="1"><b>۲</b><span>اطلاعات محصول</span></button>
+                        <button type="button" class="sstep" data-step="2"><b>۳</b><span>مشخصات و کیفیت بار</span></button>
+                        <button type="button" class="sstep" data-step="3"><b>۴</b><span>بسته‌بندی</span></button>
+                        <button type="button" class="sstep" data-step="4"><b>۵</b><span>قیمت و شرایط فروش</span></button>
+                        <button type="button" class="sstep" data-step="5"><b>۶</b><span>تصاویر و ویدئوی محصول</span></button>
+                        <button type="button" class="sstep" data-step="6"><b>۷</b><span>سابقه فعالیت</span></button>
+                        <button type="button" class="sstep" data-step="7"><b>۸</b><span>توضیحات تکمیلی</span></button>
                     </nav>
                 </aside>
 
                 <div>
 
                     <form method="post" action="" enctype="multipart/form-data" novalidate data-supplier
-                        data-busy-text="در حال ارسال…">
+                        data-busy-text="در حال ارسال…" data-multistep>
                         <!-- backend: set action + @@csrf -->
 
-
-                        <section class="ssec" id="s-personal">
+                        <section class="ssec" id="s-personal" data-step-section="0">
                             <div class="ssec-h"><span class="num">۰۱</span>
                                 <h2>اطلاعات شخصی و تماس</h2>
                             </div>
@@ -187,7 +186,7 @@
                         </section>
 
 
-                        <section class="ssec" id="s-product">
+                        <section class="ssec" id="s-product" data-step-section="1" hidden>
                             <div class="ssec-h"><span class="num">۰۲</span>
                                 <h2>اطلاعات محصول</h2>
                             </div>
@@ -266,7 +265,7 @@
                         </section>
 
 
-                        <section class="ssec" id="s-quality">
+                        <section class="ssec" id="s-quality" data-step-section="2" hidden>
                             <div class="ssec-h"><span class="num">۰۳</span>
                                 <h2>مشخصات و کیفیت بار</h2>
                             </div>
@@ -330,7 +329,7 @@
                         </section>
 
 
-                        <section class="ssec" id="s-packaging">
+                        <section class="ssec" id="s-packaging" data-step-section="3" hidden>
                             <div class="ssec-h"><span class="num">۰۴</span>
                                 <h2>بسته‌بندی</h2>
                             </div>
@@ -382,7 +381,7 @@
                         </section>
 
 
-                        <section class="ssec" id="s-price">
+                        <section class="ssec" id="s-price" data-step-section="4" hidden>
                             <div class="ssec-h"><span class="num">۰۵</span>
                                 <h2>قیمت و شرایط فروش</h2>
                             </div>
@@ -419,7 +418,7 @@
                         </section>
 
 
-                        <section class="ssec" id="s-media">
+                        <section class="ssec" id="s-media" data-step-section="5" hidden>
                             <div class="ssec-h"><span class="num">۰۶</span>
                                 <h2>تصاویر و ویدئوی محصول</h2>
                             </div>
@@ -464,7 +463,7 @@
                         </section>
 
 
-                        <section class="ssec" id="s-history">
+                        <section class="ssec" id="s-history" data-step-section="6" hidden>
                             <div class="ssec-h"><span class="num">۰۷</span>
                                 <h2>سابقه فعالیت</h2>
                             </div>
@@ -510,7 +509,7 @@
                         </section>
 
 
-                        <section class="ssec" id="s-notes">
+                        <section class="ssec" id="s-notes" data-step-section="7" hidden>
                             <div class="ssec-h"><span class="num">۰۸</span>
                                 <h2>توضیحات تکمیلی</h2>
                             </div>
@@ -530,9 +529,11 @@
                         </section>
 
                         <div class="ssubmit">
-                            <button type="submit" class="btn btn-leaf">ارسال درخواست همکاری<svg class="ic flip">
-                                    <use href="#i-arrow" />
-                                </svg></button>
+                            <div style="display: flex; gap: 12px; align-items: center;">
+                                <button type="button" class="btn" data-prev-step style="flex: 1;">بازگشت</button>
+                                <button type="button" class="btn btn-leaf" data-next-step style="flex: 1;">بعدی</button>
+                                <button type="submit" class="btn btn-leaf" data-submit-step style="flex: 1; display: none;">ارسال</button>
+                            </div>
                             <p class="notice notice-ok" data-upload-note hidden>در حال ارسال فایل‌ها… لطفاً صفحه را نبندید.
                             </p>
                             <p>پس از ثبت فرم، اطلاعات توسط تیم شرکت ندیمی بررسی شده و در صورت تناسب محصول با نیاز مجموعه،

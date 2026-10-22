@@ -71,28 +71,27 @@
                             </svg>
                             <span data-pct>0%</span>
                         </div>
-                        <small>Completed<br>Fields marked with a star are required.</small>
+                        <small>Step <span data-step-num>1</span> of 8<br>Fields marked with a star are required.</small>
                     </div>
                     <nav class="ssteps" aria-label="Supplier partnership form">
-                        <a class="sstep" href="#s-personal"><b>1</b><span>Personal &amp; contact details</span></a>
-                        <a class="sstep" href="#s-product"><b>2</b><span>Product details</span></a>
-                        <a class="sstep" href="#s-quality"><b>3</b><span>Load specs &amp; quality</span></a>
-                        <a class="sstep" href="#s-packaging"><b>4</b><span>Packaging</span></a>
-                        <a class="sstep" href="#s-price"><b>5</b><span>Price &amp; sales terms</span></a>
-                        <a class="sstep" href="#s-media"><b>6</b><span>Photos &amp; video</span></a>
-                        <a class="sstep" href="#s-history"><b>7</b><span>Track record</span></a>
-                        <a class="sstep" href="#s-notes"><b>8</b><span>Additional notes</span></a>
+                        <button type="button" class="sstep" data-step="0"><b>1</b><span>Personal &amp; contact details</span></button>
+                        <button type="button" class="sstep" data-step="1"><b>2</b><span>Product details</span></button>
+                        <button type="button" class="sstep" data-step="2"><b>3</b><span>Load specs &amp; quality</span></button>
+                        <button type="button" class="sstep" data-step="3"><b>4</b><span>Packaging</span></button>
+                        <button type="button" class="sstep" data-step="4"><b>5</b><span>Price &amp; sales terms</span></button>
+                        <button type="button" class="sstep" data-step="5"><b>6</b><span>Photos &amp; video</span></button>
+                        <button type="button" class="sstep" data-step="6"><b>7</b><span>Track record</span></button>
+                        <button type="button" class="sstep" data-step="7"><b>8</b><span>Additional notes</span></button>
                     </nav>
                 </aside>
 
                 <div>
 
                     <form method="post" action="" enctype="multipart/form-data" novalidate data-supplier
-                        data-busy-text="Sending…">
+                        data-busy-text="Sending…" data-multistep>
                         <!-- backend: set action + @@csrf -->
 
-
-                        <section class="ssec" id="s-personal">
+                        <section class="ssec" id="s-personal" data-step-section="0">
                             <div class="ssec-h"><span class="num">01</span>
                                 <h2>Personal &amp; contact details</h2>
                             </div>
@@ -188,7 +187,7 @@
                         </section>
 
 
-                        <section class="ssec" id="s-product">
+                        <section class="ssec" id="s-product" data-step-section="1" hidden>
                             <div class="ssec-h"><span class="num">02</span>
                                 <h2>Product details</h2>
                             </div>
@@ -267,7 +266,7 @@
                         </section>
 
 
-                        <section class="ssec" id="s-quality">
+                        <section class="ssec" id="s-quality" data-step-section="2" hidden>
                             <div class="ssec-h"><span class="num">03</span>
                                 <h2>Load specs &amp; quality</h2>
                             </div>
@@ -331,7 +330,7 @@
                         </section>
 
 
-                        <section class="ssec" id="s-packaging">
+                        <section class="ssec" id="s-packaging" data-step-section="3" hidden>
                             <div class="ssec-h"><span class="num">04</span>
                                 <h2>Packaging</h2>
                             </div>
@@ -383,7 +382,7 @@
                         </section>
 
 
-                        <section class="ssec" id="s-price">
+                        <section class="ssec" id="s-price" data-step-section="4" hidden>
                             <div class="ssec-h"><span class="num">05</span>
                                 <h2>Price &amp; sales terms</h2>
                             </div>
@@ -420,7 +419,7 @@
                         </section>
 
 
-                        <section class="ssec" id="s-media">
+                        <section class="ssec" id="s-media" data-step-section="5" hidden>
                             <div class="ssec-h"><span class="num">06</span>
                                 <h2>Photos &amp; video</h2>
                             </div>
@@ -465,7 +464,7 @@
                         </section>
 
 
-                        <section class="ssec" id="s-history">
+                        <section class="ssec" id="s-history" data-step-section="6" hidden>
                             <div class="ssec-h"><span class="num">07</span>
                                 <h2>Track record</h2>
                             </div>
@@ -511,7 +510,7 @@
                         </section>
 
 
-                        <section class="ssec" id="s-notes">
+                        <section class="ssec" id="s-notes" data-step-section="7" hidden>
                             <div class="ssec-h"><span class="num">08</span>
                                 <h2>Additional notes</h2>
                             </div>
@@ -531,9 +530,11 @@
                         </section>
 
                         <div class="ssubmit">
-                            <button type="submit" class="btn btn-leaf">Submit partnership request<svg class="ic flip">
-                                    <use href="#i-arrow" />
-                                </svg></button>
+                            <div style="display: flex; gap: 12px; align-items: center;">
+                                <button type="button" class="btn" data-prev-step style="flex: 1;">Back</button>
+                                <button type="button" class="btn btn-leaf" data-next-step style="flex: 1;">Next</button>
+                                <button type="submit" class="btn btn-leaf" data-submit-step style="flex: 1; display: none;">Submit</button>
+                            </div>
                             <p class="notice notice-ok" data-upload-note hidden>Uploading files… please keep this page
                                 open.</p>
                             <p>After you submit, the Nadimi team reviews your details and, if the product fits our needs,

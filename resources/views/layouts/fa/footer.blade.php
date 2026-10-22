@@ -160,6 +160,8 @@
 
             <p>اکسپرس ندیمی برند تجاری شرکت Nadimi International LLC است.</p>
 
+            <p>ساخته شده توسط <a href="https://tetateam.com" target="_blank" rel="noopener">TETA Team</a></p>
+
         </div>
 
     </div>
