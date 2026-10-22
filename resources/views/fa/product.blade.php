@@ -124,9 +124,11 @@
 
 
 
-                        <form class="iform" method="post" action="" novalidate data-busy-text="در حال ارسال…">
+                        <form class="iform" method="POST"
+                              action="{{ route('home.post', ['lang' => app()->getLocale()]) }}" novalidate
+                              data-busy-text="در حال ارسال…" id="inquiry-form">
                             <!-- backend: set action + @@csrf -->
-
+                            @csrf
 
                             <div class="iform-grid">
 
@@ -136,11 +138,11 @@
 
                                     <select id="iq-product" name="product" class="input">
 
-                                        <option value="">ترکیبی / چند محصول</option>
+                                        <option value="{{ old('product') }}">ترکیبی / چند محصول</option>
 
                                         <optgroup label="صیفی‌جات">
 
-                                            <option value="tomato" selected>گوجه‌فرنگی</option>
+                                            <option value="tomato">گوجه‌فرنگی</option>
 
                                             <option value="cucumber">خیار</option>
 
@@ -197,7 +199,9 @@
                                         </optgroup>
 
                                     </select>
-
+                                    @error('product')
+                                    <p style="color:red">{{ $message }}</p>
+                                    @enderror
                                 </div>
 
                                 <div class="field">
@@ -205,8 +209,10 @@
                                     <label for="iq-qty">مقدار <b class="req">*</b></label>
 
                                     <input id="iq-qty" name="quantity" class="input" required maxlength="80"
-                                        value="" placeholder="مثلاً یک کانتینر ۴۰ فوت، ۲۰ تن">
-
+                                           value="{{ old('quantity') }}" placeholder="مثلاً یک کانتینر ۴۰ فوت، ۲۰ تن">
+                                    @error('quantity')
+                                    <p style="color:red">{{ $message }}</p>
+                                    @enderror
                                 </div>
 
                                 <div class="field">
@@ -234,7 +240,9 @@
                                         <option value="private_label">با برند خریدار</option>
 
                                     </select>
-
+                                    @error('packaging')
+                                    <p style="color:red">{{ $message }}</p>
+                                    @enderror
                                 </div>
 
                                 <div class="field">
@@ -256,7 +264,9 @@
                                         <option value="DAP">DAP</option>
 
                                     </select>
-
+                                    @error('incoterm')
+                                    <p style="color:red">{{ $message }}</p>
+                                    @enderror
                                 </div>
 
                                 <div class="field w" style="grid-column: 1 / -1">
@@ -264,8 +274,11 @@
                                     <label for="iq-dest">کشور / بندر مقصد <b class="req">*</b></label>
 
                                     <input id="iq-dest" name="destination" class="input" required maxlength="120"
-                                        value="" placeholder="مثلاً عمان – مسقط">
+                                           value="{{ old('destination') }}" placeholder="مثلاً عمان – مسقط">
 
+                                    @error('destination')
+                                    <p style="color:red">{{ $message }}</p>
+                                    @enderror
                                 </div>
 
                                 <div class="field">
@@ -273,8 +286,10 @@
                                     <label for="iq-name">نام شما <b class="req">*</b></label>
 
                                     <input id="iq-name" name="name" class="input" required maxlength="120"
-                                        autocomplete="name" value="">
-
+                                           autocomplete="name" value="{{ old('name') }}">
+                                    @error('name')
+                                    <p style="color:red">{{ $message }}</p>
+                                    @enderror
                                 </div>
 
                                 <div class="field">
@@ -282,8 +297,10 @@
                                     <label for="iq-co">شرکت</label>
 
                                     <input id="iq-co" name="company" class="input" maxlength="160"
-                                        autocomplete="organization" value="" placeholder="نام شرکت">
-
+                                           autocomplete="organization" value="{{ old('company') }}" placeholder="نام شرکت">
+                                    @error('company')
+                                    <p style="color:red">{{ $message }}</p>
+                                    @enderror
                                 </div>
 
                                 <div class="field">
@@ -291,8 +308,10 @@
                                     <label for="iq-email">ایمیل</label>
 
                                     <input id="iq-email" name="email" type="email" class="input" maxlength="190"
-                                        autocomplete="email" value="" placeholder="name@company.com">
-
+                                           autocomplete="email" value="{{ old('email') }}" placeholder="name@company.com">
+                                    @error('email')
+                                    <p style="color:red">{{ $message }}</p>
+                                    @enderror
                                 </div>
 
                                 <div class="field">
@@ -300,8 +319,12 @@
                                     <label for="iq-phone">تلفن / واتساپ</label>
 
                                     <input id="iq-phone" name="phone" type="tel" class="input" maxlength="40"
-                                        autocomplete="tel" inputmode="tel" value="" placeholder="+968 …">
+                                           autocomplete="tel" inputmode="tel" value="{{ old('phone') }}"
+                                           placeholder="+968 …">
 
+                                    @error('phone')
+                                    <p style="color:red">{{ $message }}</p>
+                                    @enderror
                                 </div>
 
                                 <div class="field" style="grid-column: 1 / -1">
@@ -309,8 +332,10 @@
                                     <label for="iq-msg">توضیحات <span class="opt">(اختیاری)</span></label>
 
                                     <textarea id="iq-msg" name="message" class="input" rows="3" maxlength="2000"
-                                        placeholder="رقم، سایز، زمان تحویل…"></textarea>
-
+                                              placeholder="رقم، سایز، زمان تحویل…" value="{{ old('message') }}"></textarea>
+                                    @error('message')
+                                    <p style="color:red">{{ $message }}</p>
+                                    @enderror
                                 </div>
 
                             </div>
