@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'index')->name('language.select');
 Route::get('/panel', [PanelController::class, 'index'])->name('panel');
+Route::post('/panel', [PanelController::class, 'index'])->name('login');
 
 Route::group(['prefix' => '{lang}', 'where' => ['lang' => 'en|fa|ar'], 'middleware' => ['web', 'locale']], function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
