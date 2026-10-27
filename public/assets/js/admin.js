@@ -27,10 +27,10 @@ M('message',4,{office:'oman',name:'مریم کاظمی',subject:'قیمت روز
 M('supplier',9,{name:'رضا محمدی',mobile:'09140000000',province:'آذربایجان شرقی',city:'مرند',role:'orchardist',product:'زردآلو',variety:'شکرپاره',origin:'باغ‌های مرند',quantity_tons:'۴۰',frequency:'season',grade:'premium',ready_from:'اواخر خرداد',notes:'امکان بارگیری روزانه ۵ تن.'}),
 M('suggestion',30,{name:'سارا احمدی',subject:'افزودن محصول',email:'sara@example.com',body:'پیشنهاد می‌کنم انجیر هم به فهرست محصولات اضافه شود.'}),
 M('complaint',52,{name:'علی رضایی',subject:'تأخیر در تحویل',email:'ali@example.com',phone:'09350000000',order_ref:'INV-1042',body:'بار آخر دو روز دیرتر از زمان اعلام‌شده رسید.'})]}
-let S={products:BASE,content:CONTENT,messages:demoMsgs()},dbDoc=null,tab='home',sel=null,tm;
+let S={products:[],content:CONTENT,messages:demoMsgs()},dbDoc=null,tab='home',sel=null,tm;
 const ui={pq:'',pc:'',mq:'',mk:'all'},KEY='nadimi-panel-v1';
-try{const j=localStorage.getItem(KEY);if(j)Object.assign(S,JSON.parse(j))}catch(e){}
-function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){toast('حافظه‌ی مرورگر پر است')}clearTimeout(tm);tm=setTimeout(async()=>{if(dbDoc)try{await dbDoc.set({json:JSON.stringify(S)})}catch(e){toast('ذخیره‌ی ابری انجام نشد')}},400)}
+try{const j=localStorage.getItem(KEY);if(j){const parsed=JSON.parse(j);if(parsed&&parsed.messages)S.messages=parsed.messages;if(parsed&&parsed.content)S.content=parsed.content;}}catch(e){}
+function save(){try{const toSave={messages:S.messages,content:S.content};localStorage.setItem(KEY,JSON.stringify(toSave))}catch(e){toast('حافظه‌ی مرورگر پر است')}clearTimeout(tm);tm=setTimeout(async()=>{if(dbDoc)try{await dbDoc.set({json:JSON.stringify({messages:S.messages,content:S.content})})}catch(e){toast('ذخیره‌ی ابری انجام نشد')}},400)}
 function toast(t){const d=document.createElement('div');d.className='ts';d.textContent=t;document.body.append(d);setTimeout(()=>d.remove(),2400)}
 function modal(h){const m=document.createElement('div');m.className='ov';m.innerHTML='<div class="md">'+h+'</div>';m.onclick=e=>{if(e.target===m)m.remove()};document.body.append(m);return m}
 const shrink=f=>new Promise(r=>{const i=new Image(),u=URL.createObjectURL(f);i.onload=()=>{const k=Math.min(1,260/Math.max(i.width,i.height)),c=document.createElement('canvas');c.width=i.width*k;c.height=i.height*k;c.getContext('2d').drawImage(i,0,0,c.width,c.height);URL.revokeObjectURL(u);r(c.toDataURL('image/jpeg',.7))};i.onerror=()=>r('');i.src=u});
@@ -47,13 +47,13 @@ function form(title,fields,v,ok,o={}){
   if(bad)return toast('لطفاً کادر قرمز را پر کنید');r.months=[...m.querySelectorAll('[data-mo]')].map(b=>b.classList.contains('on'));m.remove();ok(r)};
  const f0=$('input,textarea',m);f0&&f0.focus()}
 function ask(msg,fn){const m=modal(`<p>${msg}</p><div class="bar"><span class="sp"></span><button class="btn" data-c>انصراف</button><button class="btn p" data-ok>بله، انجام شود</button></div>`);$('[data-c]',m).onclick=()=>m.remove();$('[data-ok]',m).onclick=()=>{m.remove();fn()}}
-const TABS=[['home','خانه'],['prod','محصولات'],['msg','پیام‌ها'],['cont','متن‌های سایت']];
+const TABS=[['home','خانه'],['prod','محصولات'],['msg','پیام‌ها'],['cont','متن‌های سایت'],['set','تنظیمات']];
 const unread=k=>S.messages.filter(m=>!m.read&&(!k||(k==='msgs'?['message','suggestion','complaint'].includes(m.kind):m.kind===k))).length;
-const ICONS={home:'M3 11l9-8 9 8M5 10v10h5v-6h4v6h5V10',prod:'M21 8l-9-5-9 5v8l9 5 9-5V8zM3.3 7.5 12 12.5l8.7-5M12 22V12.5',msg:'M4 5h16v14H4zM4 7l8 6 8-6',cont:'M6 3h9l4 4v14H6zM14 3v5h5M9 13h7M9 17h5',price:'M3 12V4h8l10 10-8 8L3 12zM7.5 8.5h.01',user:'M16 20v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M10 10a4 4 0 1 0 0-8 4 4 0 0 0 0 8M20 20v-2a4 4 0 0 0-3-3.9',sun:'M12 3v2M12 19v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M3 12h2M19 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8',moon:'M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z'};
+const ICONS={out:'M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9',set:'M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z',home:'M3 11l9-8 9 8M5 10v10h5v-6h4v6h5V10',prod:'M21 8l-9-5-9 5v8l9 5 9-5V8zM3.3 7.5 12 12.5l8.7-5M12 22V12.5',msg:'M4 5h16v14H4zM4 7l8 6 8-6',cont:'M6 3h9l4 4v14H6zM14 3v5h5M9 13h7M9 17h5',price:'M3 12V4h8l10 10-8 8L3 12zM7.5 8.5h.01',user:'M16 20v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M10 10a4 4 0 1 0 0-8 4 4 0 0 0 0 8M20 20v-2a4 4 0 0 0-3-3.9',sun:'M12 3v2M12 19v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M3 12h2M19 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8',moon:'M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z'};
 const IC=(n,s=20)=>`<svg viewBox="0 0 24 24" width="${s}" height="${s}" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="${ICONS[n]}"/></svg>`;
 const pgh=(t,s,a='')=>`<div class="pgh"><div><span class="lb">${s}</span><h1>${t}</h1></div><div class="row">${a}</div></div>`;
 const isDark=()=>document.documentElement.dataset.theme?document.documentElement.dataset.theme==='dark':matchMedia('(prefers-color-scheme:dark)').matches;
-function tg(){document.querySelectorAll('[data-tb]').forEach(b=>b.innerHTML=IC(isDark()?'sun':'moon')+(b.classList.contains('tg')?'<span>'+(isDark()?'حالت روشن':'حالت تیره')+'</span>':''))}
+function tg(){document.querySelectorAll('[data-lo]').forEach(b=>b.innerHTML=IC('out')+'<span>خروج</span>');document.querySelectorAll('[data-tb]').forEach(b=>b.innerHTML=IC(isDark()?'sun':'moon')+(b.classList.contains('tg')?'<span>'+(isDark()?'حالت روشن':'حالت تیره')+'</span>':''))}
 function nav(){$('#nav').innerHTML=TABS.map(([k,l])=>`<button class="nv ${tab===k?'on':''}" data-tab="${k}">${IC(k)}<span>${l}</span>${k==='msg'&&unread()?`<em class="cnt" style="font-style:normal">${fa(unread())}</em>`:''}</button>`).join('')}
 /* ---------- home ---------- */
 function home(){const off=S.products.filter(p=>p.status==='off_season').length,rec=[...S.messages].sort((a,b)=>b.ts-a.ts).slice(0,4),d=new Date().toLocaleDateString('fa-IR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
@@ -67,12 +67,12 @@ return `<section class="hero"><span class="lb">${d}</span><h1>سلام، خوش 
 const P_=id=>S.products.find(x=>x.id===id),C_=id=>S.content.find(x=>x.id===id),M_=id=>S.messages.find(x=>x.id===id);
 const thumb=p=>{const s=p.img||THUMB[p.id];return s?`<img src="${s}" alt="">`:esc((p.name.fa||'؟')[0])};
 function plist(){const q=ui.pq.trim().toLowerCase(),L=S.products.filter(p=>(!ui.pc||p.cat===ui.pc)&&(!q||(p.name.fa+' '+p.name.en+' '+p.name.ar).toLowerCase().includes(q)));
- return L.length?`<div class="pg">${L.map(p=>`<div class="pc ${p.hidden?'dim':''}"><div class="pimg">${thumb(p)}</div><div class="pb"><b>${esc(p.name.fa)}</b><small>${CATS[p.cat]||''}${p.hidden?' · مخفی در سایت':''}</small><small>${esc(p.origin)}</small><div class="sea">${p.months.map(x=>`<i class="${x?'on':''}"></i>`).join('')}</div><small>${season(p.months)}</small><div class="row"><button class="sw ${p.status==='available'?'on':''}" data-act="ptog" data-id="${p.id}">${p.status==='available'?'موجود':'خارج از فصل'}</button><button class="btn sm" data-act="pedit" data-id="${p.id}">ویرایش</button></div></div></div>`).join('')}</div>`:'<div class="empty">محصولی پیدا نشد</div>'}
+ return L.length?`<div class="pg">${L.map(p=>`<div class="pc ${p.hidden?'dim':''}"><div class="pimg">${thumb(p)}</div><div class="pb"><b>${esc(p.name.fa)}</b><small>${CATS[p.cat]||''}${p.hidden?' · مخفی در سایت':''}</small><div class="sea">${p.months&&p.months.map? p.months.map(x=>`<i class="${x?'on':''}"></i>`).join(''):''}</div><small>${p.months&&p.months.map? season(p.months):''}</small><div class="row"><button class="sw ${p.status==='available'?'on':''}" data-act="ptog" data-id="${p.id}">${p.status==='available'?'موجود':'خارج از فصل'}</button><button class="btn sm" data-act="pedit" data-id="${p.id}">ویرایش</button></div></div></div>`).join('')}</div>`:'<div class="empty">محصولی پیدا نشد</div>'}
 function prod(){return `${pgh('محصولات','مدیریت فهرست محصولات سایت','<button class="btn p" data-act="padd">+ افزودن محصول</button>')}<div class="tb"><input data-in="pq" placeholder="جستجوی محصول…" value="${esc(ui.pq)}"></div><div class="chips"><button class="chip ${ui.pc?'':'on'}" data-pc="">همه</button>${Object.entries(CATS).map(([k,l])=>`<button class="chip ${ui.pc===k?'on':''}" data-pc="${k}">${l}</button>`).join('')}</div><div id="lst">${plist()}</div>`}
-const PF=[{k:'fa',l:'نام فارسی *',req:1,w:1},{k:'en',l:'نام انگلیسی',ltr:1},{k:'ar',l:'نام عربی'},{k:'cat',l:'دسته‌بندی',t:'select',o:Object.entries(CATS)},{k:'status',l:'وضعیت',t:'select',o:[['available','موجود'],['off_season','خارج از فصل']]},{k:'origin',l:'مبدأ تولید (استان‌ها)',w:1},{k:'hidden',l:'نمایش در سایت',t:'select',o:[['','بله، نمایش داده شود'],['1','نه، مخفی باشد']]},{k:'image',l:'عکس محصول (اختیاری)',t:'file'},{k:'summary',l:'توضیح کوتاه',t:'textarea',w:1},{k:'size',l:'سایز معمول',ltr:1},{k:'packaging',l:'بسته‌بندی'},{k:'minOrder',l:'حداقل سفارش',w:1}];
-const monHtml=m=>`<p class="mut" style="margin:14px 0 6px">ماه‌هایی که محصول عرضه می‌شود <button class="chip" data-all type="button" style="padding:0 10px;margin-inline-start:6px">همه‌ی سال</button></p><div class="mo">${MON.map((n,i)=>`<button type="button" data-mo class="${m[i]?'on':''}">${n}</button>`).join('')}</div>`;
-const flat=p=>({fa:p.name.fa,en:p.name.en,ar:p.name.ar,cat:p.cat,status:p.status,origin:p.origin,hidden:p.hidden?'1':'',summary:p.summary,size:p.size,packaging:p.packaging,minOrder:p.minOrder});
-const apply=(p,v)=>{p.name={fa:v.fa,en:v.en,ar:v.ar};['cat','status','origin','summary','size','packaging','minOrder'].forEach(k=>p[k]=v[k]||'');p.hidden=!!v.hidden;p.months=v.months;if(v.image)p.img=v.image};
+const PF=[{k:'fa',l:'نام فارسی *',req:1,w:1},{k:'en',l:'نام انگلیسی',ltr:1},{k:'ar',l:'نام عربی'},{k:'cat',l:'دسته‌بندی',t:'select',o:Object.entries(CATS)},{k:'status',l:'وضعیت',t:'select',o:[['available','موجود'],['off_season','خارج از فصل']]},{k:'hidden',l:'نمایش در سایت',t:'select',o:[['','بله، نمایش داده شود'],['1','نه، مخفی باشد']]},{k:'image',l:'عکس محصول (اختیاری)',t:'file'},{k:'summary',l:'توضیح کوتاه',t:'textarea',w:1},{k:'size',l:'سایز معمول',ltr:1},{k:'packaging',l:'بسته‌بندی'},{k:'minOrder',l:'حداقل سفارش',w:1}];
+const monHtml=m=>`<p class="mut" style="margin:14px 0 6px">ماه‌هایی که محصول عرضه می‌شود <button class="chip" data-all type="button" style="padding:0 10px;margin-inline-start:6px">همه‌ی سال</button></p><div class="mo">${MON.map((n,i)=>`<button type="button" data-mo class="${m&&m[i]?'on':''}">${n}</button>`).join('')}</div>`;
+const flat=p=>({fa:p.name&&p.name.fa||'',en:p.name&&p.name.en||'',ar:p.name&&p.name.ar||'',cat:p.cat||p.category,status:p.status,hidden:p.hidden?'1':'',summary:p.summary,size:p.size,packaging:p.packaging,minOrder:p.minOrder||p.min_order});
+const apply=(p,v)=>{p.name={fa:v.fa,en:v.en,ar:v.ar};['cat','status','summary','size','packaging','minOrder'].forEach(k=>p[k]=v[k]||'');p.hidden=!!v.hidden;p.months=v.months;if(v.image)p.img=v.image};
 /* ---------- messages ---------- */
 const title=m=>m.kind==='inquiry'?'استعلام '+(P_(m.f.product)?.name.fa||'چند محصول'):m.kind==='supplier'?'همکاری: '+(m.f.product||''):(m.f.subject||'بدون موضوع');
 const phoneOf=m=>m.f.phone||m.f.mobile||m.f.whatsapp||'';
@@ -93,15 +93,83 @@ function cont(){const gs=[...new Set(S.content.map(c=>c.group))];
  return `${pgh('متن‌های سایت','ویرایش تیتر و اطلاعات تماس')}<div class="note">متن‌هایی که در سایت دیده می‌شوند و ممکن است نیاز به تغییر داشته باشند.</div>${gs.map(g=>`<div class="card"><h2>${g}</h2>${S.content.filter(c=>c.group===g).map(c=>`<div class="cr"><div><b>${c.label}</b>${c.tri?' <small>(سه زبان)</small>':''}<div class="ell" ${c.ltr?'dir="ltr"':''}>${esc(c.v.fa)}</div></div><button class="btn sm" data-act="cedit" data-id="${c.id}">ویرایش</button></div>`).join('')}</div>`).join('')}`}
 /* ---------- actions ---------- */
 const ACT={},done=m=>{save();render();m&&toast(m)};
-ACT.padd=()=>form('محصول جدید',PF,{cat:'vegetables',status:'available'},v=>{const p={id:uid(),name:{},months:[]};apply(p,v);S.products.unshift(p);done('محصول اضافه شد')},{extra:monHtml(Array(12).fill(true))});
-ACT.pedit=id=>{const p=P_(id);form('ویرایش '+esc(p.name.fa),PF,flat(p),v=>{apply(p,v);done('ذخیره شد')},{extra:monHtml(p.months),del:()=>{S.products=S.products.filter(x=>x.id!==id);done('محصول حذف شد')}})};
-ACT.ptog=id=>{const p=P_(id);p.status=p.status==='available'?'off_season':'available';save();$('#lst').innerHTML=plist();toast(p.name.fa+': '+(p.status==='available'?'موجود شد':'خارج از فصل شد'))};
+ACT.padd=()=>form('محصول جدید',PF,{cat:'vegetables',status:'available'},async v=>{
+  const payload={
+    name:{fa:v.fa,en:v.en,ar:v.ar},
+    category:v.cat,
+    status:v.status,
+    summary:v.summary,
+    size:v.size,
+    packaging:v.packaging,
+    min_order:v.minOrder,
+    months:v.months,
+    image:v.image,
+    hidden:v.hidden?true:false,
+    sort_order:0
+  };
+  try{
+    const r=await fetch((window.PANEL&&PANEL.productsUrl)||'/panel/products',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json','Accept':'application/json','X-CSRF-TOKEN':(window.PANEL&&PANEL.csrf)||''},body:JSON.stringify(payload)});
+    const d=await r.json().catch(()=>({}));
+    if(r.ok && d.product){S.products.unshift(d.product);done('محصول اضافه شد');render();return;}
+    const err = d.errors ? Object.values(d.errors)[0][0] : (d.message||'خطا در ذخیره محصول');
+    toast(err);
+    return;
+  }catch(e){toast('خطا در اتصال');return;}
+},{extra:monHtml(Array(12).fill(true))});
+ACT.pedit=id=>{const p=P_(id);form('ویرایش '+esc(p.name&&p.name.fa||''),PF,flat(p),async v=>{
+  apply(p,v);
+  const payload={
+    name:{fa:p.name.fa,en:p.name.en,ar:p.name.ar},
+    category:p.cat,
+    status:p.status,
+    summary:p.summary,
+    size:p.size,
+    packaging:p.packaging,
+    min_order:p.minOrder,
+    months:p.months,
+    image:p.img||p.image,
+    hidden:p.hidden
+  };
+  try{
+    const url=((window.PANEL&&PANEL.productsUrl)||'/panel/products')+'/'+id;
+    const r=await fetch(url,{method:'PUT',credentials:'same-origin',headers:{'Content-Type':'application/json','Accept':'application/json','X-CSRF-TOKEN':(window.PANEL&&PANEL.csrf)||''},body:JSON.stringify(payload)});
+    const d=await r.json().catch(()=>({}));
+    if(r.ok && d.product){
+      const idx=S.products.findIndex(x=>x.id==id);
+      if(idx>=0)S.products[idx]=d.product;
+      done('ذخیره شد');render();return;
+    }
+    toast(d.message||'خطا در ذخیره');
+    return;
+  }catch(e){toast('خطا در اتصال');return;}
+},{extra:monHtml(p.months||Array(12).fill(true)),del:async ()=>{try{const url=((window.PANEL&&PANEL.productsUrl)||'/panel/products')+'/'+id;await fetch(url,{method:'DELETE',credentials:'same-origin',headers:{'Accept':'application/json','X-CSRF-TOKEN':(window.PANEL&&PANEL.csrf)||''}});}catch(e){}S.products=S.products.filter(x=>x.id!==id);done('محصول حذف شد')}})};
+ACT.ptog=async id=>{const p=P_(id);p.status=p.status==='available'?'off_season':'available';try{const url=((window.PANEL&&PANEL.productsUrl)||'/panel/products')+'/'+id;await fetch(url,{method:'PUT',credentials:'same-origin',headers:{'Content-Type':'application/json','Accept':'application/json','X-CSRF-TOKEN':(window.PANEL&&PANEL.csrf)||''},body:JSON.stringify({status:p.status})});}catch(e){}save();$('#lst').innerHTML=plist();toast((p.name&&p.name.fa||'')+': '+(p.status==='available'?'موجود شد':'خارج از فصل شد'))};
 ACT.mdone=id=>{const m=M_(id);m.done=!m.done;done()};
 ACT.mdel=id=>ask('این مورد حذف شود؟',()=>{S.messages=S.messages.filter(x=>x.id!==id);if(sel===id)sel=null;done('حذف شد')});
 ACT.clrdemo=()=>ask('همه‌ی پیام‌های نمونه پاک شوند؟',()=>{S.messages=S.messages.filter(m=>!m.demo);sel=null;done('پاک شد')});
 ACT.cedit=id=>{const c=C_(id),t=c.long?'textarea':'text',fs=c.tri?[['fa','فارسی'],['en','English'],['ar','العربية']].map(([k,l])=>({k,l,t,w:1,ltr:k==='en'})):[{k:'fa',l:c.label,t,w:1,ltr:c.ltr}];form('ویرایش: '+c.label,fs,c.v,v=>{c.v.fa=v.fa;if(c.tri){c.v.en=v.en;c.v.ar=v.ar}done('ذخیره شد')})};
 ACT.theme=()=>{const r=document.documentElement;r.dataset.theme=isDark()?'light':'dark';try{localStorage.setItem('nadimi-theme',r.dataset.theme)}catch(e){}tg()};
 try{const th=localStorage.getItem('nadimi-theme');if(th)document.documentElement.dataset.theme=th}catch(e){}
+/* ---------- settings (admin account) ---------- */
+const PANEL=window.PANEL||{};
+const weakNote=()=>PANEL.weak?`<div class="note">گذرواژه‌ی مدیر هنوز همان مقدار پیش‌فرض (admin) است؛ برای امنیت، آن را عوض کنید. ${tab==='set'?'':'<button class="btn sm" data-go="set">رفتن به تنظیمات</button>'}</div>`:'';
+function sett(){return `${pgh('تنظیمات','حساب مدیر')}<div class="card"><div class="g"><label class="w">نام کاربری<input id="ac-u" value="${esc(PANEL.user)}" dir="ltr" autocomplete="username" autocapitalize="none"></label><label class="w">گذرواژه‌ی فعلی<input id="ac-c" type="password" dir="ltr" autocomplete="current-password"></label><label>گذرواژه‌ی جدید<input id="ac-p" type="password" dir="ltr" autocomplete="new-password" placeholder="خالی = بدون تغییر"></label><label>تکرار گذرواژه‌ی جدید<input id="ac-p2" type="password" dir="ltr" autocomplete="new-password"></label></div><div class="bar"><button class="btn dn" data-act="logout">خروج از حساب</button><span class="sp"></span><button class="btn p" data-act="acsave">ذخیره</button></div></div>`}
+ACT.logout=()=>document.getElementById('logout-form').submit();
+ACT.acsave=async()=>{
+ const g=id=>document.getElementById(id),btn=document.querySelector('[data-act="acsave"]');
+ ['ac-u','ac-c','ac-p','ac-p2'].forEach(id=>g(id).classList.remove('bad'));
+ if(g('ac-p').value&&g('ac-p').value!==g('ac-p2').value){g('ac-p2').classList.add('bad');return toast('تکرار گذرواژه‌ی جدید با آن یکسان نیست')}
+ btn.disabled=true;
+ try{
+  const r=await fetch(PANEL.accountUrl,{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json','Accept':'application/json','X-CSRF-TOKEN':PANEL.csrf,'X-Requested-With':'XMLHttpRequest'},body:JSON.stringify({username:g('ac-u').value.trim(),current_password:g('ac-c').value,password:g('ac-p').value,password_confirmation:g('ac-p2').value})});
+  if(r.status===401||r.status===419){toast('نشست شما منقضی شده است؛ دوباره وارد شوید');setTimeout(()=>location.reload(),1200);return}
+  const d=await r.json().catch(()=>({}));
+  if(r.ok&&d.ok){PANEL.user=d.username;PANEL.weak=d.weak;toast('تغییرات ذخیره شد');render();return}
+  const er=d.errors||{},k=Object.keys(er)[0];
+  if(k){const el={username:'ac-u',current_password:'ac-c',password:'ac-p'}[k];el&&g(el).classList.add('bad');toast(er[k][0])}else toast(d.message||'خطایی رخ داد؛ دوباره تلاش کنید');
+ }catch(e){toast('اتصال برقرار نشد')}finally{btn.disabled=false}
+};
+
 /* ---------- events ---------- */
 document.addEventListener('click',e=>{const t=e.target.closest('[data-act],[data-tab],[data-sel],[data-go],[data-kind],[data-pc]');if(!t)return;const d=t.dataset;
  if(d.tab||d.go){tab=d.tab||d.go;if(d.kind)ui.mk=d.kind;render();scrollTo(0,0);return}
@@ -112,6 +180,19 @@ document.addEventListener('click',e=>{const t=e.target.closest('[data-act],[data
 document.addEventListener('input',e=>{const k=e.target.dataset.in;if(!k)return;ui[k]=e.target.value;$('#lst').innerHTML=(k==='pq'?plist:mlist)()});
 document.addEventListener('change',e=>{if(e.target.dataset.note===undefined)return;const m=M_(sel);if(m){m.note=e.target.value;save();toast('یادداشت ذخیره شد')}});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')[...document.querySelectorAll('.ov')].pop()?.remove()});
-function render(){nav();tg();$('#main').innerHTML=({home,prod,msg,cont})[tab]()}
+async function loadProducts(){
+  try{
+    const r = await fetch((window.PANEL&&PANEL.productsUrl)||'/panel/products',{credentials:'same-origin',headers:{'Accept':'application/json'}});
+    const d = await r.json().catch(()=>({}));
+    if(Array.isArray(d.products)){
+      S.products = d.products;
+      try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}
+      return true;
+    }
+  }catch(e){}
+  return false;
+}
+function render(){nav();tg();$('#main').innerHTML=weakNote()+({home,prod,msg,cont,set:sett})[tab]()}
 render();
+loadProducts().then((loaded)=>{if(loaded)render();});
 (async()=>{try{const c=window.claude&&await claude.use('db');if(!c)return;dbDoc=c.doc('panel/state');const s=await dbDoc.get();if(s.exists){Object.assign(S,JSON.parse(s.data().json));try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}render()}}catch(e){dbDoc=null}})();
