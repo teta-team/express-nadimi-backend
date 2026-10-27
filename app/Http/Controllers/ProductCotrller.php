@@ -2,29 +2,42 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class ProductCotrller extends Controller
 {
-    public function index($lang)
+    public function index($lang, $slug = null)
     {
+        $product = null;
+        if ($slug) {
+            $product = Product::where('slug', $slug)->where('hidden', false)->first();
+        } elseif (request()->has('id')) {
+            $product = Product::find(request('id'));
+            if ($product && $product->hidden) {
+                $product = null;
+            }
+        }
+
         if ($lang == 'ar') {
-            return view('ar.product');
+            return view('ar.product', compact('product'));
         } elseif ($lang == 'fa') {
-            return view('fa.product');
+            return view('fa.product', compact('product'));
         } else {
-            return view('en.product');
+            return view('en.product', compact('product'));
         }
     }
 
     public function products($lang)
     {
+        $products = Product::where('hidden', false)->orderBy('sort_order')->orderBy('id')->get();
+
         if ($lang == 'ar') {
-            return view('ar.products');
+            return view('ar.products', compact('products'));
         } elseif ($lang == 'fa') {
-            return view('fa.products');
+            return view('fa.products', compact('products'));
         } else {
-            return view('en.products');
+            return view('en.products', compact('products'));
         }
     }
 

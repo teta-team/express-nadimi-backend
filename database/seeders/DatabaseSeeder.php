@@ -15,11 +15,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        // The default super user (admin / admin) is created by the
+        // "add_username_and_superuser_to_users_table" migration.
+        // Recreate it here only if it is missing (e.g. after truncating users).
+        User::firstOrCreate(
+            ['username' => 'admin'],
+            ['name' => 'Admin', 'password' => 'admin']
+        )->forceFill(['is_superuser' => true])->save();
     }
 }
