@@ -206,7 +206,7 @@
 
 
                         <form method="POST" action="{{ route('contact.post', ['lang' => app()->getLocale()]) }}"
-                            novalidate data-busy-text="Sending…">
+                            novalidate data-whatsapp-form="contact">
                             @csrf
 
                             <fieldset class="types">
