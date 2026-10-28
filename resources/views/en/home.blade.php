@@ -61,7 +61,7 @@
             </div>
         </section>
 
-        
+
 
 
         <section class="section-tight steps-sec" aria-labelledby="steps-h">
@@ -105,7 +105,7 @@
             </div>
         </section>
 
-@include('partials.export-cinema')
+        @include('partials.export-cinema')
         <section class="section" aria-labelledby="week-h">
             <div class="container">
                 <div class="sec-head sec-head-row">
@@ -484,7 +484,7 @@
 
                         <form class="iform" method="POST"
                             action="{{ route('home.post', ['lang' => app()->getLocale()]) }}" novalidate
-                            data-busy-text="Sending…">
+                            data-whatsapp-form="inquiry">
                             <!-- backend: set action + @@csrf -->
                             @csrf
 

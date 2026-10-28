@@ -479,7 +479,7 @@
 
                         <form class="iform" method="POST"
                             action="{{ route('home.post', ['lang' => app()->getLocale()]) }}" novalidate
-                            data-busy-text="در حال ارسال…" id="inquiry-form">
+                            data-whatsapp-form="inquiry" id="inquiry-form">
                             <!-- backend: set action + @@csrf -->
                             @csrf
 

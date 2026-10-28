@@ -472,7 +472,7 @@ main { display: block; outline: none; }
 [lang="fa"] .waybill-head b, [lang="ar"] .waybill-head b { letter-spacing: 0; font-size: .88rem; }
 .waybill-head span { font-size: .78rem; color: var(--muted); font-weight: 600; font-variant-numeric: tabular-nums; }
 .waybill-body { padding: clamp(18px, 3vw, 30px); }
-[lang="fa"] .stamp, [lang="ar"] 
+[lang="fa"] .stamp, [lang="ar"]
 /* ---------- Forms ---------- */
 .field { display: grid; gap: 6px; min-width: 0; align-content: start; }
 .field > label, .legend { font-size: .82rem; font-weight: 700; color: var(--ink-2); }
@@ -507,6 +507,7 @@ input[type="number"], input[type="tel"], input[type="email"], input[type="date"]
 .notice { display: flex; gap: 12px; align-items: flex-start; padding: 14px 16px; border-radius: 12px; margin-bottom: 16px; font-size: .92rem; }
 .notice .ic { width: 22px; height: 22px; margin-top: 2px; }
 .notice p { margin-top: 2px; }
+.notice a { font-weight: 700; text-decoration: underline; }
 .notice-ok { background: var(--mint); color: var(--forest); border: 1px solid var(--mint-3); }
 .notice-ok .ic { color: var(--leaf); }
 .notice-err { background: #fdf1ef; color: #6d1f19; border: 1px solid #f2cdc8; }
