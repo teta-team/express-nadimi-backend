@@ -395,7 +395,7 @@
                                     >
 
                                     @error('product')
-                                    <p style="color:red">{{ $message }}</p>
+                                        <p style="color:red">{{ $message }}</p>
                                     @enderror
                                 </div>
 
@@ -415,7 +415,7 @@
                                     >
 
                                     @error('quantity')
-                                    <p style="color:red">{{ $message }}</p>
+                                        <p style="color:red">{{ $message }}</p>
                                     @enderror
                                 </div>
 
@@ -451,7 +451,7 @@
                                     </select>
 
                                     @error('packaging')
-                                    <p style="color:red">{{ $message }}</p>
+                                        <p style="color:red">{{ $message }}</p>
                                     @enderror
                                 </div>
 
@@ -470,7 +470,7 @@
                                     </select>
 
                                     @error('incoterm')
-                                    <p style="color:red">{{ $message }}</p>
+                                        <p style="color:red">{{ $message }}</p>
                                     @enderror
                                 </div>
 
@@ -490,7 +490,7 @@
                                     >
 
                                     @error('destination')
-                                    <p style="color:red">{{ $message }}</p>
+                                        <p style="color:red">{{ $message }}</p>
                                     @enderror
                                 </div>
 
@@ -510,7 +510,7 @@
                                     >
 
                                     @error('name')
-                                    <p style="color:red">{{ $message }}</p>
+                                        <p style="color:red">{{ $message }}</p>
                                     @enderror
                                 </div>
 
@@ -528,7 +528,7 @@
                                     >
 
                                     @error('company')
-                                    <p style="color:red">{{ $message }}</p>
+                                        <p style="color:red">{{ $message }}</p>
                                     @enderror
                                 </div>
 
@@ -547,7 +547,7 @@
                                     >
 
                                     @error('email')
-                                    <p style="color:red">{{ $message }}</p>
+                                        <p style="color:red">{{ $message }}</p>
                                     @enderror
                                 </div>
 
@@ -567,7 +567,7 @@
                                     >
 
                                     @error('phone')
-                                    <p style="color:red">{{ $message }}</p>
+                                        <p style="color:red">{{ $message }}</p>
                                     @enderror
                                 </div>
 
@@ -586,7 +586,7 @@
                                     >{{ old('message') }}</textarea>
 
                                     @error('message')
-                                    <p style="color:red">{{ $message }}</p>
+                                        <p style="color:red">{{ $message }}</p>
                                     @enderror
                                 </div>
 

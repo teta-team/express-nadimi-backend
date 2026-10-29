@@ -89,8 +89,8 @@
     revealables.forEach((el) => el.classList.add('is-in'));
   }
 
-  /* ---------- Forms: busy state on submit ---------- */
-  $$('form').forEach((form) => {
+  /* ---------- Forms: busy state on submit (WhatsApp forms are handled by whatsapp-form.js) ---------- */
+  $$('form:not([data-whatsapp-form])').forEach((form) => {
     form.addEventListener('submit', () => {
       const btn = $('button[type="submit"]', form);
       if (!btn || btn.classList.contains('is-busy')) return;

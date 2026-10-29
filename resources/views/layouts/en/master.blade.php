@@ -28,6 +28,7 @@
     @include('layouts.en.footer')
 
     <script src="{{ asset('assets/js/site.js') }}" defer></script>
+    <script src="{{ asset('assets/js/whatsapp-form.js') }}" defer></script>
     @yield('scripts')
 </body>
 
