@@ -72,29 +72,34 @@
 
 
             <div>
-
                 <h2 class="footer-h">Products</h2>
 
                 <ul class="footer-list footer-cols">
+                    @forelse ($footerProducts as $product)
+                        @php
+                            $productName = is_array($product->name)
+                                ? ($product->name['en'] ?? $product->name['fa'] ?? $product->slug)
+                                : ($product->name ?: $product->slug);
+                        @endphp
 
-                    <li><a href="{{ route('product', ['lang' => 'en']) }}">Tomato</a></li>
+                        <li>
+                            <a href="{{ route('product.show', [
+                    'lang' => 'en',
+                    'slug' => $product->slug,
+                ]) }}">
+                                {{ $productName }}
+                            </a>
+                        </li>
+                    @empty
+                        <li>No products to display.</li>
+                    @endforelse
 
-                    <li><a href="{{ route('product', ['lang' => 'en']) }}">Cabbage</a></li>
-
-                    <li><a href="{{ route('product', ['lang' => 'en']) }}">Cauliflower</a></li>
-
-                    <li><a href="{{ route('product', ['lang' => 'en']) }}">Lettuce</a></li>
-
-                    <li><a href="{{ route('product', ['lang' => 'en']) }}">Apricot</a></li>
-
-                    <li><a href="{{ route('product', ['lang' => 'en']) }}">Cherry</a></li>
-
-                    <li><a href="{{ route('product', ['lang' => 'en']) }}">Nectarine</a></li>
-
-                    <li><a href="{{ route('products', ['lang' => 'en']) }}">All Products</a></li>
-
+                    <li>
+                        <a href="{{ route('products', ['lang' => 'en']) }}">
+                            All products
+                        </a>
+                    </li>
                 </ul>
-
             </div>
 
 

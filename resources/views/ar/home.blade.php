@@ -50,7 +50,10 @@
                     <ul class="hero-facts">
                         <li><b>15+</b><span>عاماً من الخبرة في الزراعة والتجارة</span></li>
                         <li><b>7</b><span>أسواق تصدير</span></li>
-                        <li><b>20+</b><span>صنفاً من الفواكه والخضروات</span></li>
+                        <li>
+                            <b>{{ $products->count() }}+</b>
+                            <span>صنفاً من الفواكه والخضروات</span>
+                        </li>
                         <li><b>WMC04</b><span>جناحنا في سوق سلال بعُمان</span></li>
                     </ul>
                 </div>
@@ -109,281 +112,134 @@
                 <div class="sec-head sec-head-row">
                     <div>
                         <h2 id="week-h" class="h2">ما المنتجات المتاحة هذا الأسبوع؟</h2>
-                        <p class="lead">سوق المنتجات الزراعية يتغيّر باستمرار؛ فالمتوفر والأسعار وشروط التوريد تتحدد بحسب
-                            موسم الحصاد وحجم الإنتاج والجودة وظروف السوق اليومية. تواصلوا معنا لمعرفة سعر اليوم.</p>
+                        <p class="lead">
+                            تعرّفوا على منتجاتنا الزراعية ومواسم توريدها،
+                            وتواصلوا معنا لمعرفة الأسعار والكميات المتاحة حالياً.
+                        </p>
                     </div>
-                    <a class="btn-all" href="{{ route('products', ['lang' => 'ar']) }}"><span>جميع المنتجات
-                            (23)</span><span class="btn-all-ic" aria-hidden="true"><svg class="ic flip">
-                                <use href="#i-arrow" />
-                            </svg></span></a>
+
+                    <a class="btn-all" href="{{ route('products', ['lang' => 'ar']) }}">
+                        <span>جميع المنتجات ({{ $products->count() }})</span>
+
+                        <span class="btn-all-ic" aria-hidden="true">
+                    <svg class="ic flip">
+                        <use href="#i-arrow" />
+                    </svg>
+                </span>
+                    </a>
                 </div>
+
                 <div class="rail">
-                    <article class="pcard">
-                        <div class="pcard-media">
-                            <img src="{{ asset('assets/images/products/tomato.jpg') }}" alt="" width="480"
-                                height="373" loading="lazy" decoding="async">
-                            <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
-                                    <use href="#i-arrow" />
-                                </svg></span>
-                        </div>
-                        <div class="pcard-body">
-                            <div class="pcard-top">
-                                <h3 class="pcard-title"><a href="{{ route('product', ['lang' => 'ar']) }}">طماطم</a></h3>
-                                <span class="dot-badge is-available">متوفر</span>
+                    @forelse ($products as $p)
+                        @php
+                            $name = is_array($p->name)
+                                ? ($p->name['ar'] ?? $p->name['en'] ?? $p->name['fa'] ?? $p->slug)
+                                : ($p->name ?: $p->slug);
+
+                            $summary = is_array($p->summary)
+                                ? ($p->summary['ar'] ?? $p->summary['en'] ?? $p->summary['fa'] ?? '')
+                                : ($p->summary ?? '');
+
+                            $months = is_array($p->months)
+                                ? array_values($p->months)
+                                : [];
+
+                            $months = array_map(
+                                fn ($value) => filter_var($value, FILTER_VALIDATE_BOOLEAN),
+                                array_pad(array_slice($months, 0, 12), 12, false)
+                            );
+
+                            $monthNames = [
+                                'يناير', 'فبراير', 'مارس', 'أبريل',
+                                'مايو', 'يونيو', 'يوليو', 'أغسطس',
+                                'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر',
+                            ];
+
+                            $activeMonths = count(array_filter($months));
+                            $isAvailable = $p->status === 'available';
+
+                            $status = $isAvailable ? 'متوفر' : 'خارج الموسم';
+
+                            $statusClass = $isAvailable
+                                ? 'is-available'
+                                : 'is-off';
+
+                            $image = $p->image
+                                ?: asset('assets/images/products/tomato.jpg');
+
+                            $seasonLabel = $activeMonths === 12
+                                ? 'طوال العام'
+                                : ($activeMonths === 0
+                                    ? 'لم يُحدَّد موسم التوريد'
+                                    : implode('، ', array_map(
+                                        fn ($index) => $monthNames[$index],
+                                        array_keys(array_filter($months))
+                                    )));
+                        @endphp
+
+                        <article class="pcard">
+                            <div class="pcard-media">
+                                <a
+                                    href="{{ route('product.show', ['lang' => 'ar', 'slug' => $p->slug]) }}"
+                                    aria-label="عرض المنتج {{ $name }}"
+                                >
+                                    <img
+                                        src="{{ $image }}"
+                                        alt="{{ $name }}"
+                                        width="480"
+                                        height="373"
+                                        loading="lazy"
+                                        decoding="async"
+                                    >
+                                </a>
+
+                                <span class="pcard-go" aria-hidden="true">
+                            <svg class="ic flip">
+                                <use href="#i-arrow" />
+                            </svg>
+                        </span>
                             </div>
-                            <p class="pcard-origin">جيرفت، بوشهر، أذربيجان الشرقية</p>
-                            <div class="season" role="img" aria-label="الموسم: طوال العام">
-                                <ol class="season-bar" aria-hidden="true">
-                                    <li class="on" title="يناير"></li>
-                                    <li class="on" title="فبراير"></li>
-                                    <li class="on" title="مارس"></li>
-                                    <li class="on" title="أبريل"></li>
-                                    <li class="on" title="مايو"></li>
-                                    <li class="on" title="يونيو"></li>
-                                    <li class="on" title="يوليو"></li>
-                                    <li class="on" title="أغسطس"></li>
-                                    <li class="on" title="سبتمبر"></li>
-                                    <li class="on now" title="أكتوبر"></li>
-                                    <li class="on" title="نوفمبر"></li>
-                                    <li class="on" title="ديسمبر"></li>
-                                </ol>
-                                <span class="season-label">طوال العام</span>
+
+                            <div class="pcard-body">
+                                <div class="pcard-top">
+                                    <h3 class="pcard-title">
+                                        <a href="{{ route('product.show', ['lang' => 'ar', 'slug' => $p->slug]) }}">
+                                            {{ $name }}
+                                        </a>
+                                    </h3>
+
+                                    <span class="dot-badge {{ $statusClass }}">
+                                {{ $status }}
+                            </span>
+                                </div>
+
+                                <p class="pcard-origin">
+                                    {{ $summary }}
+                                </p>
+
+                                <div
+                                    class="season"
+                                    role="img"
+                                    aria-label="موسم توريد {{ $name }}: {{ $seasonLabel }}"
+                                >
+                                    <ol class="season-bar" aria-hidden="true">
+                                        @foreach ($months as $index => $on)
+                                            <li
+                                                class="{{ $on ? 'on' : '' }}"
+                                                title="{{ $monthNames[$index] }}"
+                                            ></li>
+                                        @endforeach
+                                    </ol>
+
+                                    <span class="season-label">
+                                {{ $seasonLabel }}
+                            </span>
+                                </div>
                             </div>
-                        </div>
-                    </article>
-                    <article class="pcard">
-                        <div class="pcard-media">
-                            <img src="{{ asset('assets/images/products/cucumber.jpg') }}" alt="" width="480"
-                                height="373" loading="lazy" decoding="async">
-                            <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
-                                    <use href="#i-arrow" />
-                                </svg></span>
-                        </div>
-                        <div class="pcard-body">
-                            <div class="pcard-top">
-                                <h3 class="pcard-title"><a href="{{ route('product', ['lang' => 'ar']) }}">خيار</a></h3>
-                                <span class="dot-badge is-available">متوفر</span>
-                            </div>
-                            <p class="pcard-origin">جيرفت، أصفهان، طهران</p>
-                            <div class="season" role="img" aria-label="الموسم: طوال العام">
-                                <ol class="season-bar" aria-hidden="true">
-                                    <li class="on" title="يناير"></li>
-                                    <li class="on" title="فبراير"></li>
-                                    <li class="on" title="مارس"></li>
-                                    <li class="on" title="أبريل"></li>
-                                    <li class="on" title="مايو"></li>
-                                    <li class="on" title="يونيو"></li>
-                                    <li class="on" title="يوليو"></li>
-                                    <li class="on" title="أغسطس"></li>
-                                    <li class="on" title="سبتمبر"></li>
-                                    <li class="on now" title="أكتوبر"></li>
-                                    <li class="on" title="نوفمبر"></li>
-                                    <li class="on" title="ديسمبر"></li>
-                                </ol>
-                                <span class="season-label">طوال العام</span>
-                            </div>
-                        </div>
-                    </article>
-                    <article class="pcard">
-                        <div class="pcard-media">
-                            <img src="{{ asset('assets/images/products/BellPepper.jpg') }}" alt=""
-                                width="480" height="373" loading="lazy" decoding="async">
-                            <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
-                                    <use href="#i-arrow" />
-                                </svg></span>
-                        </div>
-                        <div class="pcard-body">
-                            <div class="pcard-top">
-                                <h3 class="pcard-title"><a href="{{ route('product', ['lang' => 'ar']) }}">فلفل رومي</a>
-                                </h3>
-                                <span class="dot-badge is-available">متوفر</span>
-                            </div>
-                            <p class="pcard-origin">جيرفت، أصفهان</p>
-                            <div class="season" role="img" aria-label="الموسم: طوال العام">
-                                <ol class="season-bar" aria-hidden="true">
-                                    <li class="on" title="يناير"></li>
-                                    <li class="on" title="فبراير"></li>
-                                    <li class="on" title="مارس"></li>
-                                    <li class="on" title="أبريل"></li>
-                                    <li class="on" title="مايو"></li>
-                                    <li class="on" title="يونيو"></li>
-                                    <li class="on" title="يوليو"></li>
-                                    <li class="on" title="أغسطس"></li>
-                                    <li class="on" title="سبتمبر"></li>
-                                    <li class="on now" title="أكتوبر"></li>
-                                    <li class="on" title="نوفمبر"></li>
-                                    <li class="on" title="ديسمبر"></li>
-                                </ol>
-                                <span class="season-label">طوال العام</span>
-                            </div>
-                        </div>
-                    </article>
-                    <article class="pcard">
-                        <div class="pcard-media">
-                            <img src="{{ asset('assets/images/products/cabbage.jpg') }}" alt="" width="480"
-                                height="373" loading="lazy" decoding="async">
-                            <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
-                                    <use href="#i-arrow" />
-                                </svg></span>
-                        </div>
-                        <div class="pcard-body">
-                            <div class="pcard-top">
-                                <h3 class="pcard-title"><a href="{{ route('product', ['lang' => 'ar']) }}">ملفوف</a></h3>
-                                <span class="dot-badge is-available">متوفر</span>
-                            </div>
-                            <p class="pcard-origin">گلستان، أردبيل، جيرفت</p>
-                            <div class="season" role="img" aria-label="الموسم: سبتمبر – أبريل">
-                                <ol class="season-bar" aria-hidden="true">
-                                    <li class="on" title="يناير"></li>
-                                    <li class="on" title="فبراير"></li>
-                                    <li class="on" title="مارس"></li>
-                                    <li class="on" title="أبريل"></li>
-                                    <li class="" title="مايو"></li>
-                                    <li class="" title="يونيو"></li>
-                                    <li class="" title="يوليو"></li>
-                                    <li class="" title="أغسطس"></li>
-                                    <li class="on" title="سبتمبر"></li>
-                                    <li class="on now" title="أكتوبر"></li>
-                                    <li class="on" title="نوفمبر"></li>
-                                    <li class="on" title="ديسمبر"></li>
-                                </ol>
-                                <span class="season-label">سبتمبر – أبريل</span>
-                            </div>
-                        </div>
-                    </article>
-                    <article class="pcard">
-                        <div class="pcard-media">
-                            <img src="{{ asset('assets/images/products/Cauliflower.png') }}" alt=""
-                                width="480" height="373" loading="lazy" decoding="async">
-                            <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
-                                    <use href="#i-arrow" />
-                                </svg></span>
-                        </div>
-                        <div class="pcard-body">
-                            <div class="pcard-top">
-                                <h3 class="pcard-title"><a href="{{ route('product', ['lang' => 'ar']) }}">قرنبيط</a>
-                                </h3>
-                                <span class="dot-badge is-available">متوفر</span>
-                            </div>
-                            <p class="pcard-origin">جيرفت، گلستان</p>
-                            <div class="season" role="img" aria-label="الموسم: سبتمبر – أبريل">
-                                <ol class="season-bar" aria-hidden="true">
-                                    <li class="on" title="يناير"></li>
-                                    <li class="on" title="فبراير"></li>
-                                    <li class="on" title="مارس"></li>
-                                    <li class="on" title="أبريل"></li>
-                                    <li class="" title="مايو"></li>
-                                    <li class="" title="يونيو"></li>
-                                    <li class="" title="يوليو"></li>
-                                    <li class="" title="أغسطس"></li>
-                                    <li class="on" title="سبتمبر"></li>
-                                    <li class="on now" title="أكتوبر"></li>
-                                    <li class="on" title="نوفمبر"></li>
-                                    <li class="on" title="ديسمبر"></li>
-                                </ol>
-                                <span class="season-label">سبتمبر – أبريل</span>
-                            </div>
-                        </div>
-                    </article>
-                    <article class="pcard">
-                        <div class="pcard-media">
-                            <img src="{{ asset('assets/images/products/Lettuce.png') }}" alt="" width="480"
-                                height="373" loading="lazy" decoding="async">
-                            <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
-                                    <use href="#i-arrow" />
-                                </svg></span>
-                        </div>
-                        <div class="pcard-body">
-                            <div class="pcard-top">
-                                <h3 class="pcard-title"><a href="{{ route('product', ['lang' => 'ar']) }}">خس</a></h3>
-                                <span class="dot-badge is-available">متوفر</span>
-                            </div>
-                            <p class="pcard-origin">جيرفت، بوشهر</p>
-                            <div class="season" role="img" aria-label="الموسم: أكتوبر – أبريل">
-                                <ol class="season-bar" aria-hidden="true">
-                                    <li class="on" title="يناير"></li>
-                                    <li class="on" title="فبراير"></li>
-                                    <li class="on" title="مارس"></li>
-                                    <li class="on" title="أبريل"></li>
-                                    <li class="" title="مايو"></li>
-                                    <li class="" title="يونيو"></li>
-                                    <li class="" title="يوليو"></li>
-                                    <li class="" title="أغسطس"></li>
-                                    <li class="" title="سبتمبر"></li>
-                                    <li class="on now" title="أكتوبر"></li>
-                                    <li class="on" title="نوفمبر"></li>
-                                    <li class="on" title="ديسمبر"></li>
-                                </ol>
-                                <span class="season-label">أكتوبر – أبريل</span>
-                            </div>
-                        </div>
-                    </article>
-                    <article class="pcard">
-                        <div class="pcard-media">
-                            <img src="{{ asset('assets/images/products/potato.jpg') }}" alt="" width="480"
-                                height="373" loading="lazy" decoding="async">
-                            <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
-                                    <use href="#i-arrow" />
-                                </svg></span>
-                        </div>
-                        <div class="pcard-body">
-                            <div class="pcard-top">
-                                <h3 class="pcard-title"><a href="{{ route('product', ['lang' => 'ar']) }}">بطاطا</a></h3>
-                                <span class="dot-badge is-available">متوفر</span>
-                            </div>
-                            <p class="pcard-origin">أردبيل، همدان، جيرفت</p>
-                            <div class="season" role="img" aria-label="الموسم: طوال العام">
-                                <ol class="season-bar" aria-hidden="true">
-                                    <li class="on" title="يناير"></li>
-                                    <li class="on" title="فبراير"></li>
-                                    <li class="on" title="مارس"></li>
-                                    <li class="on" title="أبريل"></li>
-                                    <li class="on" title="مايو"></li>
-                                    <li class="on" title="يونيو"></li>
-                                    <li class="on" title="يوليو"></li>
-                                    <li class="on" title="أغسطس"></li>
-                                    <li class="on" title="سبتمبر"></li>
-                                    <li class="on now" title="أكتوبر"></li>
-                                    <li class="on" title="نوفمبر"></li>
-                                    <li class="on" title="ديسمبر"></li>
-                                </ol>
-                                <span class="season-label">طوال العام</span>
-                            </div>
-                        </div>
-                    </article>
-                    <article class="pcard">
-                        <div class="pcard-media">
-                            <img src="{{ asset('assets/images/products/Redonion.png') }}" alt="" width="480"
-                                height="373" loading="lazy" decoding="async">
-                            <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
-                                    <use href="#i-arrow" />
-                                </svg></span>
-                        </div>
-                        <div class="pcard-body">
-                            <div class="pcard-top">
-                                <h3 class="pcard-title"><a href="{{ route('product', ['lang' => 'ar']) }}">بصل</a></h3>
-                                <span class="dot-badge is-available">متوفر</span>
-                            </div>
-                            <p class="pcard-origin">جيرفت، خوزستان، أصفهان</p>
-                            <div class="season" role="img" aria-label="الموسم: أبريل – نوفمبر">
-                                <ol class="season-bar" aria-hidden="true">
-                                    <li class="" title="يناير"></li>
-                                    <li class="" title="فبراير"></li>
-                                    <li class="" title="مارس"></li>
-                                    <li class="on" title="أبريل"></li>
-                                    <li class="on" title="مايو"></li>
-                                    <li class="on" title="يونيو"></li>
-                                    <li class="on" title="يوليو"></li>
-                                    <li class="on" title="أغسطس"></li>
-                                    <li class="on" title="سبتمبر"></li>
-                                    <li class="on now" title="أكتوبر"></li>
-                                    <li class="on" title="نوفمبر"></li>
-                                    <li class="" title="ديسمبر"></li>
-                                </ol>
-                                <span class="season-label">أبريل – نوفمبر</span>
-                            </div>
-                        </div>
-                    </article>
+                        </article>
+                    @empty
+                        <p>لا توجد منتجات متاحة حالياً.</p>
+                    @endforelse
                 </div>
             </div>
         </section>
@@ -484,70 +340,47 @@
                                     <label for="iq-product">المنتج</label>
 
                                     <select id="iq-product" name="product" class="input">
+                                        <option value="" @selected(old('product', '') === '')>
+                                            مختلط / عدة منتجات
+                                        </option>
 
-                                        <option value="{{ old('product') }}">مختلط / عدة منتجات</option>
+                                        @php
+                                            $productCategories = [
+                                                'vegetables' => 'الخضروات',
+                                                'stone-fruits' => 'الفواكه ذات النواة',
+                                                'orchard-fruits' => 'فواكه البساتين',
+                                                'citrus-melons' => 'الحمضيات والبطيخ',
+                                            ];
+                                        @endphp
 
-                                        <optgroup label="الخضروات">
+                                        @foreach ($productCategories as $category => $categoryLabel)
+                                            @php
+                                                $categoryProducts = $products->where('category', $category);
+                                            @endphp
 
-                                            <option value="tomato">طماطم</option>
+                                            @if ($categoryProducts->isNotEmpty())
+                                                <optgroup label="{{ $categoryLabel }}">
+                                                    @foreach ($categoryProducts as $p)
+                                                        @php
+                                                            $productName = is_array($p->name)
+                                                                ? ($p->name['ar'] ?? $p->name['en'] ?? $p->name['fa'] ?? $p->slug)
+                                                                : ($p->name ?: $p->slug);
+                                                        @endphp
 
-                                            <option value="cucumber">خيار</option>
-
-                                            <option value="bell-pepper">فلفل رومي</option>
-
-                                            <option value="cabbage">ملفوف</option>
-
-                                            <option value="cauliflower">قرنبيط</option>
-
-                                            <option value="lettuce">خس</option>
-
-                                            <option value="potato">بطاطا</option>
-
-                                            <option value="onion">بصل</option>
-
-                                        </optgroup>
-
-                                        <optgroup label="الفواكه ذات النواة">
-
-                                            <option value="apricot">مشمش</option>
-
-                                            <option value="cherry">كرز</option>
-
-                                            <option value="peach">خوخ</option>
-
-                                            <option value="nectarine">نكتارين</option>
-
-                                        </optgroup>
-
-                                        <optgroup label="فواكه البساتين">
-
-                                            <option value="apple">تفاح</option>
-
-                                            <option value="pomegranate">رمان</option>
-
-                                            <option value="kiwi">كيوي</option>
-
-                                            <option value="grape">عنب</option>
-
-                                        </optgroup>
-
-                                        <optgroup label="الحمضيات والبطيخ">
-
-                                            <option value="orange">برتقال</option>
-
-                                            <option value="tangerine">يوسفي</option>
-
-                                            <option value="lemon">ليمون</option>
-
-                                            <option value="watermelon">بطيخ</option>
-
-                                            <option value="melon">شمام</option>
-
-                                        </optgroup>
-
+                                                        <option
+                                                            value="{{ $p->slug }}"
+                                                            @selected((string) old('product') === (string) $p->slug)
+                                                        >
+                                                            {{ $productName }}
+                                                        </option>
+                                                    @endforeach
+                                                </optgroup>
+                                            @endif
+                                        @endforeach
                                     </select>
+
                                     @error('product')
-                                        <p style="color:red">{{ $message }}</p>
+                                    <p style="color:red">{{ $message }}</p>
                                     @enderror
                                 </div>
 

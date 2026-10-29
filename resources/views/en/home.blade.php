@@ -50,7 +50,7 @@
                     <ul class="hero-facts">
                         <li><b>15+</b><span>Years in agriculture &amp; trade</span></li>
                         <li><b>7</b><span>Export markets</span></li>
-                        <li><b>20+</b><span>Fruit &amp; vegetable types</span></li>
+                        <li><b>{{ $products->count() }}+</b><span>Fruit &amp; vegetable types</span></li>
                         <li><b>WMC04</b><span>Our stand at Souq Silal, Oman</span></li>
                     </ul>
                 </div>
@@ -61,7 +61,7 @@
             </div>
         </section>
 
-        
+
 
 
         <section class="section-tight steps-sec" aria-labelledby="steps-h">
@@ -115,283 +115,127 @@
                             depend on the harvest season, production volume, quality and daily market conditions. Contact us
                             for today's price.</p>
                     </div>
-                    <a class="btn-all" href="{{ route('products', ['lang' => 'en']) }}"><span>All 23 products</span><span
-                            class="btn-all-ic" aria-hidden="true"><svg class="ic flip">
-                                <use href="#i-arrow" />
-                            </svg></span></a>
+                    <a class="btn-all" href="{{ route('products', ['lang' => 'en']) }}">
+                        <span>All {{ $products->count() }} products</span>
+                        <span class="btn-all-ic" aria-hidden="true">
+        <svg class="ic flip">
+            <use href="#i-arrow" />
+        </svg>
+    </span>
+                    </a>
                 </div>
                 <div class="rail">
-                    <article class="pcard">
-                        <div class="pcard-media">
-                            <img src="{{ asset('assets/images/products/tomato.jpg') }}" alt="" width="480"
-                                height="373" loading="lazy" decoding="async">
-                            <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
-                                    <use href="#i-arrow" />
-                                </svg></span>
-                        </div>
-                        <div class="pcard-body">
-                            <div class="pcard-top">
-                                <h3 class="pcard-title"><a href="{{ route('product', ['lang' => 'en']) }}">Tomato</a>
-                                </h3>
-                                <span class="dot-badge is-available">Available</span>
+                    @forelse ($products as $p)
+                        @php
+                            $name = is_array($p->name)
+                                ? ($p->name['en'] ?? $p->name['fa'] ?? $p->slug)
+                                : ($p->name ?: $p->slug);
+
+                            $summary = is_array($p->summary)
+                                ? ($p->summary['en'] ?? $p->summary['fa'] ?? '')
+                                : ($p->summary ?? '');
+
+                            $months = is_array($p->months)
+                                ? array_values($p->months)
+                                : [];
+
+                            $months = array_map(
+                                fn ($value) => filter_var($value, FILTER_VALIDATE_BOOLEAN),
+                                array_pad(array_slice($months, 0, 12), 12, false)
+                            );
+
+                            $monthNames = [
+                                'Jan', 'Feb', 'Mar', 'Apr',
+                                'May', 'Jun', 'Jul', 'Aug',
+                                'Sep', 'Oct', 'Nov', 'Dec',
+                            ];
+
+                            $activeMonths = count(array_filter($months));
+
+                            $isAvailable = $p->status === 'available';
+
+                            $status = $isAvailable ? 'Available' : 'Off-season';
+
+                            $statusClass = $isAvailable
+                                ? 'is-available'
+                                : 'is-off';
+
+                            $image = $p->image
+                                ?: asset('assets/images/products/tomato.jpg');
+
+                            $seasonLabel = $activeMonths === 12
+                                ? 'Year-round'
+                                : ($activeMonths === 0
+                                    ? 'Season not specified'
+                                    : implode(' – ', array_map(
+                                        fn ($index) => $monthNames[$index],
+                                        array_keys(array_filter($months))
+                                    )));
+                        @endphp
+
+                        <article class="pcard">
+                            <div class="pcard-media">
+                                <a
+                                    href="{{ route('product.show', ['lang' => 'en', 'slug' => $p->slug]) }}"
+                                    aria-label="View {{ $name }}"
+                                >
+                                    <img
+                                        src="{{ $image }}"
+                                        alt="{{ $name }}"
+                                        width="480"
+                                        height="373"
+                                        loading="lazy"
+                                        decoding="async"
+                                    >
+                                </a>
+
+                                <span class="pcard-go" aria-hidden="true">
+                    <svg class="ic flip">
+                        <use href="#i-arrow" />
+                    </svg>
+                </span>
                             </div>
-                            <p class="pcard-origin">Jiroft, Bushehr, East Azerbaijan</p>
-                            <div class="season" role="img" aria-label="Season: Year-round">
-                                <ol class="season-bar" aria-hidden="true">
-                                    <li class="on" title="Jan"></li>
-                                    <li class="on" title="Feb"></li>
-                                    <li class="on" title="Mar"></li>
-                                    <li class="on" title="Apr"></li>
-                                    <li class="on" title="May"></li>
-                                    <li class="on" title="Jun"></li>
-                                    <li class="on" title="Jul"></li>
-                                    <li class="on" title="Aug"></li>
-                                    <li class="on" title="Sep"></li>
-                                    <li class="on now" title="Oct"></li>
-                                    <li class="on" title="Nov"></li>
-                                    <li class="on" title="Dec"></li>
-                                </ol>
-                                <span class="season-label">Year-round</span>
+
+                            <div class="pcard-body">
+                                <div class="pcard-top">
+                                    <h3 class="pcard-title">
+                                        <a href="{{ route('product.show', ['lang' => 'en', 'slug' => $p->slug]) }}">
+                                            {{ $name }}
+                                        </a>
+                                    </h3>
+
+                                    <span class="dot-badge {{ $statusClass }}">
+                        {{ $status }}
+                    </span>
+                                </div>
+
+                                <p class="pcard-origin">
+                                    {{ $summary }}
+                                </p>
+
+                                <div
+                                    class="season"
+                                    role="img"
+                                    aria-label="Season for {{ $name }}: {{ $seasonLabel }}"
+                                >
+                                    <ol class="season-bar" aria-hidden="true">
+                                        @foreach ($months as $index => $on)
+                                            <li
+                                                class="{{ $on ? 'on' : '' }}"
+                                                title="{{ $monthNames[$index] }}"
+                                            ></li>
+                                        @endforeach
+                                    </ol>
+
+                                    <span class="season-label">
+                        {{ $seasonLabel }}
+                    </span>
+                                </div>
                             </div>
-                        </div>
-                    </article>
-                    <article class="pcard">
-                        <div class="pcard-media">
-                            <img src="{{ asset('assets/images/products/cucumber.jpg') }}" alt="" width="480"
-                                height="373" loading="lazy" decoding="async">
-                            <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
-                                    <use href="#i-arrow" />
-                                </svg></span>
-                        </div>
-                        <div class="pcard-body">
-                            <div class="pcard-top">
-                                <h3 class="pcard-title"><a href="{{ route('product', ['lang' => 'en']) }}">Cucumber</a>
-                                </h3>
-                                <span class="dot-badge is-available">Available</span>
-                            </div>
-                            <p class="pcard-origin">Jiroft, Isfahan, Tehran</p>
-                            <div class="season" role="img" aria-label="Season: Year-round">
-                                <ol class="season-bar" aria-hidden="true">
-                                    <li class="on" title="Jan"></li>
-                                    <li class="on" title="Feb"></li>
-                                    <li class="on" title="Mar"></li>
-                                    <li class="on" title="Apr"></li>
-                                    <li class="on" title="May"></li>
-                                    <li class="on" title="Jun"></li>
-                                    <li class="on" title="Jul"></li>
-                                    <li class="on" title="Aug"></li>
-                                    <li class="on" title="Sep"></li>
-                                    <li class="on now" title="Oct"></li>
-                                    <li class="on" title="Nov"></li>
-                                    <li class="on" title="Dec"></li>
-                                </ol>
-                                <span class="season-label">Year-round</span>
-                            </div>
-                        </div>
-                    </article>
-                    <article class="pcard">
-                        <div class="pcard-media">
-                            <img src="{{ asset('assets/images/products/BellPepper.jpg') }}" alt=""
-                                width="480" height="373" loading="lazy" decoding="async">
-                            <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
-                                    <use href="#i-arrow" />
-                                </svg></span>
-                        </div>
-                        <div class="pcard-body">
-                            <div class="pcard-top">
-                                <h3 class="pcard-title"><a href="{{ route('product', ['lang' => 'en']) }}">Bell
-                                        Pepper</a></h3>
-                                <span class="dot-badge is-available">Available</span>
-                            </div>
-                            <p class="pcard-origin">Jiroft, Isfahan</p>
-                            <div class="season" role="img" aria-label="Season: Year-round">
-                                <ol class="season-bar" aria-hidden="true">
-                                    <li class="on" title="Jan"></li>
-                                    <li class="on" title="Feb"></li>
-                                    <li class="on" title="Mar"></li>
-                                    <li class="on" title="Apr"></li>
-                                    <li class="on" title="May"></li>
-                                    <li class="on" title="Jun"></li>
-                                    <li class="on" title="Jul"></li>
-                                    <li class="on" title="Aug"></li>
-                                    <li class="on" title="Sep"></li>
-                                    <li class="on now" title="Oct"></li>
-                                    <li class="on" title="Nov"></li>
-                                    <li class="on" title="Dec"></li>
-                                </ol>
-                                <span class="season-label">Year-round</span>
-                            </div>
-                        </div>
-                    </article>
-                    <article class="pcard">
-                        <div class="pcard-media">
-                            <img src="{{ asset('assets/images/products/cabbage.jpg') }}" alt="" width="480"
-                                height="373" loading="lazy" decoding="async">
-                            <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
-                                    <use href="#i-arrow" />
-                                </svg></span>
-                        </div>
-                        <div class="pcard-body">
-                            <div class="pcard-top">
-                                <h3 class="pcard-title"><a href="{{ route('product', ['lang' => 'en']) }}">Cabbage</a>
-                                </h3>
-                                <span class="dot-badge is-available">Available</span>
-                            </div>
-                            <p class="pcard-origin">Golestan, Ardabil, Jiroft</p>
-                            <div class="season" role="img" aria-label="Season: Sep – Apr">
-                                <ol class="season-bar" aria-hidden="true">
-                                    <li class="on" title="Jan"></li>
-                                    <li class="on" title="Feb"></li>
-                                    <li class="on" title="Mar"></li>
-                                    <li class="on" title="Apr"></li>
-                                    <li class="" title="May"></li>
-                                    <li class="" title="Jun"></li>
-                                    <li class="" title="Jul"></li>
-                                    <li class="" title="Aug"></li>
-                                    <li class="on" title="Sep"></li>
-                                    <li class="on now" title="Oct"></li>
-                                    <li class="on" title="Nov"></li>
-                                    <li class="on" title="Dec"></li>
-                                </ol>
-                                <span class="season-label">Sep – Apr</span>
-                            </div>
-                        </div>
-                    </article>
-                    <article class="pcard">
-                        <div class="pcard-media">
-                            <img src="{{ asset('assets/images/products/Cauliflower.png') }}" alt=""
-                                width="480" height="373" loading="lazy" decoding="async">
-                            <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
-                                    <use href="#i-arrow" />
-                                </svg></span>
-                        </div>
-                        <div class="pcard-body">
-                            <div class="pcard-top">
-                                <h3 class="pcard-title"><a
-                                        href="{{ route('product', ['lang' => 'en']) }}">Cauliflower</a></h3>
-                                <span class="dot-badge is-available">Available</span>
-                            </div>
-                            <p class="pcard-origin">Jiroft, Golestan</p>
-                            <div class="season" role="img" aria-label="Season: Sep – Apr">
-                                <ol class="season-bar" aria-hidden="true">
-                                    <li class="on" title="Jan"></li>
-                                    <li class="on" title="Feb"></li>
-                                    <li class="on" title="Mar"></li>
-                                    <li class="on" title="Apr"></li>
-                                    <li class="" title="May"></li>
-                                    <li class="" title="Jun"></li>
-                                    <li class="" title="Jul"></li>
-                                    <li class="" title="Aug"></li>
-                                    <li class="on" title="Sep"></li>
-                                    <li class="on now" title="Oct"></li>
-                                    <li class="on" title="Nov"></li>
-                                    <li class="on" title="Dec"></li>
-                                </ol>
-                                <span class="season-label">Sep – Apr</span>
-                            </div>
-                        </div>
-                    </article>
-                    <article class="pcard">
-                        <div class="pcard-media">
-                            <img src="{{ asset('assets/images/products/Lettuce.png') }}" alt="" width="480"
-                                height="373" loading="lazy" decoding="async">
-                            <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
-                                    <use href="#i-arrow" />
-                                </svg></span>
-                        </div>
-                        <div class="pcard-body">
-                            <div class="pcard-top">
-                                <h3 class="pcard-title"><a href="{{ route('product', ['lang' => 'en']) }}">Lettuce</a>
-                                </h3>
-                                <span class="dot-badge is-available">Available</span>
-                            </div>
-                            <p class="pcard-origin">Jiroft, Bushehr</p>
-                            <div class="season" role="img" aria-label="Season: Oct – Apr">
-                                <ol class="season-bar" aria-hidden="true">
-                                    <li class="on" title="Jan"></li>
-                                    <li class="on" title="Feb"></li>
-                                    <li class="on" title="Mar"></li>
-                                    <li class="on" title="Apr"></li>
-                                    <li class="" title="May"></li>
-                                    <li class="" title="Jun"></li>
-                                    <li class="" title="Jul"></li>
-                                    <li class="" title="Aug"></li>
-                                    <li class="" title="Sep"></li>
-                                    <li class="on now" title="Oct"></li>
-                                    <li class="on" title="Nov"></li>
-                                    <li class="on" title="Dec"></li>
-                                </ol>
-                                <span class="season-label">Oct – Apr</span>
-                            </div>
-                        </div>
-                    </article>
-                    <article class="pcard">
-                        <div class="pcard-media">
-                            <img src="{{ asset('assets/images/products/potato.jpg') }}" alt="" width="480"
-                                height="373" loading="lazy" decoding="async">
-                            <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
-                                    <use href="#i-arrow" />
-                                </svg></span>
-                        </div>
-                        <div class="pcard-body">
-                            <div class="pcard-top">
-                                <h3 class="pcard-title"><a href="{{ route('product', ['lang' => 'en']) }}">Potato</a>
-                                </h3>
-                                <span class="dot-badge is-available">Available</span>
-                            </div>
-                            <p class="pcard-origin">Ardabil, Hamadan, Jiroft</p>
-                            <div class="season" role="img" aria-label="Season: Year-round">
-                                <ol class="season-bar" aria-hidden="true">
-                                    <li class="on" title="Jan"></li>
-                                    <li class="on" title="Feb"></li>
-                                    <li class="on" title="Mar"></li>
-                                    <li class="on" title="Apr"></li>
-                                    <li class="on" title="May"></li>
-                                    <li class="on" title="Jun"></li>
-                                    <li class="on" title="Jul"></li>
-                                    <li class="on" title="Aug"></li>
-                                    <li class="on" title="Sep"></li>
-                                    <li class="on now" title="Oct"></li>
-                                    <li class="on" title="Nov"></li>
-                                    <li class="on" title="Dec"></li>
-                                </ol>
-                                <span class="season-label">Year-round</span>
-                            </div>
-                        </div>
-                    </article>
-                    <article class="pcard">
-                        <div class="pcard-media">
-                            <img src="{{ asset('assets/images/products/Redonion.png') }}" alt="" width="480"
-                                height="373" loading="lazy" decoding="async">
-                            <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
-                                    <use href="#i-arrow" />
-                                </svg></span>
-                        </div>
-                        <div class="pcard-body">
-                            <div class="pcard-top">
-                                <h3 class="pcard-title"><a href="{{ route('product', ['lang' => 'en']) }}">Onion</a></h3>
-                                <span class="dot-badge is-available">Available</span>
-                            </div>
-                            <p class="pcard-origin">Jiroft, Khuzestan, Isfahan</p>
-                            <div class="season" role="img" aria-label="Season: Apr – Nov">
-                                <ol class="season-bar" aria-hidden="true">
-                                    <li class="" title="Jan"></li>
-                                    <li class="" title="Feb"></li>
-                                    <li class="" title="Mar"></li>
-                                    <li class="on" title="Apr"></li>
-                                    <li class="on" title="May"></li>
-                                    <li class="on" title="Jun"></li>
-                                    <li class="on" title="Jul"></li>
-                                    <li class="on" title="Aug"></li>
-                                    <li class="on" title="Sep"></li>
-                                    <li class="on now" title="Oct"></li>
-                                    <li class="on" title="Nov"></li>
-                                    <li class="" title="Dec"></li>
-                                </ol>
-                                <span class="season-label">Apr – Nov</span>
-                            </div>
-                        </div>
-                    </article>
+                        </article>
+                    @empty
+                        <p>No products are currently available to display.</p>
+                    @endforelse
                 </div>
             </div>
         </section>
@@ -490,73 +334,48 @@
 
                             <div class="iform-grid">
 
-                                <div class="field">
+                                    <div class="field">
+                                        <label for="iq-product">Product</label>
 
-                                    <label for="iq-product">Product</label>
+                                        <select id="iq-product" name="product" class="input">
+                                            <option value="" @selected(old('product', '') === '')>
+                                                Mixed / several products
+                                            </option>
 
-                                    <select id="iq-product" name="product" class="input">
+                                            @php
+                                                $productCategories = [
+                                                    'vegetables' => 'Vegetables',
+                                                    'stone-fruits' => 'Stone fruits',
+                                                    'orchard-fruits' => 'Orchard fruits',
+                                                    'citrus-melons' => 'Citrus & melons',
+                                                ];
+                                            @endphp
 
-                                        <option value="{{ old('product') }}">Mixed / several products</option>
+                                            @foreach ($productCategories as $category => $categoryLabel)
+                                                @php
+                                                    $categoryProducts = $products->where('category', $category);
+                                                @endphp
 
-                                        <optgroup label="Vegetables">
+                                                @if ($categoryProducts->isNotEmpty())
+                                                    <optgroup label="{{ $categoryLabel }}">
+                                                        @foreach ($categoryProducts as $p)
+                                                            @php
+                                                                $productName = is_array($p->name)
+                                                                    ? ($p->name['en'] ?? $p->name['fa'] ?? $p->slug)
+                                                                    : ($p->name ?: $p->slug);
+                                                            @endphp
 
-                                            <option value="tomato">Tomato</option>
-
-                                            <option value="cucumber">Cucumber</option>
-
-                                            <option value="bell-pepper">Bell Pepper</option>
-
-                                            <option value="cabbage">Cabbage</option>
-
-                                            <option value="cauliflower">Cauliflower</option>
-
-                                            <option value="lettuce">Lettuce</option>
-
-                                            <option value="potato">Potato</option>
-
-                                            <option value="onion">Onion</option>
-
-                                        </optgroup>
-
-                                        <optgroup label="Stone fruits">
-
-                                            <option value="apricot">Apricot</option>
-
-                                            <option value="cherry">Cherry</option>
-
-                                            <option value="peach">Peach</option>
-
-                                            <option value="nectarine">Nectarine</option>
-
-                                        </optgroup>
-
-                                        <optgroup label="Orchard fruits">
-
-                                            <option value="apple">Apple</option>
-
-                                            <option value="pomegranate">Pomegranate</option>
-
-                                            <option value="kiwi">Kiwi</option>
-
-                                            <option value="grape">Grape</option>
-
-                                        </optgroup>
-
-                                        <optgroup label="Citrus &amp; melons">
-
-                                            <option value="orange">Orange</option>
-
-                                            <option value="tangerine">Tangerine</option>
-
-                                            <option value="lemon">Lemon</option>
-
-                                            <option value="watermelon">Watermelon</option>
-
-                                            <option value="melon">Melon</option>
-
-                                        </optgroup>
-
-                                    </select>
+                                                            <option
+                                                                value="{{ $p->slug }}"
+                                                                @selected((string) old('product') === (string) $p->slug)
+                                                            >
+                                                                {{ $productName }}
+                                                            </option>
+                                                        @endforeach
+                                                    </optgroup>
+                                                @endif
+                                            @endforeach
+                                        </select>
                                     @error('product')
                                         <p style="color:red">{{ $message }}</p>
                                     @enderror

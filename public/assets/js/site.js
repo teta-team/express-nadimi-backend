@@ -111,54 +111,133 @@
     notice.setAttribute('tabindex', '-1');
     setTimeout(() => { notice.scrollIntoView({ block: 'center', behavior: reduceMotion ? 'auto' : 'smooth' }); notice.focus({ preventScroll: true }); }, 120);
   }
+/* ---------- Products: filter by category + search ---------- */
+    /* ---------- Products: server-side filters + scroll restoration ---------- */
+    const productsGrid = $('[data-products]');
 
-  /* ---------- Products: filter by category + search ---------- */
-  const grid = $('[data-products]');
-  if (grid) {
-    const cards = $$('[data-product]', grid);
-    const buttons = $$('[data-filter]');
-    const search = $('[data-search]');
-    const meta = $('[data-count]');
-    const empty = $('[data-empty]');
-    const requestedCategory = new URL(location.href).searchParams.get('category');
-    let cat = buttons.some((b) => b.dataset.filter === requestedCategory)
-      ? requestedCategory
-      : buttons.find((b) => b.getAttribute('aria-pressed') === 'true')?.dataset.filter || '';
-    buttons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.filter === cat)));
+    if (productsGrid) {
+        const searchInput = $('[data-search]');
+        const filterLinks = $$('[data-filter]');
+        const paginationLinks = $$('.products-pagination a');
 
-    const apply = () => {
-      const q = (search?.value || '').trim().toLowerCase();
-      let n = 0;
-      cards.forEach((c) => {
-        const ok = (!cat || c.dataset.category === cat) && (!q || c.dataset.name.includes(q));
-        c.hidden = !ok;
-        if (ok) n++;
-      });
-      if (meta) meta.textContent = (n === 1 ? meta.dataset.one : meta.dataset.many).replace(':count', fmt.format(n));
-      if (empty) empty.hidden = n > 0;
-    };
-    buttons.forEach((b) => b.addEventListener('click', (e) => {
-      e.preventDefault();
-      cat = b.dataset.filter;
-      buttons.forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
-      const url = new URL(location.href);
-      cat ? url.searchParams.set('category', cat) : url.searchParams.delete('category');
-      history.replaceState(null, '', url);
-      apply();
-    }));
-    search?.addEventListener('input', apply);
-    apply();
-  }
+        // Restore the previous scroll position after navigating to another
+        // category or pagination page.
+        const scrollKey = 'products-scroll-position';
 
+        try {
+            const savedScroll = sessionStorage.getItem(scrollKey);
+
+            if (savedScroll !== null) {
+                sessionStorage.removeItem(scrollKey);
+
+                const scrollY = Number(savedScroll);
+
+                if (Number.isFinite(scrollY) && scrollY >= 0) {
+                    requestAnimationFrame(() => {
+                        window.scrollTo({
+                            top: scrollY,
+                            behavior: 'instant'
+                        });
+                    });
+                }
+            }
+        } catch (error) {
+            // Scrolling still works if sessionStorage is unavailable.
+        }
+
+        // Save scroll position before navigating through product filters.
+        const saveScrollPosition = (link) => {
+            if (!link || link.target === '_blank') return;
+            if (link.hasAttribute('download')) return;
+
+            try {
+                sessionStorage.setItem(
+                    scrollKey,
+                    String(window.scrollY)
+                );
+            } catch (error) {
+                // Ignore storage restrictions.
+            }
+        };
+
+        filterLinks.forEach((link) => {
+            link.addEventListener('click', () => {
+                // Allow the browser to follow the link normally.
+                saveScrollPosition(link);
+            });
+        });
+
+        paginationLinks.forEach((link) => {
+            link.addEventListener('click', () => {
+                saveScrollPosition(link);
+            });
+        });
+
+        // Submit the search to Laravel instead of filtering only the
+        // products currently loaded on this pagination page.
+        if (searchInput) {
+            const params = new URLSearchParams(window.location.search);
+            searchInput.value = params.get('search') || '';
+
+            let searchTimer;
+
+            searchInput.addEventListener('input', () => {
+                clearTimeout(searchTimer);
+
+                searchTimer = setTimeout(() => {
+                    const url = new URL(window.location.href);
+                    const query = searchInput.value.trim();
+
+                    if (query) {
+                        url.searchParams.set('search', query);
+                    } else {
+                        url.searchParams.delete('search');
+                    }
+
+                    // Start at page 1 for a new search.
+                    url.searchParams.delete('page');
+
+                    try {
+                        sessionStorage.setItem(
+                            scrollKey,
+                            String(window.scrollY)
+                        );
+                    } catch (error) {
+                        // Ignore storage restrictions.
+                    }
+
+                    window.location.assign(url.toString());
+                }, 500);
+            });
+        }
+    }
   /* ---------- Harvest calendar: category tabs ---------- */
-  const cal = $('[data-cal]');
-  if (cal) {
-    const tabs = $$('[data-cal-filter]', cal);
-    tabs.forEach((t) => t.addEventListener('click', () => {
-      tabs.forEach((x) => x.setAttribute('aria-pressed', String(x === t)));
-      $$('[data-cal-group]', cal).forEach((g) => { g.hidden = !!t.dataset.calFilter && g.dataset.calGroup !== t.dataset.calFilter; });
-    }));
-  }
+    /* ---------- Availability calendar: category tabs ---------- */
+    const cal = $('[data-cal]');
+
+    if (cal) {
+        const tabs = $$('[data-cal-filter]', cal);
+        const groups = $$('[data-cal-group]', cal);
+
+        tabs.forEach((tab) => {
+            tab.addEventListener('click', () => {
+                const category = tab.dataset.calFilter || '';
+
+                tabs.forEach((item) => {
+                    item.setAttribute(
+                        'aria-pressed',
+                        String(item === tab)
+                    );
+                });
+
+                groups.forEach((group) => {
+                    group.hidden = Boolean(
+                        category && group.dataset.calGroup !== category
+                    );
+                });
+            });
+        });
+    }
 
   /* ---------- Contact: message type + office clocks + copy ---------- */
   const typeInputs = $$('input[name="type"]');

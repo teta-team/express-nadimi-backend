@@ -1,5 +1,67 @@
 @extends('layouts.fa.master')
+@php
+    $locale = app()->getLocale();
 
+    $name = is_array($product->name)
+        ? ($product->name[$locale] ?? $product->name['fa'] ?? $product->name['en'] ?? $product->slug)
+        : ($product->name ?: $product->slug);
+
+    $summary = is_array($product->summary)
+        ? ($product->summary[$locale] ?? $product->summary['fa'] ?? $product->summary['en'] ?? '')
+        : ($product->summary ?? '');
+
+    $size = $product->size_translations[$locale]
+        ?? $product->size_translations['fa']
+        ?? $product->size
+        ?? '';
+
+    $packaging = $product->packaging_translations[$locale]
+        ?? $product->packaging_translations['fa']
+        ?? $product->packaging
+        ?? '';
+
+    $minOrder = $product->min_order_translations[$locale]
+        ?? $product->min_order_translations['fa']
+        ?? $product->min_order
+        ?? '';
+
+    $months = is_array($product->months)
+        ? array_values($product->months)
+        : [];
+
+    $months = array_map(
+        fn ($value) => filter_var($value, FILTER_VALIDATE_BOOLEAN),
+        array_pad(array_slice($months, 0, 12), 12, false)
+    );
+
+    $activeMonths = count(array_filter($months));
+
+    $image = $product->image ?: asset('assets/images/products/tomato-900.webp');
+
+    $isOffSeason = $product->status === 'off_season';
+
+    $categoryNames = [
+        'vegetables' => 'صیفی‌جات',
+        'stone-fruits' => 'میوه‌های هسته‌دار',
+        'orchard-fruits' => 'میوه‌های باغی',
+        'citrus-melons' => 'مرکبات و جالیزی',
+    ];
+
+    $categoryName = $categoryNames[$product->category] ?? 'محصولات';
+    $monthNames = [
+        'فروردین', 'اردیبهشت', 'خرداد', 'تیر',
+        'مرداد', 'شهریور', 'مهر', 'آبان',
+        'آذر', 'دی', 'بهمن', 'اسفند',
+    ];
+@endphp
+
+@section('title')
+    {{ $name }} | محصولات صادراتی اکسپرس ندیمی
+@endsection
+
+@section('description')
+    {{ $summary ?: 'مشخصات، فصل عرضه و اطلاعات سفارش ' . $name . ' از اکسپرس ندیمی.' }}
+@endsection
 @section('title')
     صادرات گوجه‌فرنگی ایران | اکسپرس ندیمی
 @endsection
@@ -9,31 +71,117 @@
 @endsection
 
 @section('meta')
-    <link rel="canonical" href="{{ route('product', ['lang' => 'fa']) }}">
-    <link rel="alternate" hreflang="en" href="{{ route('product', ['lang' => 'en']) }}">
-    <link rel="alternate" hreflang="fa" href="{{ route('product', ['lang' => 'fa']) }}">
-    <link rel="alternate" hreflang="ar" href="{{ route('product', ['lang' => 'ar']) }}">
-    <link rel="alternate" hreflang="x-default" href="{{ route('product', ['lang' => 'en']) }}">
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="اکسپرس ندیمی">
-    <meta property="og:title" content="صادرات گوجه‌فرنگی ایران | اکسپرس ندیمی">
-    <meta property="og:description"
-        content="گوجه گلخانه‌ای و مزرعه‌ای سفت و سرخ، برداشت‌شده در مرحله رنگ‌گیری تا سالم و رسیده به مقصد برسد.">
-    <meta property="og:url" content="{{ route('product', ['lang' => 'fa']) }}">
-    <meta property="og:image" content="{{ asset('assets/images/products/tomato-900.webp') }}">
-    <meta property="og:locale" content="fa_IR">
-    <meta name="twitter:card" content="summary_large_image">
-    <script type="application/ld+json">{"@@context":"https://schema.org","@type":"Organization","name":"Nadimi International LLC","alternateName":["Express Nadimi","اکسپرس ندیمی"],"url":"{{ url('/') }}","logo":"{{ asset('assets/images/logo/nadimi-logo-512.png') }}","email":"info@nadimi.example","telephone":"+968 9948 2094","address":[{"@type":"PostalAddress","addressLocality":"Tabriz","addressCountry":"IR"},{"@type":"PostalAddress","addressLocality":"Muscat","addressCountry":"OM"}]}</script>
-    <script type="application/ld+json">{"@@context":"https://schema.org","@type":"Product","name":"گوجه‌فرنگی","description":"گوجه گلخانه‌ای و مزرعه‌ای سفت و سرخ، برداشت‌شده در مرحله رنگ‌گیری تا سالم و رسیده به مقصد برسد.","image":"{{ asset('assets/images/products/tomato-900.webp') }}","category":"صیفی‌جات","countryOfOrigin":"IR","brand":{"@type":"Brand","name":"Express Nadimi"}}</script>
-@endsection
+    @php
+        $locale = app()->getLocale();
 
+        $name = is_array($product->name)
+            ? ($product->name[$locale] ?? $product->name['fa'] ?? $product->name['en'] ?? $product->slug)
+            : ($product->name ?: $product->slug);
+
+        $summary = is_array($product->summary)
+            ? ($product->summary[$locale] ?? $product->summary['fa'] ?? $product->summary['en'] ?? '')
+            : ($product->summary ?? '');
+
+        $image = $product->image ?: asset('assets/images/products/tomato-900.webp');
+
+        $categoryNames = [
+            'vegetables' => ['fa' => 'صیفی‌جات', 'en' => 'Vegetables', 'ar' => 'الخضروات'],
+            'stone-fruits' => ['fa' => 'میوه‌های هسته‌دار', 'en' => 'Stone Fruits', 'ar' => 'الفواكه ذات النواة'],
+            'orchard-fruits' => ['fa' => 'میوه‌های باغی', 'en' => 'Orchard Fruits', 'ar' => 'فواكه البساتين'],
+            'citrus-melons' => ['fa' => 'مرکبات و جالیزی', 'en' => 'Citrus & Melons', 'ar' => 'الحمضيات والبطيخ'],
+        ];
+
+        $categoryName = $categoryNames[$product->category][$locale]
+            ?? $categoryNames[$product->category]['en']
+            ?? 'Products';
+
+        $productUrl = route('product.show', [
+            'lang' => $locale,
+            'slug' => $product->slug,
+        ]);
+
+        $title = $name . ' | Express Nadimi';
+        $description = \Illuminate\Support\Str::limit(strip_tags($summary), 160);
+    @endphp
+
+    <link rel="canonical" href="{{ $productUrl }}">
+
+    @foreach (['en', 'fa', 'ar'] as $alternateLang)
+        <link
+            rel="alternate"
+            hreflang="{{ $alternateLang }}"
+            href="{{ route('product.show', ['lang' => $alternateLang, 'slug' => $product->slug]) }}"
+        >
+    @endforeach
+
+    <link
+        rel="alternate"
+        hreflang="x-default"
+        href="{{ route('product.show', ['lang' => 'en', 'slug' => $product->slug]) }}"
+    >
+
+    <meta name="description" content="{{ $description }}">
+
+    <meta property="og:type" content="product">
+    <meta property="og:site_name" content="اکسپرس ندیمی">
+    <meta property="og:title" content="{{ $title }}">
+    <meta property="og:description" content="{{ $description }}">
+    <meta property="og:url" content="{{ $productUrl }}">
+    <meta property="og:image" content="{{ $image }}">
+    <meta property="og:locale" content="{{ ['fa' => 'fa_IR', 'ar' => 'ar_AR', 'en' => 'en_US'][$locale] ?? 'en_US' }}">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ $title }}">
+    <meta name="twitter:description" content="{{ $description }}">
+    <meta name="twitter:image" content="{{ $image }}">
+
+    <script type="application/ld+json">
+        {!! json_encode([
+            '@context' => 'https://schema.org',
+            '@type' => 'Organization',
+            'name' => 'Nadimi International LLC',
+            'alternateName' => ['Express Nadimi', 'اکسپرس ندیمی'],
+            'url' => url('/'),
+            'logo' => asset('assets/images/logo/nadimi-logo-512.png'),
+            'telephone' => '+968 9948 2094',
+            'address' => [
+                [
+                    '@type' => 'PostalAddress',
+                    'addressLocality' => 'Tabriz',
+                    'addressCountry' => 'IR',
+                ],
+                [
+                    '@type' => 'PostalAddress',
+                    'addressLocality' => 'Muscat',
+                    'addressCountry' => 'OM',
+                ],
+            ],
+        ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT) !!}
+    </script>
+
+    <script type="application/ld+json">
+        {!! json_encode([
+            '@context' => 'https://schema.org',
+            '@type' => 'Product',
+            'name' => $name,
+            'description' => $description,
+            'image' => $image,
+            'category' => $categoryName,
+            'brand' => [
+                '@type' => 'Brand',
+                'name' => 'Express Nadimi',
+            ],
+            'url' => $productUrl,
+        ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT) !!}
+    </script>
+@endsection
 @section('content')
     <main id="main" tabindex="-1">
         <div class="container">
             <article class="pd">
                 <div class="pd-media">
-                    <img src="{{ asset('assets/images/products/tomato-900.webp') }}" alt="گوجه‌فرنگی" width="900"
-                        height="700" fetchpriority="high" decoding="async">
+                    <img src="{{ $image }}" alt="{{ $name }}" width="900"
+                         height="700" fetchpriority="high" decoding="async">
                 </div>
 
                 <div class="pd-info">
@@ -42,48 +190,49 @@
                         <a href="{{ route('products', ['lang' => 'fa']) }}">محصولات</a><i></i>
                         <a href="{{ route('products', ['lang' => 'fa', 'category' => 'vegetables']) }}">صیفی‌جات</a>
                     </nav>
-                    <span class="dot-badge is-available">موجود</span>
-                    <h1 class="display">گوجه‌فرنگی</h1>
-                    <p class="pd-summary">گوجه گلخانه‌ای و مزرعه‌ای سفت و سرخ، برداشت‌شده در مرحله رنگ‌گیری تا سالم و رسیده
-                        به مقصد برسد.</p>
+                    <span class="dot-badge {{ $isOffSeason ? 'is-off' : 'is-available' }}">
+    {{ $isOffSeason ? 'خارج از فصل' : 'موجود' }}
+</span>
+                    <h1 class="display">{{ $name }}</h1>
+                    <p class="pd-summary">{{ $summary }}</p>
 
                     <div class="pd-season">
-                        <p class="label" style="margin-bottom: 12px">فصل صادرات · تمام سال</p>
+                        <p class="label" style="margin-bottom: 12px">
+                            فصل صادرات ·
+                            @if ($activeMonths === 12)
+                                تمام سال
+                            @elseif ($activeMonths === 0)
+                                ماه عرضه مشخص نشده
+                            @else
+                                {{ $activeMonths }} ماه از سال
+                            @endif
+                        </p>
+
                         <ol class="season-bar" aria-hidden="true">
-                            <li class="on"></li>
-                            <li class="on"></li>
-                            <li class="on"></li>
-                            <li class="on"></li>
-                            <li class="on"></li>
-                            <li class="on"></li>
-                            <li class="on"></li>
-                            <li class="on"></li>
-                            <li class="on"></li>
-                            <li class="on now"></li>
-                            <li class="on"></li>
-                            <li class="on"></li>
+                            @foreach ($months as $month)
+                                <li class="{{ $month ? 'on' : '' }}"></li>
+                            @endforeach
                         </ol>
+
                         <div class="pd-months" aria-hidden="true">
-                            <span>دی</span><span>بهم</span><span>اسف</span><span>فرو</span><span>ارد</span><span>خرد</span><span>تیر</span><span>مرد</span><span>شهر</span><span>مهر</span><span>آبا</span><span>آذر</span>
+                            @foreach ($monthNames as $monthName)
+                                <span>{{ mb_substr($monthName, 0, 3, 'UTF-8') }}</span>
+                            @endforeach
                         </div>
                     </div>
 
                     <dl class="specs">
                         <div>
-                            <dt>مبدأ تولید</dt>
-                            <dd>جیرفت، بوشهر، آذربایجان شرقی</dd>
-                        </div>
-                        <div>
                             <dt>سایز معمول</dt>
-                            <dd dir="ltr" style="text-align: start">Ø 57–67 mm (M) · 67–82 mm (L)</dd>
+                            <dd>{{ $size ?: 'ثبت نشده' }}</dd>
                         </div>
                         <div>
                             <dt>بسته‌بندی</dt>
-                            <dd>کارتن ۵ کیلویی · کارتن ۸ تا ۱۰ کیلویی · سبد پلاستیکی · با برند خریدار</dd>
+                            <dd>{{ $packaging ?: 'ثبت نشده' }}</dd>
                         </div>
                         <div>
                             <dt>حداقل سفارش</dt>
-                            <dd>یک کامیون (حدود ۲۰ تن) یا یک کانتینر یخچالی ۴۰ فوت</dd>
+                            <dd>{{ $minOrder ?: 'ثبت نشده' }}</dd>
                         </div>
                     </dl>
 
@@ -91,11 +240,6 @@
                         <a class="btn" href="#inquiry">استعلام قیمت<svg class="ic flip">
                                 <use href="#i-arrow" />
                             </svg></a>
-                        <a class="btn btn-line"
-                            href="https://wa.me/989144172605?text=%D8%A7%D8%B3%D8%AA%D8%B9%D9%84%D8%A7%D9%85%20%D9%82%DB%8C%D9%85%D8%AA%20%DA%AF%D9%88%D8%AC%D9%87%E2%80%8C%D9%81%D8%B1%D9%86%DA%AF%DB%8C"
-                            target="_blank" rel="noopener"><svg class="ic">
-                                <use href="#i-whatsapp" />
-                            </svg>پیام در واتساپ</a>
                     </div>
                 </div>
             </article>
@@ -105,7 +249,9 @@
             <div class="container inquiry-grid">
                 <div class="inquiry-intro">
                     <span class="label">استعلام قیمت</span>
-                    <h2 id="inquiry-h" class="h2" style="margin-top: 14px">استعلام قیمت گوجه‌فرنگی</h2>
+                    <h2 id="inquiry-h" class="h2" style="margin-top: 14px">
+                        استعلام قیمت {{ $name }}
+                    </h2>
                     <p class="lead">محصول، مقدار و مقصد را بنویسید. معمولاً ظرف یک روز کاری پاسخ می‌دهیم.</p>
                 </div>
                 <div class="waybill">
@@ -125,7 +271,7 @@
 
 
                         <form class="iform" method="POST"
-                              action="{{ route('home.post', ['lang' => app()->getLocale()]) }}" novalidate
+                              action="{{ route('product.post', ['lang' => app()->getLocale()]) }}" novalidate
                               data-busy-text="در حال ارسال…" id="inquiry-form">
                             <!-- backend: set action + @@csrf -->
                             @csrf
@@ -133,72 +279,18 @@
                             <div class="iform-grid">
 
                                 <div class="field">
+                                    <label for="iq-product">محصول مورد استعلام</label>
 
-                                    <label for="iq-product">محصول</label>
+                                    <input
+                                        id="iq-product"
+                                        type="text"
+                                        class="input"
+                                        value="{{ $name }}"
+                                        readonly
+                                    >
 
-                                    <select id="iq-product" name="product" class="input">
+                                    <input type="hidden" name="product" value="{{ $product->slug }}">
 
-                                        <option value="{{ old('product') }}">ترکیبی / چند محصول</option>
-
-                                        <optgroup label="صیفی‌جات">
-
-                                            <option value="tomato">گوجه‌فرنگی</option>
-
-                                            <option value="cucumber">خیار</option>
-
-                                            <option value="bell-pepper">فلفل دلمه‌ای</option>
-
-                                            <option value="cabbage">کلم‌پیچ</option>
-
-                                            <option value="cauliflower">گل‌کلم</option>
-
-                                            <option value="lettuce">کاهو</option>
-
-                                            <option value="potato">سیب‌زمینی</option>
-
-                                            <option value="onion">پیاز</option>
-
-                                        </optgroup>
-
-                                        <optgroup label="میوه‌های هسته‌دار">
-
-                                            <option value="apricot">زردآلو</option>
-
-                                            <option value="cherry">گیلاس</option>
-
-                                            <option value="peach">هلو</option>
-
-                                            <option value="nectarine">شلیل</option>
-
-                                        </optgroup>
-
-                                        <optgroup label="میوه‌های باغی">
-
-                                            <option value="apple">سیب</option>
-
-                                            <option value="pomegranate">انار</option>
-
-                                            <option value="kiwi">کیوی</option>
-
-                                            <option value="grape">انگور</option>
-
-                                        </optgroup>
-
-                                        <optgroup label="مرکبات و جالیزی">
-
-                                            <option value="orange">پرتقال</option>
-
-                                            <option value="tangerine">نارنگی</option>
-
-                                            <option value="lemon">لیمو</option>
-
-                                            <option value="watermelon">هندوانه</option>
-
-                                            <option value="melon">خربزه و طالبی</option>
-
-                                        </optgroup>
-
-                                    </select>
                                     @error('product')
                                     <p style="color:red">{{ $message }}</p>
                                     @enderror
@@ -371,142 +463,108 @@
                             <use href="#i-arrow" />
                         </svg></a>
                 </div>
-                <div class="rail">
-                    <article class="pcard">
-                        <div class="pcard-media">
-                            <img src="{{ asset('assets/images/products/cucumber-480.webp') }}" alt=""
-                                width="480" height="373" loading="lazy" decoding="async">
-                            <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
-                                    <use href="#i-arrow" />
-                                </svg></span>
+                <div class="pgrid related-pgrid">
+                    @forelse ($relatedProducts as $p)
+                        @php
+                            $lang = 'fa';
+
+                            $pname = is_array($p->name)
+                                ? ($p->name[$lang] ?? $p->name['en'] ?? $p->slug)
+                                : ($p->name ?: $p->slug);
+
+                            $summary = is_array($p->summary)
+                                ? ($p->summary[$lang] ?? $p->summary['en'] ?? '')
+                                : ($p->summary ?? '');
+
+                            $months = is_array($p->months)
+                                ? array_values($p->months)
+                                : [];
+
+                            $months = array_map(
+                                fn ($value) => filter_var($value, FILTER_VALIDATE_BOOLEAN),
+                                array_pad(array_slice($months, 0, 12), 12, false)
+                            );
+
+                            $img = $p->image ?: asset('assets/images/products/tomato.jpg');
+
+                            $status = $p->status === 'off_season' ? 'خارج از فصل' : 'موجود';
+
+                            $statusClass = $p->status === 'off_season'
+                                ? 'is-off'
+                                : 'is-available';
+
+                            $activeMonths = count(array_filter($months));
+                        @endphp
+
+                        <div class="related-product-item">
+                            <article class="pcard">
+                                <div class="pcard-media">
+                                    <a href="{{ route('product.show', [
+                        'lang' => 'fa',
+                        'slug' => $p->slug,
+                    ]) }}">
+                                        <img
+                                            src="{{ $img }}"
+                                            alt="{{ $pname }}"
+                                            width="480"
+                                            height="373"
+                                            loading="lazy"
+                                            decoding="async"
+                                        >
+                                    </a>
+
+                                    <span class="pcard-go" aria-hidden="true">
+                        <svg class="ic flip">
+                            <use href="#i-arrow" />
+                        </svg>
+                    </span>
+                                </div>
+
+                                <div class="pcard-body">
+                                    <div class="pcard-top">
+                                        <h3 class="pcard-title">
+                                            <a href="{{ route('product.show', [
+                                'lang' => 'fa',
+                                'slug' => $p->slug,
+                            ]) }}">
+                                                {{ $pname }}
+                                            </a>
+                                        </h3>
+
+                                        <span class="dot-badge {{ $statusClass }}">
+                            {{ $status }}
+                        </span>
+                                    </div>
+
+                                    <p class="pcard-origin">{{ $summary }}</p>
+
+                                    <div
+                                        class="season"
+                                        role="img"
+                                        aria-label="ماه‌های موجود بودن {{ $pname }}"
+                                    >
+                                        <ol class="season-bar" aria-hidden="true">
+                                            @foreach ($months as $on)
+                                                <li class="{{ $on ? 'on' : '' }}"></li>
+                                            @endforeach
+                                        </ol>
+
+                                        <span class="season-label">
+                            @if ($activeMonths === 12)
+                                                موجود در تمام سال
+                                            @elseif ($activeMonths === 0)
+                                                ماه موجودی مشخص نشده
+                                            @else
+                                                موجود در {{ $activeMonths }} ماه از سال
+                                            @endif
+                        </span>
+                                    </div>
+                                </div>
+                            </article>
                         </div>
-                        <div class="pcard-body">
-                            <div class="pcard-top">
-                                <h3 class="pcard-title"><a href="{{ route('product', ['lang' => 'fa']) }}">خیار</a></h3>
-                                <span class="dot-badge is-available">موجود</span>
-                            </div>
-                            <p class="pcard-origin">جیرفت، اصفهان، تهران</p>
-                            <div class="season" role="img" aria-label="فصل عرضه: تمام سال">
-                                <ol class="season-bar" aria-hidden="true">
-                                    <li class="on" title="دی"></li>
-                                    <li class="on" title="بهمن"></li>
-                                    <li class="on" title="اسفند"></li>
-                                    <li class="on" title="فروردین"></li>
-                                    <li class="on" title="اردیبهشت"></li>
-                                    <li class="on" title="خرداد"></li>
-                                    <li class="on" title="تیر"></li>
-                                    <li class="on" title="مرداد"></li>
-                                    <li class="on" title="شهریور"></li>
-                                    <li class="on now" title="مهر"></li>
-                                    <li class="on" title="آبان"></li>
-                                    <li class="on" title="آذر"></li>
-                                </ol>
-                                <span class="season-label">تمام سال</span>
-                            </div>
-                        </div>
-                    </article>
-                    <article class="pcard">
-                        <div class="pcard-media">
-                            <img src="{{ asset('assets/images/products/bell-pepper-480.webp') }}" alt=""
-                                width="480" height="373" loading="lazy" decoding="async">
-                            <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
-                                    <use href="#i-arrow" />
-                                </svg></span>
-                        </div>
-                        <div class="pcard-body">
-                            <div class="pcard-top">
-                                <h3 class="pcard-title"><a href="{{ route('product', ['lang' => 'fa']) }}">فلفل
-                                        دلمه‌ای</a></h3>
-                                <span class="dot-badge is-available">موجود</span>
-                            </div>
-                            <p class="pcard-origin">جیرفت، اصفهان</p>
-                            <div class="season" role="img" aria-label="فصل عرضه: تمام سال">
-                                <ol class="season-bar" aria-hidden="true">
-                                    <li class="on" title="دی"></li>
-                                    <li class="on" title="بهمن"></li>
-                                    <li class="on" title="اسفند"></li>
-                                    <li class="on" title="فروردین"></li>
-                                    <li class="on" title="اردیبهشت"></li>
-                                    <li class="on" title="خرداد"></li>
-                                    <li class="on" title="تیر"></li>
-                                    <li class="on" title="مرداد"></li>
-                                    <li class="on" title="شهریور"></li>
-                                    <li class="on now" title="مهر"></li>
-                                    <li class="on" title="آبان"></li>
-                                    <li class="on" title="آذر"></li>
-                                </ol>
-                                <span class="season-label">تمام سال</span>
-                            </div>
-                        </div>
-                    </article>
-                    <article class="pcard">
-                        <div class="pcard-media">
-                            <img src="{{ asset('assets/images/products/cabbage-480.webp') }}" alt=""
-                                width="480" height="373" loading="lazy" decoding="async">
-                            <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
-                                    <use href="#i-arrow" />
-                                </svg></span>
-                        </div>
-                        <div class="pcard-body">
-                            <div class="pcard-top">
-                                <h3 class="pcard-title"><a href="{{ route('product', ['lang' => 'fa']) }}">کلم‌پیچ</a>
-                                </h3>
-                                <span class="dot-badge is-available">موجود</span>
-                            </div>
-                            <p class="pcard-origin">گلستان، اردبیل، جیرفت</p>
-                            <div class="season" role="img" aria-label="فصل عرضه: شهریور – فروردین">
-                                <ol class="season-bar" aria-hidden="true">
-                                    <li class="on" title="دی"></li>
-                                    <li class="on" title="بهمن"></li>
-                                    <li class="on" title="اسفند"></li>
-                                    <li class="on" title="فروردین"></li>
-                                    <li class="" title="اردیبهشت"></li>
-                                    <li class="" title="خرداد"></li>
-                                    <li class="" title="تیر"></li>
-                                    <li class="" title="مرداد"></li>
-                                    <li class="on" title="شهریور"></li>
-                                    <li class="on now" title="مهر"></li>
-                                    <li class="on" title="آبان"></li>
-                                    <li class="on" title="آذر"></li>
-                                </ol>
-                                <span class="season-label">شهریور – فروردین</span>
-                            </div>
-                        </div>
-                    </article>
-                    <article class="pcard">
-                        <div class="pcard-media">
-                            <img src="{{ asset('assets/images/products/cauliflower-480.webp') }}" alt=""
-                                width="480" height="373" loading="lazy" decoding="async">
-                            <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
-                                    <use href="#i-arrow" />
-                                </svg></span>
-                        </div>
-                        <div class="pcard-body">
-                            <div class="pcard-top">
-                                <h3 class="pcard-title"><a href="{{ route('product', ['lang' => 'fa']) }}">گل‌کلم</a>
-                                </h3>
-                                <span class="dot-badge is-available">موجود</span>
-                            </div>
-                            <p class="pcard-origin">جیرفت، گلستان</p>
-                            <div class="season" role="img" aria-label="فصل عرضه: شهریور – فروردین">
-                                <ol class="season-bar" aria-hidden="true">
-                                    <li class="on" title="دی"></li>
-                                    <li class="on" title="بهمن"></li>
-                                    <li class="on" title="اسفند"></li>
-                                    <li class="on" title="فروردین"></li>
-                                    <li class="" title="اردیبهشت"></li>
-                                    <li class="" title="خرداد"></li>
-                                    <li class="" title="تیر"></li>
-                                    <li class="" title="مرداد"></li>
-                                    <li class="on" title="شهریور"></li>
-                                    <li class="on now" title="مهر"></li>
-                                    <li class="on" title="آبان"></li>
-                                    <li class="on" title="آذر"></li>
-                                </ol>
-                                <span class="season-label">شهریور – فروردین</span>
-                            </div>
-                        </div>
-                    </article>
+                    @empty
+                        <p>در حال حاضر محصول دیگری در این دسته ثبت نشده است.</p>
+                    @endforelse
                 </div>
             </div>
         </section>

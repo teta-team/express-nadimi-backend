@@ -16,9 +16,7 @@ Route::get('/login', [PanelController::class, 'index'])->name('login');
 Route::post('/panel', [PanelController::class, 'login']);
 Route::post('/login', [PanelController::class, 'login']);
 Route::post('/panel/logout', [PanelController::class, 'logout'])->name('logout');
-Route::post('/panel/account', [PanelController::class, 'updateAccount'])
-    ->middleware(['auth', 'throttle:10,1'])
-    ->name('panel.account');
+Route::post('/panel/account', [PanelController::class, 'updateAccount'])->middleware(['auth', 'throttle:10,1'])->name('panel.account');
 
 Route::middleware(['web', 'auth'])->prefix('panel')->group(function () {
     Route::get('/products', [\App\Http\Controllers\Panel\PageController::class, 'index'])->name('panel.products');
@@ -29,10 +27,35 @@ Route::middleware(['web', 'auth'])->prefix('panel')->group(function () {
     Route::delete('/products/{product}', [\App\Http\Controllers\Panel\PageController::class, 'destroyProduct'])->name('panel.products.destroy');
 });
 
-Route::middleware(['web', 'auth'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/dashboard', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
-    Route::resource('products', \App\Http\Controllers\Admin\ProductController::class);
-});
+Route::middleware(['web', 'auth'])
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
+        Route::get(
+            '/dashboard',
+            [\App\Http\Controllers\Admin\DashboardController::class, 'index']
+        )->name('dashboard');
+
+        Route::get(
+            '/products/trash',
+            [\App\Http\Controllers\Admin\ProductController::class, 'trash']
+        )->name('products.trash');
+
+        Route::post(
+            '/products/{id}/restore',
+            [\App\Http\Controllers\Admin\ProductController::class, 'restore']
+        )->whereNumber('id')->name('products.restore');
+
+        Route::delete('/products/{id}/force-delete', [
+            \App\Http\Controllers\Admin\ProductController::class,
+            'forceDelete',
+        ])
+            ->whereNumber('id')
+            ->name('products.forceDelete');
+
+        Route::resource('products', \App\Http\Controllers\Admin\ProductController::class)
+            ->except(['show']);
+    });
 
 Route::group(['prefix' => '{lang}', 'where' => ['lang' => 'en|fa|ar'], 'middleware' => ['web', 'locale']], function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
