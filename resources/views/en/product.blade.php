@@ -360,11 +360,16 @@
                     </div>
 
                     <div class="waybill-body">
+                        @if (session('success'))
+                            <p role="status"
+                               style="padding:12px;margin-bottom:16px;border:1px solid #5D8060;border-radius:8px;color:#315C36">
+                                {{ session('success') }}
+                            </p>
+                        @endif
                         <form
                             class="iform"
                             method="POST"
                             action="{{ route('product.post', ['lang' => app()->getLocale()]) }}"
-                            novalidate
                             data-busy-text="Sending…"
                             id="inquiry-form"
                         >

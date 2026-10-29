@@ -31,30 +31,84 @@ Route::middleware(['web', 'auth'])
     ->prefix('admin')
     ->name('admin.')
     ->group(function () {
-        Route::get(
-            '/dashboard',
-            [\App\Http\Controllers\Admin\DashboardController::class, 'index']
-        )->name('dashboard');
+        Route::get('/dashboard', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
+        Route::get('/products/trash', [\App\Http\Controllers\Admin\ProductController::class, 'trash'])->name('products.trash');
+        Route::post('/products/{id}/restore', [\App\Http\Controllers\Admin\ProductController::class, 'restore'])->whereNumber('id')->name('products.restore');
+        Route::delete('/products/{id}/force-delete', [\App\Http\Controllers\Admin\ProductController::class, 'forceDelete',])->whereNumber('id')->name('products.forceDelete');
+        Route::resource('products', \App\Http\Controllers\Admin\ProductController::class)->except(['show']);
+Route::get('/Request', [
+    \App\Http\Controllers\Admin\RequestController::class,
+    'index'
+])->name('Request');
 
-        Route::get(
-            '/products/trash',
-            [\App\Http\Controllers\Admin\ProductController::class, 'trash']
-        )->name('products.trash');
+Route::get('/Request/trash', [
+    \App\Http\Controllers\Admin\RequestController::class,
+    'trash'
+])->name('Request.trash');
 
-        Route::post(
-            '/products/{id}/restore',
-            [\App\Http\Controllers\Admin\ProductController::class, 'restore']
-        )->whereNumber('id')->name('products.restore');
+Route::get('/Request/{type}/{id}', [
+    \App\Http\Controllers\Admin\RequestController::class,
+    'show'
+])->where([
+    'type' => 'price|supplier',
+    'id' => '[0-9]+',
+])->name('Request.show');
 
-        Route::delete('/products/{id}/force-delete', [
-            \App\Http\Controllers\Admin\ProductController::class,
-            'forceDelete',
-        ])
-            ->whereNumber('id')
-            ->name('products.forceDelete');
+Route::post('/Request/{type}/{id}/review', [
+    \App\Http\Controllers\Admin\RequestController::class,
+    'review'
+])->where([
+    'type' => 'price|supplier',
+    'id' => '[0-9]+',
+])->name('Request.review');
 
-        Route::resource('products', \App\Http\Controllers\Admin\ProductController::class)
-            ->except(['show']);
+Route::patch('/Request/{type}/{id}/status', [
+    \App\Http\Controllers\Admin\RequestController::class,
+    'updateStatus'
+])->where([
+    'type' => 'price|supplier',
+    'id' => '[0-9]+',
+])->name('Request.updateStatus');
+
+Route::post('/Request/{type}/{id}/archive', [
+    \App\Http\Controllers\Admin\RequestController::class,
+    'archive'
+])->where([
+    'type' => 'price|supplier',
+    'id' => '[0-9]+',
+])->name('Request.archive');
+
+Route::post('/Request/{type}/{id}/unarchive', [
+    \App\Http\Controllers\Admin\RequestController::class,
+    'unarchive'
+])->where([
+    'type' => 'price|supplier',
+    'id' => '[0-9]+',
+])->name('Request.unarchive');
+
+Route::delete('/Request/{type}/{id}', [
+    \App\Http\Controllers\Admin\RequestController::class,
+    'destroy'
+])->where([
+    'type' => 'price|supplier',
+    'id' => '[0-9]+',
+])->name('Request.destroy');
+
+Route::post('/Request/{type}/{id}/restore', [
+    \App\Http\Controllers\Admin\RequestController::class,
+    'restore'
+])->where([
+    'type' => 'price|supplier',
+    'id' => '[0-9]+',
+])->name('Request.restore');
+
+Route::delete('/Request/{type}/{id}/force-delete', [
+    \App\Http\Controllers\Admin\RequestController::class,
+    'forceDelete'
+])->where([
+    'type' => 'price|supplier',
+    'id' => '[0-9]+',
+])->name('Request.forceDelete');
     });
 
 Route::group(['prefix' => '{lang}', 'where' => ['lang' => 'en|fa|ar'], 'middleware' => ['web', 'locale']], function () {

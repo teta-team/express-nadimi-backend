@@ -286,6 +286,101 @@
     });
   });
 
+    /* ---------- Price inquiry: multiple products ---------- */
+    const inquiryProducts = $('#inquiry-products');
+    const addInquiryProduct = $('#add-inquiry-product');
+
+    if (inquiryProducts && addInquiryProduct) {
+        const maxProducts = 30;
+
+        const updateInquiryRows = () => {
+            const rows = $$('.inquiry-product-row', inquiryProducts);
+
+            rows.forEach((row) => {
+                const removeBtn = $('.remove-inquiry-product', row);
+
+                if (removeBtn) {
+                    removeBtn.disabled = rows.length === 1;
+                }
+            });
+
+            addInquiryProduct.disabled = rows.length >= maxProducts;
+        };
+
+        addInquiryProduct.addEventListener('click', () => {
+            const rows = $$('.inquiry-product-row', inquiryProducts);
+
+            if (rows.length >= maxProducts) return;
+
+            const newRow = rows[0].cloneNode(true);
+            const index = rows.length;
+
+            $$('input, select, textarea', newRow).forEach((field) => {
+                const match = field.name.match(
+                    /^products\[\d+\]\[(product|quantity|packaging)\]$/
+                );
+
+                if (match) {
+                    field.name = `products[${index}][${match[1]}]`;
+                }
+
+                if (field.tagName === 'SELECT') {
+                    field.selectedIndex = 0;
+                } else {
+                    field.value = '';
+                }
+
+                field.classList.remove('is-invalid');
+                field.removeAttribute('aria-invalid');
+            });
+
+            // Remove validation errors cloned from the original row.
+            $$('[data-validation-error], .field-error', newRow).forEach((el) => {
+                el.remove();
+            });
+
+            // Also remove ordinary error paragraphs, if present.
+            $$('p', newRow).forEach((el) => {
+                if (el.classList.contains('error') || el.classList.contains('text-danger')) {
+                    el.remove();
+                }
+            });
+
+            inquiryProducts.appendChild(newRow);
+            updateInquiryRows();
+        });
+
+        inquiryProducts.addEventListener('click', (event) => {
+            const removeBtn = event.target.closest('.remove-inquiry-product');
+
+            if (!removeBtn) return;
+
+            const rows = $$('.inquiry-product-row', inquiryProducts);
+
+            if (rows.length <= 1) return;
+
+            removeBtn.closest('.inquiry-product-row').remove();
+
+            // Re-index names so Laravel receives a continuous array.
+            $$('.inquiry-product-row', inquiryProducts).forEach((row, index) => {
+                $$('input, select, textarea', row).forEach((field) => {
+                    const match = field.name.match(
+                        /^products\[\d+\]\[(product|quantity|packaging)\]$/
+                    );
+
+                    if (match) {
+                        field.name = `products[${index}][${match[1]}]`;
+                    }
+                });
+            });
+
+            updateInquiryRows();
+        });
+
+        updateInquiryRows();
+    }
+
+
    /* ---------- Supplier form: progress, conditional questions, previews ---------- */
    const sform = $('[data-supplier]');
    if (sform) {

@@ -41,13 +41,32 @@
     $isOffSeason = $product->status === 'off_season';
 
     $categoryNames = [
-        'vegetables' => 'صیفی‌جات',
-        'stone-fruits' => 'میوه‌های هسته‌دار',
-        'orchard-fruits' => 'میوه‌های باغی',
-        'citrus-melons' => 'مرکبات و جالیزی',
-    ];
+    'vegetables' => [
+        'fa' => 'صیفی‌جات',
+        'en' => 'Vegetables',
+        'ar' => 'الخضروات',
+    ],
+    'stone-fruits' => [
+        'fa' => 'میوه‌های هسته‌دار',
+        'en' => 'Stone Fruits',
+        'ar' => 'الفواكه ذات النواة',
+    ],
+    'orchard-fruits' => [
+        'fa' => 'میوه‌های باغی',
+        'en' => 'Orchard Fruits',
+        'ar' => 'فواكه البساتين',
+    ],
+    'citrus-melons' => [
+        'fa' => 'مرکبات و جالیزی',
+        'en' => 'Citrus & Melons',
+        'ar' => 'الحمضيات والبطيخ',
+    ],
+];
 
-    $categoryName = $categoryNames[$product->category] ?? 'محصولات';
+$categoryName = $categoryNames[$product->category][$locale]
+    ?? $categoryNames[$product->category]['fa']
+    ?? 'محصولات';
+
     $monthNames = [
         'فروردین', 'اردیبهشت', 'خرداد', 'تیر',
         'مرداد', 'شهریور', 'مهر', 'آبان',
@@ -61,13 +80,6 @@
 
 @section('description')
     {{ $summary ?: 'مشخصات، فصل عرضه و اطلاعات سفارش ' . $name . ' از اکسپرس ندیمی.' }}
-@endsection
-@section('title')
-    صادرات گوجه‌فرنگی ایران | اکسپرس ندیمی
-@endsection
-
-@section('description')
-    گوجه گلخانه‌ای و مزرعه‌ای سفت و سرخ، برداشت‌شده در مرحله رنگ‌گیری تا سالم و رسیده به مقصد برسد.
 @endsection
 
 @section('meta')
@@ -188,7 +200,12 @@
                     <nav class="crumbs" aria-label="Breadcrumb">
                         <a href="{{ route('home', ['lang' => 'fa']) }}">خانه</a><i></i>
                         <a href="{{ route('products', ['lang' => 'fa']) }}">محصولات</a><i></i>
-                        <a href="{{ route('products', ['lang' => 'fa', 'category' => 'vegetables']) }}">صیفی‌جات</a>
+                        <a href="{{ route('products', [
+    'lang' => $locale,
+    'category' => $product->category,
+]) }}">
+                            {{ $categoryName }}
+                        </a>
                     </nav>
                     <span class="dot-badge {{ $isOffSeason ? 'is-off' : 'is-available' }}">
     {{ $isOffSeason ? 'خارج از فصل' : 'موجود' }}
@@ -249,35 +266,53 @@
             <div class="container inquiry-grid">
                 <div class="inquiry-intro">
                     <span class="label">استعلام قیمت</span>
+
                     <h2 id="inquiry-h" class="h2" style="margin-top: 14px">
                         استعلام قیمت {{ $name }}
                     </h2>
-                    <p class="lead">محصول، مقدار و مقصد را بنویسید. معمولاً ظرف یک روز کاری پاسخ می‌دهیم.</p>
+
+                    <p class="lead">
+                        محصول، مقدار و مقصد را بنویسید. معمولاً ظرف یک روز کاری پاسخ می‌دهیم.
+                    </p>
                 </div>
+
                 <div class="waybill">
-
                     <div class="waybill-head">
-
                         <b>استعلام صادرات</b>
-
                         <span>پاسخ تا یک روز کاری</span>
-
                     </div>
 
                     <div class="waybill-body">
+                        @if (session('success'))
+                            <p
+                                role="status"
+                                style="padding:12px;margin-bottom:16px;border:1px solid #5D8060;border-radius:8px;color:#315C36"
+                            >
+                                {{ session('success') }}
+                            </p>
+                        @endif
 
+                        @if ($errors->any())
+                            <div
+                                role="alert"
+                                style="padding:12px;margin-bottom:16px;border:1px solid #c66;border-radius:8px;color:#a22"
+                            >
+                                لطفاً خطاهای فرم را بررسی و دوباره ارسال کنید.
+                            </div>
+                        @endif
 
-
-
-
-                        <form class="iform" method="POST"
-                              action="{{ route('product.post', ['lang' => app()->getLocale()]) }}" novalidate
-                              data-busy-text="در حال ارسال…" id="inquiry-form">
-                            <!-- backend: set action + @@csrf -->
+                        <form
+                            class="iform"
+                            method="POST"
+                            action="{{ route('product.post', ['lang' => $locale]) }}"
+                            id="inquiry-form"
+                            novalidate
+                            data-busy-text="در حال ارسال…"
+                        >
                             @csrf
 
                             <div class="iform-grid">
-
+                                {{-- محصول --}}
                                 <div class="field">
                                     <label for="iq-product">محصول مورد استعلام</label>
 
@@ -289,167 +324,284 @@
                                         readonly
                                     >
 
-                                    <input type="hidden" name="product" value="{{ $product->slug }}">
+                                    <input
+                                        type="hidden"
+                                        name="products[0][product]"
+                                        value="{{ $product->slug }}"
+                                    >
 
-                                    @error('product')
-                                    <p style="color:red">{{ $message }}</p>
+                                    @error('products.0.product')
+                                    <p class="field-error" style="color:red">
+                                        {{ $message }}
+                                    </p>
+                                    @enderror
+
+                                    @error('products')
+                                    <p class="field-error" style="color:red">
+                                        {{ $message }}
+                                    </p>
                                     @enderror
                                 </div>
 
+                                {{-- مقدار --}}
                                 <div class="field">
+                                    <label for="iq-qty">
+                                        مقدار <b class="req">*</b>
+                                    </label>
 
-                                    <label for="iq-qty">مقدار <b class="req">*</b></label>
+                                    <input
+                                        id="iq-qty"
+                                        name="products[0][quantity]"
+                                        class="input"
+                                        required
+                                        maxlength="80"
+                                        value="{{ old('products.0.quantity') }}"
+                                        placeholder="مثلاً یک کانتینر ۴۰ فوت، ۲۰ تن"
+                                    >
 
-                                    <input id="iq-qty" name="quantity" class="input" required maxlength="80"
-                                           value="{{ old('quantity') }}" placeholder="مثلاً یک کانتینر ۴۰ فوت، ۲۰ تن">
-                                    @error('quantity')
-                                    <p style="color:red">{{ $message }}</p>
+                                    @error('products.0.quantity')
+                                    <p class="field-error" style="color:red">
+                                        {{ $message }}
+                                    </p>
                                     @enderror
                                 </div>
 
+                                {{-- بسته‌بندی --}}
                                 <div class="field">
-
                                     <label for="iq-pack">بسته‌بندی</label>
 
-                                    <select id="iq-pack" name="packaging" class="input">
-
+                                    <select
+                                        id="iq-pack"
+                                        name="products[0][packaging]"
+                                        class="input"
+                                    >
                                         <option value="">فرقی نمی‌کند</option>
 
-                                        <option value="carton_5">کارتن ۵ کیلویی</option>
+                                        <option value="carton_5"
+                                            @selected(old('products.0.packaging') === 'carton_5')>
+                                            کارتن ۵ کیلویی
+                                        </option>
 
-                                        <option value="carton_10">کارتن ۸ تا ۱۰ کیلویی</option>
+                                        <option value="carton_10"
+                                            @selected(old('products.0.packaging') === 'carton_10')>
+                                            کارتن ۸ تا ۱۰ کیلویی
+                                        </option>
 
-                                        <option value="tray">سینی تک‌لایه</option>
+                                        <option value="tray"
+                                            @selected(old('products.0.packaging') === 'tray')>
+                                            سینی تک‌لایه
+                                        </option>
 
-                                        <option value="crate">سبد پلاستیکی</option>
+                                        <option value="crate"
+                                            @selected(old('products.0.packaging') === 'crate')>
+                                            سبد پلاستیکی
+                                        </option>
 
-                                        <option value="mesh_bag">کیسه توری ۱۰ تا ۲۵ کیلویی</option>
+                                        <option value="mesh_bag"
+                                            @selected(old('products.0.packaging') === 'mesh_bag')>
+                                            کیسه توری ۱۰ تا ۲۵ کیلویی
+                                        </option>
 
-                                        <option value="bulk">فله / باکس فله</option>
+                                        <option value="bulk"
+                                            @selected(old('products.0.packaging') === 'bulk')>
+                                            فله / باکس فله
+                                        </option>
 
-                                        <option value="punnet">ظرف ۰٫۵ تا ۱ کیلویی</option>
+                                        <option value="punnet"
+                                            @selected(old('products.0.packaging') === 'punnet')>
+                                            ظرف ۰٫۵ تا ۱ کیلویی
+                                        </option>
 
-                                        <option value="private_label">با برند خریدار</option>
-
+                                        <option value="private_label"
+                                            @selected(old('products.0.packaging') === 'private_label')>
+                                            با برند خریدار
+                                        </option>
                                     </select>
-                                    @error('packaging')
-                                    <p style="color:red">{{ $message }}</p>
+
+                                    @error('products.0.packaging')
+                                    <p class="field-error" style="color:red">
+                                        {{ $message }}
+                                    </p>
                                     @enderror
                                 </div>
 
+                                {{-- شرایط تحویل --}}
                                 <div class="field">
-
                                     <label for="iq-inco">شرایط تحویل</label>
 
-                                    <select id="iq-inco" name="incoterm" class="input" dir="ltr">
-
-                                        <option value="FOB" selected>FOB</option>
-
-                                        <option value="CFR">CFR</option>
-
-                                        <option value="CIF">CIF</option>
-
-                                        <option value="EXW">EXW</option>
-
-                                        <option value="FCA">FCA</option>
-
-                                        <option value="DAP">DAP</option>
-
+                                    <select
+                                        id="iq-inco"
+                                        name="incoterm"
+                                        class="input"
+                                        dir="ltr"
+                                    >
+                                        @foreach (['FOB', 'CFR', 'CIF', 'EXW', 'FCA', 'DAP'] as $term)
+                                            <option
+                                                value="{{ $term }}"
+                                                @selected(old('incoterm', 'FOB') === $term)
+                                            >
+                                                {{ $term }}
+                                            </option>
+                                        @endforeach
                                     </select>
+
                                     @error('incoterm')
-                                    <p style="color:red">{{ $message }}</p>
+                                    <p class="field-error" style="color:red">
+                                        {{ $message }}
+                                    </p>
                                     @enderror
                                 </div>
 
-                                <div class="field w" style="grid-column: 1 / -1">
+                                {{-- مقصد --}}
+                                <div class="field w" style="grid-column:1 / -1">
+                                    <label for="iq-dest">
+                                        کشور / بندر مقصد <b class="req">*</b>
+                                    </label>
 
-                                    <label for="iq-dest">کشور / بندر مقصد <b class="req">*</b></label>
-
-                                    <input id="iq-dest" name="destination" class="input" required maxlength="120"
-                                           value="{{ old('destination') }}" placeholder="مثلاً عمان – مسقط">
+                                    <input
+                                        id="iq-dest"
+                                        name="destination"
+                                        class="input"
+                                        required
+                                        maxlength="120"
+                                        value="{{ old('destination') }}"
+                                        placeholder="مثلاً عمان – مسقط"
+                                    >
 
                                     @error('destination')
-                                    <p style="color:red">{{ $message }}</p>
+                                    <p class="field-error" style="color:red">
+                                        {{ $message }}
+                                    </p>
                                     @enderror
                                 </div>
 
+                                {{-- نام --}}
                                 <div class="field">
+                                    <label for="iq-name">
+                                        نام شما <b class="req">*</b>
+                                    </label>
 
-                                    <label for="iq-name">نام شما <b class="req">*</b></label>
+                                    <input
+                                        id="iq-name"
+                                        name="name"
+                                        class="input"
+                                        required
+                                        maxlength="120"
+                                        autocomplete="name"
+                                        value="{{ old('name') }}"
+                                    >
 
-                                    <input id="iq-name" name="name" class="input" required maxlength="120"
-                                           autocomplete="name" value="{{ old('name') }}">
                                     @error('name')
-                                    <p style="color:red">{{ $message }}</p>
+                                    <p class="field-error" style="color:red">
+                                        {{ $message }}
+                                    </p>
                                     @enderror
                                 </div>
 
+                                {{-- شرکت --}}
                                 <div class="field">
-
                                     <label for="iq-co">شرکت</label>
 
-                                    <input id="iq-co" name="company" class="input" maxlength="160"
-                                           autocomplete="organization" value="{{ old('company') }}" placeholder="نام شرکت">
+                                    <input
+                                        id="iq-co"
+                                        name="company"
+                                        class="input"
+                                        maxlength="160"
+                                        autocomplete="organization"
+                                        value="{{ old('company') }}"
+                                        placeholder="نام شرکت"
+                                    >
+
                                     @error('company')
-                                    <p style="color:red">{{ $message }}</p>
+                                    <p class="field-error" style="color:red">
+                                        {{ $message }}
+                                    </p>
                                     @enderror
                                 </div>
 
+                                {{-- ایمیل --}}
                                 <div class="field">
-
                                     <label for="iq-email">ایمیل</label>
 
-                                    <input id="iq-email" name="email" type="email" class="input" maxlength="190"
-                                           autocomplete="email" value="{{ old('email') }}" placeholder="name@company.com">
+                                    <input
+                                        id="iq-email"
+                                        name="email"
+                                        type="email"
+                                        class="input"
+                                        maxlength="190"
+                                        autocomplete="email"
+                                        value="{{ old('email') }}"
+                                        placeholder="name@company.com"
+                                    >
+
                                     @error('email')
-                                    <p style="color:red">{{ $message }}</p>
+                                    <p class="field-error" style="color:red">
+                                        {{ $message }}
+                                    </p>
                                     @enderror
                                 </div>
 
+                                {{-- تلفن --}}
                                 <div class="field">
-
                                     <label for="iq-phone">تلفن / واتساپ</label>
 
-                                    <input id="iq-phone" name="phone" type="tel" class="input" maxlength="40"
-                                           autocomplete="tel" inputmode="tel" value="{{ old('phone') }}"
-                                           placeholder="+968 …">
+                                    <input
+                                        id="iq-phone"
+                                        name="phone"
+                                        type="tel"
+                                        class="input"
+                                        maxlength="40"
+                                        autocomplete="tel"
+                                        inputmode="tel"
+                                        value="{{ old('phone') }}"
+                                        placeholder="+968 …"
+                                    >
 
                                     @error('phone')
-                                    <p style="color:red">{{ $message }}</p>
+                                    <p class="field-error" style="color:red">
+                                        {{ $message }}
+                                    </p>
                                     @enderror
                                 </div>
 
-                                <div class="field" style="grid-column: 1 / -1">
+                                {{-- توضیحات --}}
+                                <div class="field" style="grid-column:1 / -1">
+                                    <label for="iq-msg">
+                                        توضیحات <span class="opt">(اختیاری)</span>
+                                    </label>
 
-                                    <label for="iq-msg">توضیحات <span class="opt">(اختیاری)</span></label>
+                                    <textarea
+                                        id="iq-msg"
+                                        name="message"
+                                        class="input"
+                                        rows="3"
+                                        maxlength="2000"
+                                        placeholder="رقم، سایز، زمان تحویل…"
+                                    >{{ old('message') }}</textarea>
 
-                                    <textarea id="iq-msg" name="message" class="input" rows="3" maxlength="2000"
-                                              placeholder="رقم، سایز، زمان تحویل…" value="{{ old('message') }}"></textarea>
                                     @error('message')
-                                    <p style="color:red">{{ $message }}</p>
+                                    <p class="field-error" style="color:red">
+                                        {{ $message }}
+                                    </p>
                                     @enderror
                                 </div>
-
                             </div>
-
-
 
                             <div class="iform-foot">
+                                <p class="iform-hint">
+                                    واردکردن ایمیل یا تلفن الزامی است؛ یکی از آن‌ها کافی است.
+                                </p>
 
-                                <p class="iform-hint">ایمیل یا تلفن کافی است؛ یکی از آن‌ها الزامی است.</p>
-
-                                <button class="btn btn-leaf" type="submit">ارسال استعلام<svg class="ic flip">
+                                <button class="btn btn-leaf" type="submit">
+                                    ارسال استعلام
+                                    <svg class="ic flip">
                                         <use href="#i-arrow" />
-                                    </svg></button>
-
+                                    </svg>
+                                </button>
                             </div>
-
                         </form>
-
                     </div>
-
                 </div>
-
             </div>
         </section>
 
@@ -458,10 +610,15 @@
                 <div class="sec-head sec-head-row">
                     <h2 id="rel-h" class="h2">محصولات دیگر این دسته</h2>
                     <a class="link-arrow"
-                        href="{{ route('products', ['lang' => 'fa', 'category' => 'vegetables']) }}">صیفی‌جات<svg
-                            class="ic flip">
+                       href="{{ route('products', [
+       'lang' => $locale,
+       'category' => $product->category,
+   ]) }}">
+                        {{ $categoryName }}
+                        <svg class="ic flip">
                             <use href="#i-arrow" />
-                        </svg></a>
+                        </svg>
+                    </a>
                 </div>
                 <div class="pgrid related-pgrid">
                     @forelse ($relatedProducts as $p)

@@ -315,108 +315,152 @@
 
                     <div class="waybill-body">
 
+                        @if (session('success'))
+                            <p role="status"
+                               style="padding:12px;margin-bottom:16px;border:1px solid #5D8060;border-radius:8px;color:#315C36">
+                                {{ session('success') }}
+                            </p>
+                        @endif
 
 
 
 
                         <form class="iform" method="POST"
-                            action="{{ route('home.post', ['lang' => app()->getLocale()]) }}" novalidate
+                            action="{{ route('home.post', ['lang' => app()->getLocale()]) }}"
                             data-busy-text="در حال ارسال…" id="inquiry-form">
                             <!-- backend: set action + @@csrf -->
                             @csrf
 
                             <div class="iform-grid">
 
-                                <div class="field">
+                                <div class="field" style="grid-column: 1 / -1">
+                                    <label>محصولات موردنظر</label>
 
-                                    <label for="iq-product">محصول</label>
-
-                                    <select id="iq-product" name="product" class="input">
-                                        <option value="" @selected(old('product', '') === '')>
-                                            ترکیبی / چند محصول
-                                        </option>
-
+                                    <div id="inquiry-products">
                                         @php
+                                            $oldProducts = old('products', [
+                                                ['product' => '', 'quantity' => '', 'packaging' => ''],
+                                            ]);
+
+                                            if (!is_array($oldProducts) || count($oldProducts) === 0) {
+                                                $oldProducts = [
+                                                    ['product' => '', 'quantity' => '', 'packaging' => ''],
+                                                ];
+                                            }
+
                                             $productCategories = [
                                                 'vegetables' => 'صیفی‌جات',
                                                 'stone-fruits' => 'میوه‌های هسته‌دار',
                                                 'orchard-fruits' => 'میوه‌های باغی',
                                                 'citrus-melons' => 'مرکبات و جالیزی',
                                             ];
+
+                                            $packagingOptions = [
+                                                'carton_5' => 'کارتن ۵ کیلویی',
+                                                'carton_10' => 'کارتن ۸ تا ۱۰ کیلویی',
+                                                'tray' => 'سینی تک‌لایه',
+                                                'crate' => 'سبد پلاستیکی',
+                                                'mesh_bag' => 'کیسه توری',
+                                                'bulk' => 'فله / باکس فله',
+                                                'punnet' => 'ظرف کوچک',
+                                                'private_label' => 'با برند خریدار',
+                                            ];
                                         @endphp
 
-                                        @foreach ($productCategories as $category => $categoryLabel)
-                                            @php
-                                                $categoryProducts = $products->where('category', $category);
-                                            @endphp
+                                        @foreach ($oldProducts as $index => $oldProduct)
+                                            <div class="inquiry-product-row"
+                                                 style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:16px;padding:16px;border:1px solid #ddd;border-radius:12px">
 
-                                            @if ($categoryProducts->isNotEmpty())
-                                                <optgroup label="{{ $categoryLabel }}">
-                                                    @foreach ($categoryProducts as $p)
-                                                        @php
-                                                            $productName = is_array($p->name)
-                                                                ? ($p->name['fa'] ?? $p->name['en'] ?? $p->slug)
-                                                                : ($p->name ?: $p->slug);
-                                                        @endphp
+                                                <div class="field">
+                                                    <label>محصول</label>
 
-                                                        <option
-                                                            value="{{ $p->slug }}"
-                                                            @selected((string) old('product') === (string) $p->slug)
-                                                        >
-                                                            {{ $productName }}
-                                                        </option>
-                                                    @endforeach
-                                                </optgroup>
-                                            @endif
+                                                    <select name="products[{{ $index }}][product]"
+                                                            class="input"
+                                                            required>
+                                                        <option value="">انتخاب محصول</option>
+
+                                                        @foreach ($productCategories as $category => $categoryLabel)
+                                                            @php
+                                                                $categoryProducts = $products->where('category', $category);
+                                                            @endphp
+
+                                                            @if ($categoryProducts->isNotEmpty())
+                                                                <optgroup label="{{ $categoryLabel }}">
+                                                                    @foreach ($categoryProducts as $p)
+                                                                        @php
+                                                                            $productName = is_array($p->name)
+                                                                                ? ($p->name['fa'] ?? $p->name['en'] ?? $p->slug)
+                                                                                : ($p->name ?: $p->slug);
+                                                                        @endphp
+
+                                                                        <option value="{{ $p->slug }}"
+                                                                            @selected(($oldProduct['product'] ?? '') === $p->slug)>
+                                                                            {{ $productName }}
+                                                                        </option>
+                                                                    @endforeach
+                                                                </optgroup>
+                                                            @endif
+                                                        @endforeach
+                                                    </select>
+
+                                                    @error("products.$index.product")
+                                                    <p style="color:red">{{ $message }}</p>
+                                                    @enderror
+                                                </div>
+
+                                                <div class="field">
+                                                    <label>مقدار سفارش</label>
+
+                                                    <input type="text"
+                                                           name="products[{{ $index }}][quantity]"
+                                                           class="input"
+                                                           maxlength="80"
+                                                           required
+                                                           value="{{ $oldProduct['quantity'] ?? '' }}"
+                                                           placeholder="مثلاً ۲۰ تن">
+
+                                                    @error("products.$index.quantity")
+                                                    <p style="color:red">{{ $message }}</p>
+                                                    @enderror
+                                                </div>
+
+                                                <div class="field">
+                                                    <label>بسته‌بندی</label>
+
+                                                    <select name="products[{{ $index }}][packaging]"
+                                                            class="input">
+                                                        <option value="">فرقی نمی‌کند</option>
+
+                                                        @foreach ($packagingOptions as $value => $label)
+                                                            <option value="{{ $value }}"
+                                                                @selected(($oldProduct['packaging'] ?? '') === $value)>
+                                                                {{ $label }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+
+                                                    @error("products.$index.packaging")
+                                                    <p style="color:red">{{ $message }}</p>
+                                                    @enderror
+                                                </div>
+
+                                                <div class="field" style="display:flex;align-items:end">
+                                                    <button type="button"
+                                                            class="btn remove-inquiry-product"
+                                                            style="width:100%">
+                                                        حذف محصول
+                                                    </button>
+                                                </div>
+                                            </div>
                                         @endforeach
-                                    </select>
+                                    </div>
 
-                                    @error('product')
+                                    <button type="button" id="add-inquiry-product" class="btn">
+                                        + افزودن محصول دیگر
+                                    </button>
+
+                                    @error('products')
                                     <p style="color:red">{{ $message }}</p>
-                                    @enderror
-                                    @error('product')
-                                        <p style="color:red">{{ $message }}</p>
-                                    @enderror
-                                </div>
-
-                                <div class="field">
-
-                                    <label for="iq-qty">مقدار <b class="req">*</b></label>
-
-                                    <input id="iq-qty" name="quantity" class="input" required maxlength="80"
-                                        value="{{ old('quantity') }}" placeholder="مثلاً یک کانتینر ۴۰ فوت، ۲۰ تن">
-                                    @error('quantity')
-                                        <p style="color:red">{{ $message }}</p>
-                                    @enderror
-                                </div>
-
-                                <div class="field">
-
-                                    <label for="iq-pack">بسته‌بندی</label>
-
-                                    <select id="iq-pack" name="packaging" class="input">
-
-                                        <option value="">فرقی نمی‌کند</option>
-
-                                        <option value="carton_5">کارتن ۵ کیلویی</option>
-
-                                        <option value="carton_10">کارتن ۸ تا ۱۰ کیلویی</option>
-
-                                        <option value="tray">سینی تک‌لایه</option>
-
-                                        <option value="crate">سبد پلاستیکی</option>
-
-                                        <option value="mesh_bag">کیسه توری ۱۰ تا ۲۵ کیلویی</option>
-
-                                        <option value="bulk">فله / باکس فله</option>
-
-                                        <option value="punnet">ظرف ۰٫۵ تا ۱ کیلویی</option>
-
-                                        <option value="private_label">با برند خریدار</option>
-
-                                    </select>
-                                    @error('packaging')
-                                        <p style="color:red">{{ $message }}</p>
                                     @enderror
                                 </div>
 
@@ -424,20 +468,13 @@
 
                                     <label for="iq-inco">شرایط تحویل</label>
 
-                                    <select id="iq-inco" name="incoterm" class="input" dir="ltr">
-
-                                        <option value="FOB" selected>FOB</option>
-
-                                        <option value="CFR">CFR</option>
-
-                                        <option value="CIF">CIF</option>
-
-                                        <option value="EXW">EXW</option>
-
-                                        <option value="FCA">FCA</option>
-
-                                        <option value="DAP">DAP</option>
-
+                                    <select id="iq-inco" name="incoterm" class="input" dir="ltr" required>
+                                        @foreach (['FOB', 'CFR', 'CIF', 'EXW', 'FCA', 'DAP'] as $term)
+                                            <option value="{{ $term }}"
+                                                @selected(old('incoterm', 'FOB') === $term)>
+                                                {{ $term }}
+                                            </option>
+                                        @endforeach
                                     </select>
                                     @error('incoterm')
                                         <p style="color:red">{{ $message }}</p>
