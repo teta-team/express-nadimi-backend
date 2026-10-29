@@ -50,7 +50,7 @@
                     <ul class="hero-facts">
                         <li><b>۱۵+</b><span>سال تجربه در کشاورزی و تجارت</span></li>
                         <li><b>۷</b><span>بازار صادراتی</span></li>
-                        <li><b>۲۰+</b><span>نوع میوه و صیفی</span></li>
+                        <li><b>{{ $products->count() }}+</b><span>نوع میوه و صیفی</span></li>
                         <li><b>WMC04</b><span>جایگاه ما در سوق سلال عمان</span></li>
                     </ul>
                 </div>
@@ -113,281 +113,123 @@
                             فصل برداشت، میزان تولید، کیفیت و شرایط روز بازار تعیین می‌شود؛ برای دریافت قیمت روز با ما در
                             تماس باشید.</p>
                     </div>
-                    <a class="btn-all" href="{{ route('products', ['lang' => 'fa']) }}"><span>همه ۲۳ محصول</span><span
+                    <a class="btn-all" href="{{ route('products', ['lang' => 'fa']) }}"><span>همه {{ $products->count() }} محصول</span><span
                             class="btn-all-ic" aria-hidden="true"><svg class="ic flip">
                                 <use href="#i-arrow" />
                             </svg></span></a>
                 </div>
                 <div class="rail">
-                    <article class="pcard">
-                        <div class="pcard-media">
-                            <img src="{{ asset('assets/images/products/tomato.jpg') }}" alt="" width="480"
-                                height="373" loading="lazy" decoding="async">
-                            <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
-                                    <use href="#i-arrow" />
-                                </svg></span>
-                        </div>
-                        <div class="pcard-body">
-                            <div class="pcard-top">
-                                <h3 class="pcard-title"><a href="{{ route('product', ['lang' => 'fa']) }}">گوجه‌فرنگی</a>
-                                </h3>
-                                <span class="dot-badge is-available">موجود</span>
+                    @forelse ($products as $p)
+                        @php
+                            $name = is_array($p->name)
+                                ? ($p->name['fa'] ?? $p->name['en'] ?? $p->slug)
+                                : ($p->name ?: $p->slug);
+
+                            $summary = is_array($p->summary)
+                                ? ($p->summary['fa'] ?? $p->summary['en'] ?? '')
+                                : ($p->summary ?? '');
+
+                            $months = is_array($p->months)
+                                ? array_values($p->months)
+                                : [];
+
+                            $months = array_map(
+                                fn ($value) => filter_var($value, FILTER_VALIDATE_BOOLEAN),
+                                array_pad(array_slice($months, 0, 12), 12, false)
+                            );
+
+                            $monthNames = [
+                                'فروردین', 'اردیبهشت', 'خرداد', 'تیر',
+                                'مرداد', 'شهریور', 'مهر', 'آبان',
+                                'آذر', 'دی', 'بهمن', 'اسفند',
+                            ];
+
+                            $activeMonths = count(array_filter($months));
+
+                            $isAvailable = $p->status === 'available';
+
+                            $status = $isAvailable ? 'موجود' : 'خارج از فصل';
+
+                            $statusClass = $isAvailable
+                                ? 'is-available'
+                                : 'is-off';
+
+                            $image = $p->image
+                                ?: asset('assets/images/products/tomato.jpg');
+
+                            $seasonLabel = $activeMonths === 12
+                                ? 'تمام سال'
+                                : ($activeMonths === 0
+                                    ? 'فصل عرضه ثبت نشده'
+                                    : implode('، ', array_map(
+                                        fn ($index) => $monthNames[$index],
+                                        array_keys(array_filter($months))
+                                    )));
+                        @endphp
+
+                        <article class="pcard">
+                            <div class="pcard-media">
+                                <a
+                                    href="{{ route('product.show', ['lang' => 'fa', 'slug' => $p->slug]) }}"
+                                    aria-label="مشاهده محصول {{ $name }}"
+                                >
+                                    <img
+                                        src="{{ $image }}"
+                                        alt="{{ $name }}"
+                                        width="480"
+                                        height="373"
+                                        loading="lazy"
+                                        decoding="async"
+                                    >
+                                </a>
+
+                                <span class="pcard-go" aria-hidden="true">
+                    <svg class="ic flip">
+                        <use href="#i-arrow" />
+                    </svg>
+                </span>
                             </div>
-                            <p class="pcard-origin">جیرفت، بوشهر، آذربایجان شرقی</p>
-                            <div class="season" role="img" aria-label="فصل عرضه: تمام سال">
-                                <ol class="season-bar" aria-hidden="true">
-                                    <li class="on" title="دی"></li>
-                                    <li class="on" title="بهمن"></li>
-                                    <li class="on" title="اسفند"></li>
-                                    <li class="on" title="فروردین"></li>
-                                    <li class="on" title="اردیبهشت"></li>
-                                    <li class="on" title="خرداد"></li>
-                                    <li class="on" title="تیر"></li>
-                                    <li class="on" title="مرداد"></li>
-                                    <li class="on" title="شهریور"></li>
-                                    <li class="on now" title="مهر"></li>
-                                    <li class="on" title="آبان"></li>
-                                    <li class="on" title="آذر"></li>
-                                </ol>
-                                <span class="season-label">تمام سال</span>
+
+                            <div class="pcard-body">
+                                <div class="pcard-top">
+                                    <h3 class="pcard-title">
+                                        <a href="{{ route('product.show', ['lang' => 'fa', 'slug' => $p->slug]) }}">
+                                            {{ $name }}
+                                        </a>
+                                    </h3>
+
+                                    <span class="dot-badge {{ $statusClass }}">
+                        {{ $status }}
+                    </span>
+                                </div>
+
+                                <p class="pcard-origin">
+                                    {{ $summary }}
+                                </p>
+
+                                <div
+                                    class="season"
+                                    role="img"
+                                    aria-label="فصل عرضه {{ $name }}: {{ $seasonLabel }}"
+                                >
+                                    <ol class="season-bar" aria-hidden="true">
+                                        @foreach ($months as $index => $on)
+                                            <li
+                                                class="{{ $on ? 'on' : '' }}"
+                                                title="{{ $monthNames[$index] }}"
+                                            ></li>
+                                        @endforeach
+                                    </ol>
+
+                                    <span class="season-label">
+                        {{ $seasonLabel }}
+                    </span>
+                                </div>
                             </div>
-                        </div>
-                    </article>
-                    <article class="pcard">
-                        <div class="pcard-media">
-                            <img src="{{ asset('assets/images/products/cucumber.jpg') }}" alt="" width="480"
-                                height="373" loading="lazy" decoding="async">
-                            <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
-                                    <use href="#i-arrow" />
-                                </svg></span>
-                        </div>
-                        <div class="pcard-body">
-                            <div class="pcard-top">
-                                <h3 class="pcard-title"><a href="{{ route('product', ['lang' => 'fa']) }}">خیار</a></h3>
-                                <span class="dot-badge is-available">موجود</span>
-                            </div>
-                            <p class="pcard-origin">جیرفت، اصفهان، تهران</p>
-                            <div class="season" role="img" aria-label="فصل عرضه: تمام سال">
-                                <ol class="season-bar" aria-hidden="true">
-                                    <li class="on" title="دی"></li>
-                                    <li class="on" title="بهمن"></li>
-                                    <li class="on" title="اسفند"></li>
-                                    <li class="on" title="فروردین"></li>
-                                    <li class="on" title="اردیبهشت"></li>
-                                    <li class="on" title="خرداد"></li>
-                                    <li class="on" title="تیر"></li>
-                                    <li class="on" title="مرداد"></li>
-                                    <li class="on" title="شهریور"></li>
-                                    <li class="on now" title="مهر"></li>
-                                    <li class="on" title="آبان"></li>
-                                    <li class="on" title="آذر"></li>
-                                </ol>
-                                <span class="season-label">تمام سال</span>
-                            </div>
-                        </div>
-                    </article>
-                    <article class="pcard">
-                        <div class="pcard-media">
-                            <img src="{{ asset('assets/images/products/BellPepper.jpg') }}" alt=""
-                                width="480" height="373" loading="lazy" decoding="async">
-                            <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
-                                    <use href="#i-arrow" />
-                                </svg></span>
-                        </div>
-                        <div class="pcard-body">
-                            <div class="pcard-top">
-                                <h3 class="pcard-title"><a href="{{ route('product', ['lang' => 'fa']) }}">فلفل
-                                        دلمه‌ای</a></h3>
-                                <span class="dot-badge is-available">موجود</span>
-                            </div>
-                            <p class="pcard-origin">جیرفت، اصفهان</p>
-                            <div class="season" role="img" aria-label="فصل عرضه: تمام سال">
-                                <ol class="season-bar" aria-hidden="true">
-                                    <li class="on" title="دی"></li>
-                                    <li class="on" title="بهمن"></li>
-                                    <li class="on" title="اسفند"></li>
-                                    <li class="on" title="فروردین"></li>
-                                    <li class="on" title="اردیبهشت"></li>
-                                    <li class="on" title="خرداد"></li>
-                                    <li class="on" title="تیر"></li>
-                                    <li class="on" title="مرداد"></li>
-                                    <li class="on" title="شهریور"></li>
-                                    <li class="on now" title="مهر"></li>
-                                    <li class="on" title="آبان"></li>
-                                    <li class="on" title="آذر"></li>
-                                </ol>
-                                <span class="season-label">تمام سال</span>
-                            </div>
-                        </div>
-                    </article>
-                    <article class="pcard">
-                        <div class="pcard-media">
-                            <img src="{{ asset('assets/images/products/cabbage.jpg') }}" alt="" width="480"
-                                height="373" loading="lazy" decoding="async">
-                            <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
-                                    <use href="#i-arrow" />
-                                </svg></span>
-                        </div>
-                        <div class="pcard-body">
-                            <div class="pcard-top">
-                                <h3 class="pcard-title"><a href="{{ route('product', ['lang' => 'fa']) }}">کلم‌پیچ</a>
-                                </h3>
-                                <span class="dot-badge is-available">موجود</span>
-                            </div>
-                            <p class="pcard-origin">گلستان، اردبیل، جیرفت</p>
-                            <div class="season" role="img" aria-label="فصل عرضه: شهریور – فروردین">
-                                <ol class="season-bar" aria-hidden="true">
-                                    <li class="on" title="دی"></li>
-                                    <li class="on" title="بهمن"></li>
-                                    <li class="on" title="اسفند"></li>
-                                    <li class="on" title="فروردین"></li>
-                                    <li class="" title="اردیبهشت"></li>
-                                    <li class="" title="خرداد"></li>
-                                    <li class="" title="تیر"></li>
-                                    <li class="" title="مرداد"></li>
-                                    <li class="on" title="شهریور"></li>
-                                    <li class="on now" title="مهر"></li>
-                                    <li class="on" title="آبان"></li>
-                                    <li class="on" title="آذر"></li>
-                                </ol>
-                                <span class="season-label">شهریور – فروردین</span>
-                            </div>
-                        </div>
-                    </article>
-                    <article class="pcard">
-                        <div class="pcard-media">
-                            <img src="{{ asset('assets/images/products/Cauliflower.png') }}" alt=""
-                                width="480" height="373" loading="lazy" decoding="async">
-                            <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
-                                    <use href="#i-arrow" />
-                                </svg></span>
-                        </div>
-                        <div class="pcard-body">
-                            <div class="pcard-top">
-                                <h3 class="pcard-title"><a href="{{ route('product', ['lang' => 'fa']) }}">گل‌کلم</a>
-                                </h3>
-                                <span class="dot-badge is-available">موجود</span>
-                            </div>
-                            <p class="pcard-origin">جیرفت، گلستان</p>
-                            <div class="season" role="img" aria-label="فصل عرضه: شهریور – فروردین">
-                                <ol class="season-bar" aria-hidden="true">
-                                    <li class="on" title="دی"></li>
-                                    <li class="on" title="بهمن"></li>
-                                    <li class="on" title="اسفند"></li>
-                                    <li class="on" title="فروردین"></li>
-                                    <li class="" title="اردیبهشت"></li>
-                                    <li class="" title="خرداد"></li>
-                                    <li class="" title="تیر"></li>
-                                    <li class="" title="مرداد"></li>
-                                    <li class="on" title="شهریور"></li>
-                                    <li class="on now" title="مهر"></li>
-                                    <li class="on" title="آبان"></li>
-                                    <li class="on" title="آذر"></li>
-                                </ol>
-                                <span class="season-label">شهریور – فروردین</span>
-                            </div>
-                        </div>
-                    </article>
-                    <article class="pcard">
-                        <div class="pcard-media">
-                            <img src="{{ asset('assets/images/products/Lettuce.png') }}" alt="" width="480"
-                                height="373" loading="lazy" decoding="async">
-                            <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
-                                    <use href="#i-arrow" />
-                                </svg></span>
-                        </div>
-                        <div class="pcard-body">
-                            <div class="pcard-top">
-                                <h3 class="pcard-title"><a href="{{ route('product', ['lang' => 'fa']) }}">کاهو</a></h3>
-                                <span class="dot-badge is-available">موجود</span>
-                            </div>
-                            <p class="pcard-origin">جیرفت، بوشهر</p>
-                            <div class="season" role="img" aria-label="فصل عرضه: مهر – فروردین">
-                                <ol class="season-bar" aria-hidden="true">
-                                    <li class="on" title="دی"></li>
-                                    <li class="on" title="بهمن"></li>
-                                    <li class="on" title="اسفند"></li>
-                                    <li class="on" title="فروردین"></li>
-                                    <li class="" title="اردیبهشت"></li>
-                                    <li class="" title="خرداد"></li>
-                                    <li class="" title="تیر"></li>
-                                    <li class="" title="مرداد"></li>
-                                    <li class="" title="شهریور"></li>
-                                    <li class="on now" title="مهر"></li>
-                                    <li class="on" title="آبان"></li>
-                                    <li class="on" title="آذر"></li>
-                                </ol>
-                                <span class="season-label">مهر – فروردین</span>
-                            </div>
-                        </div>
-                    </article>
-                    <article class="pcard">
-                        <div class="pcard-media">
-                            <img src="{{ asset('assets/images/products/potato.jpg') }}" alt="" width="480"
-                                height="373" loading="lazy" decoding="async">
-                            <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
-                                    <use href="#i-arrow" />
-                                </svg></span>
-                        </div>
-                        <div class="pcard-body">
-                            <div class="pcard-top">
-                                <h3 class="pcard-title"><a href="{{ route('product', ['lang' => 'fa']) }}">سیب‌زمینی</a>
-                                </h3>
-                                <span class="dot-badge is-available">موجود</span>
-                            </div>
-                            <p class="pcard-origin">اردبیل، همدان، جیرفت</p>
-                            <div class="season" role="img" aria-label="فصل عرضه: تمام سال">
-                                <ol class="season-bar" aria-hidden="true">
-                                    <li class="on" title="دی"></li>
-                                    <li class="on" title="بهمن"></li>
-                                    <li class="on" title="اسفند"></li>
-                                    <li class="on" title="فروردین"></li>
-                                    <li class="on" title="اردیبهشت"></li>
-                                    <li class="on" title="خرداد"></li>
-                                    <li class="on" title="تیر"></li>
-                                    <li class="on" title="مرداد"></li>
-                                    <li class="on" title="شهریور"></li>
-                                    <li class="on now" title="مهر"></li>
-                                    <li class="on" title="آبان"></li>
-                                    <li class="on" title="آذر"></li>
-                                </ol>
-                                <span class="season-label">تمام سال</span>
-                            </div>
-                        </div>
-                    </article>
-                    <article class="pcard">
-                        <div class="pcard-media">
-                            <img src="{{ asset('assets/images/products/Redonion.png') }}" alt="" width="480"
-                                height="373" loading="lazy" decoding="async">
-                            <span class="pcard-go" aria-hidden="true"><svg class="ic flip">
-                                    <use href="#i-arrow" />
-                                </svg></span>
-                        </div>
-                        <div class="pcard-body">
-                            <div class="pcard-top">
-                                <h3 class="pcard-title"><a href="{{ route('product', ['lang' => 'fa']) }}">پیاز</a></h3>
-                                <span class="dot-badge is-available">موجود</span>
-                            </div>
-                            <p class="pcard-origin">جیرفت، خوزستان، اصفهان</p>
-                            <div class="season" role="img" aria-label="فصل عرضه: فروردین – آبان">
-                                <ol class="season-bar" aria-hidden="true">
-                                    <li class="" title="دی"></li>
-                                    <li class="" title="بهمن"></li>
-                                    <li class="" title="اسفند"></li>
-                                    <li class="on" title="فروردین"></li>
-                                    <li class="on" title="اردیبهشت"></li>
-                                    <li class="on" title="خرداد"></li>
-                                    <li class="on" title="تیر"></li>
-                                    <li class="on" title="مرداد"></li>
-                                    <li class="on" title="شهریور"></li>
-                                    <li class="on now" title="مهر"></li>
-                                    <li class="on" title="آبان"></li>
-                                    <li class="" title="آذر"></li>
-                                </ol>
-                                <span class="season-label">فروردین – آبان</span>
-                            </div>
-                        </div>
-                    </article>
+                        </article>
+                    @empty
+                        <p>در حال حاضر محصولی برای نمایش ثبت نشده است.</p>
+                    @endforelse
                 </div>
             </div>
         </section>
@@ -473,128 +315,152 @@
 
                     <div class="waybill-body">
 
+                        @if (session('success'))
+                            <p role="status"
+                               style="padding:12px;margin-bottom:16px;border:1px solid #5D8060;border-radius:8px;color:#315C36">
+                                {{ session('success') }}
+                            </p>
+                        @endif
 
 
 
 
                         <form class="iform" method="POST"
-                            action="{{ route('home.post', ['lang' => app()->getLocale()]) }}" novalidate
-                            data-whatsapp-form="inquiry" id="inquiry-form">
+                            action="{{ route('home.post', ['lang' => app()->getLocale()]) }}"
+                            data-busy-text="در حال ارسال…" id="inquiry-form">
                             <!-- backend: set action + @@csrf -->
                             @csrf
 
                             <div class="iform-grid">
 
-                                <div class="field">
+                                <div class="field" style="grid-column: 1 / -1">
+                                    <label>محصولات موردنظر</label>
 
-                                    <label for="iq-product">محصول</label>
+                                    <div id="inquiry-products">
+                                        @php
+                                            $oldProducts = old('products', [
+                                                ['product' => '', 'quantity' => '', 'packaging' => ''],
+                                            ]);
 
-                                    <select id="iq-product" name="product" class="input">
+                                            if (!is_array($oldProducts) || count($oldProducts) === 0) {
+                                                $oldProducts = [
+                                                    ['product' => '', 'quantity' => '', 'packaging' => ''],
+                                                ];
+                                            }
 
-                                        <option value="{{ old('product') }}">ترکیبی / چند محصول</option>
+                                            $productCategories = [
+                                                'vegetables' => 'صیفی‌جات',
+                                                'stone-fruits' => 'میوه‌های هسته‌دار',
+                                                'orchard-fruits' => 'میوه‌های باغی',
+                                                'citrus-melons' => 'مرکبات و جالیزی',
+                                            ];
 
-                                        <optgroup label="صیفی‌جات">
+                                            $packagingOptions = [
+                                                'carton_5' => 'کارتن ۵ کیلویی',
+                                                'carton_10' => 'کارتن ۸ تا ۱۰ کیلویی',
+                                                'tray' => 'سینی تک‌لایه',
+                                                'crate' => 'سبد پلاستیکی',
+                                                'mesh_bag' => 'کیسه توری',
+                                                'bulk' => 'فله / باکس فله',
+                                                'punnet' => 'ظرف کوچک',
+                                                'private_label' => 'با برند خریدار',
+                                            ];
+                                        @endphp
 
-                                            <option value="tomato">گوجه‌فرنگی</option>
+                                        @foreach ($oldProducts as $index => $oldProduct)
+                                            <div class="inquiry-product-row"
+                                                 style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:16px;padding:16px;border:1px solid #ddd;border-radius:12px">
 
-                                            <option value="cucumber">خیار</option>
+                                                <div class="field">
+                                                    <label>محصول</label>
 
-                                            <option value="bell-pepper">فلفل دلمه‌ای</option>
+                                                    <select name="products[{{ $index }}][product]"
+                                                            class="input"
+                                                            required>
+                                                        <option value="">انتخاب محصول</option>
 
-                                            <option value="cabbage">کلم‌پیچ</option>
+                                                        @foreach ($productCategories as $category => $categoryLabel)
+                                                            @php
+                                                                $categoryProducts = $products->where('category', $category);
+                                                            @endphp
 
-                                            <option value="cauliflower">گل‌کلم</option>
+                                                            @if ($categoryProducts->isNotEmpty())
+                                                                <optgroup label="{{ $categoryLabel }}">
+                                                                    @foreach ($categoryProducts as $p)
+                                                                        @php
+                                                                            $productName = is_array($p->name)
+                                                                                ? ($p->name['fa'] ?? $p->name['en'] ?? $p->slug)
+                                                                                : ($p->name ?: $p->slug);
+                                                                        @endphp
 
-                                            <option value="lettuce">کاهو</option>
+                                                                        <option value="{{ $p->slug }}"
+                                                                            @selected(($oldProduct['product'] ?? '') === $p->slug)>
+                                                                            {{ $productName }}
+                                                                        </option>
+                                                                    @endforeach
+                                                                </optgroup>
+                                                            @endif
+                                                        @endforeach
+                                                    </select>
 
-                                            <option value="potato">سیب‌زمینی</option>
+                                                    @error("products.$index.product")
+                                                    <p style="color:red">{{ $message }}</p>
+                                                    @enderror
+                                                </div>
 
-                                            <option value="onion">پیاز</option>
+                                                <div class="field">
+                                                    <label>مقدار سفارش</label>
 
-                                        </optgroup>
+                                                    <input type="text"
+                                                           name="products[{{ $index }}][quantity]"
+                                                           class="input"
+                                                           maxlength="80"
+                                                           required
+                                                           value="{{ $oldProduct['quantity'] ?? '' }}"
+                                                           placeholder="مثلاً ۲۰ تن">
 
-                                        <optgroup label="میوه‌های هسته‌دار">
+                                                    @error("products.$index.quantity")
+                                                    <p style="color:red">{{ $message }}</p>
+                                                    @enderror
+                                                </div>
 
-                                            <option value="apricot">زردآلو</option>
+                                                <div class="field">
+                                                    <label>بسته‌بندی</label>
 
-                                            <option value="cherry">گیلاس</option>
+                                                    <select name="products[{{ $index }}][packaging]"
+                                                            class="input">
+                                                        <option value="">فرقی نمی‌کند</option>
 
-                                            <option value="peach">هلو</option>
+                                                        @foreach ($packagingOptions as $value => $label)
+                                                            <option value="{{ $value }}"
+                                                                @selected(($oldProduct['packaging'] ?? '') === $value)>
+                                                                {{ $label }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
 
-                                            <option value="nectarine">شلیل</option>
+                                                    @error("products.$index.packaging")
+                                                    <p style="color:red">{{ $message }}</p>
+                                                    @enderror
+                                                </div>
 
-                                        </optgroup>
+                                                <div class="field" style="display:flex;align-items:end">
+                                                    <button type="button"
+                                                            class="btn remove-inquiry-product"
+                                                            style="width:100%">
+                                                        حذف محصول
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
 
-                                        <optgroup label="میوه‌های باغی">
+                                    <button type="button" id="add-inquiry-product" class="btn">
+                                        + افزودن محصول دیگر
+                                    </button>
 
-                                            <option value="apple">سیب</option>
-
-                                            <option value="pomegranate">انار</option>
-
-                                            <option value="kiwi">کیوی</option>
-
-                                            <option value="grape">انگور</option>
-
-                                        </optgroup>
-
-                                        <optgroup label="مرکبات و جالیزی">
-
-                                            <option value="orange">پرتقال</option>
-
-                                            <option value="tangerine">نارنگی</option>
-
-                                            <option value="lemon">لیمو</option>
-
-                                            <option value="watermelon">هندوانه</option>
-
-                                            <option value="melon">خربزه و طالبی</option>
-
-                                        </optgroup>
-
-                                    </select>
-                                    @error('product')
-                                        <p style="color:red">{{ $message }}</p>
-                                    @enderror
-                                </div>
-
-                                <div class="field">
-
-                                    <label for="iq-qty">مقدار <b class="req">*</b></label>
-
-                                    <input id="iq-qty" name="quantity" class="input" required maxlength="80"
-                                        value="{{ old('quantity') }}" placeholder="مثلاً یک کانتینر ۴۰ فوت، ۲۰ تن">
-                                    @error('quantity')
-                                        <p style="color:red">{{ $message }}</p>
-                                    @enderror
-                                </div>
-
-                                <div class="field">
-
-                                    <label for="iq-pack">بسته‌بندی</label>
-
-                                    <select id="iq-pack" name="packaging" class="input">
-
-                                        <option value="">فرقی نمی‌کند</option>
-
-                                        <option value="carton_5">کارتن ۵ کیلویی</option>
-
-                                        <option value="carton_10">کارتن ۸ تا ۱۰ کیلویی</option>
-
-                                        <option value="tray">سینی تک‌لایه</option>
-
-                                        <option value="crate">سبد پلاستیکی</option>
-
-                                        <option value="mesh_bag">کیسه توری ۱۰ تا ۲۵ کیلویی</option>
-
-                                        <option value="bulk">فله / باکس فله</option>
-
-                                        <option value="punnet">ظرف ۰٫۵ تا ۱ کیلویی</option>
-
-                                        <option value="private_label">با برند خریدار</option>
-
-                                    </select>
-                                    @error('packaging')
-                                        <p style="color:red">{{ $message }}</p>
+                                    @error('products')
+                                    <p style="color:red">{{ $message }}</p>
                                     @enderror
                                 </div>
 
@@ -602,20 +468,13 @@
 
                                     <label for="iq-inco">شرایط تحویل</label>
 
-                                    <select id="iq-inco" name="incoterm" class="input" dir="ltr">
-
-                                        <option value="FOB" selected>FOB</option>
-
-                                        <option value="CFR">CFR</option>
-
-                                        <option value="CIF">CIF</option>
-
-                                        <option value="EXW">EXW</option>
-
-                                        <option value="FCA">FCA</option>
-
-                                        <option value="DAP">DAP</option>
-
+                                    <select id="iq-inco" name="incoterm" class="input" dir="ltr" required>
+                                        @foreach (['FOB', 'CFR', 'CIF', 'EXW', 'FCA', 'DAP'] as $term)
+                                            <option value="{{ $term }}"
+                                                @selected(old('incoterm', 'FOB') === $term)>
+                                                {{ $term }}
+                                            </option>
+                                        @endforeach
                                     </select>
                                     @error('incoterm')
                                         <p style="color:red">{{ $message }}</p>
@@ -684,8 +543,14 @@
 
                                     <label for="iq-msg">توضیحات <span class="opt">(اختیاری)</span></label>
 
-                                    <textarea id="iq-msg" name="message" class="input" rows="3" maxlength="2000"
-                                        placeholder="رقم، سایز، زمان تحویل…" value="{{ old('message') }}"></textarea>
+                                    <textarea
+                                        id="iq-msg"
+                                        name="message"
+                                        class="input"
+                                        rows="3"
+                                        maxlength="2000"
+                                        placeholder="رقم، سایز، زمان تحویل…"
+                                    >{{ old('message') }}</textarea>
                                     @error('message')
                                         <p style="color:red">{{ $message }}</p>
                                     @enderror
