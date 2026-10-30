@@ -1,7 +1,7 @@
 @extends('layouts.en.master')
 
 @section('title')
-    Contact Us | Iran & Oman Offices – Express Nadimi
+    Contact Us | Iran & Oman Offices – Nadimi International
 @endsection
 
 @section('description')

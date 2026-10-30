@@ -1,11 +1,11 @@
 @extends('layouts.en.master')
 
 @section('title')
-    Express Nadimi | Fresh Iranian Fruit & Vegetable Exporter
+    Nadimi International | Fresh Iranian Fruit & Vegetable Exporter
 @endsection
 
 @section('description')
-    With 15+ years of experience, Express Nadimi exports fresh Iranian fruit and vegetables to Oman and the region. Find us at Souq Silal, stand WMC04.
+    With 15+ years of experience, Nadimi International exports fresh Iranian fruit and vegetables to Oman and the region. Find us at Souq Silal, stand WMC04.
 @endsection
 
 @section('canonical', route('home', ['lang' => 'en']))

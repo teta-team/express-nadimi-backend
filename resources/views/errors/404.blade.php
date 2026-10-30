@@ -9,7 +9,7 @@
     <meta name="robots" content="noindex">
     <meta name="theme-color" content="#fdfdfc">
     <meta property="og:type" content="website">
-    <meta property="og:site_name" content="Express Nadimi">
+    <meta property="og:site_name" content="Nadimi International">
     <meta property="og:title" content="404 — این صفحه پیدا نشد | اکسپرس ندیمی">
     <meta property="og:image" content="{{ asset('assets/images/scenes/field-sunrise-1600.webp') }}">
     <script src="{{ asset('assets/js/theme.min.js') }}"></script>

@@ -1,7 +1,7 @@
 @extends('layouts.en.master')
 
 @section('title')
-    Export Products | Fresh Fruit & Vegetables – Express Nadimi
+    Export Products | Fresh Fruit & Vegetables – Nadimi International
 @endsection
 
 @section('description')

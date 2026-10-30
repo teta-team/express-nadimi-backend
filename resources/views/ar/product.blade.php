@@ -172,7 +172,7 @@
         'image'       => [$image],
         'category'    => $categoryName,
         'sku'         => (string) $product->slug,
-        'brand'       => ['@type' => 'Brand', 'name' => 'Express Nadimi'],
+        'brand'       => ['@type' => 'Brand', 'name' => 'Nadimi International'],
         'url'         => $productUrl,
     ];
 @endphp
