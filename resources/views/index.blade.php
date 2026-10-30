@@ -5,9 +5,9 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Express Nadimi — Iranian Fruit &amp; Vegetable Exporter | English · فارسی · العربية</title>
+    <title>Nadimi International — Iranian Fruit &amp; Vegetable Exporter | English · فارسی · العربية</title>
     <meta name="description"
-        content="Express Nadimi (Nadimi International LLC) exports fresh Iranian fruits and vegetables. Choose your language: English, فارسی or العربية." />
+        content="Nadimi International (Nadimi International LLC) exports fresh Iranian fruits and vegetables. Choose your language: English, فارسی or العربية." />
     <meta name="robots" content="index, follow, max-image-preview:large" />
     <meta name="theme-color" content="#fbfdfb" />
     <link rel="canonical" href="{{ url('/') }}" />
@@ -16,8 +16,8 @@
     <link rel="alternate" hreflang="ar" href="{{ route('home', ['lang' => 'ar']) }}" />
     <link rel="alternate" hreflang="x-default" href="{{ url('/') }}" />
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="Express Nadimi" />
-    <meta property="og:title" content="Express Nadimi — Iranian Fruit &amp; Vegetable Exporter" />
+    <meta property="og:site_name" content="Nadimi International" />
+    <meta property="og:title" content="Nadimi International — Iranian Fruit &amp; Vegetable Exporter" />
     <meta property="og:description"
         content="Fresh Iranian fruits and vegetables for Oman and the region. English · فارسی · العربية" />
     <meta property="og:url" content="{{ url('/') }}" />

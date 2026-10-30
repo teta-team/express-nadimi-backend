@@ -35,7 +35,7 @@
                         <i></i><span aria-current="page">اتصل بنا</span>
                     </nav>
                     <span class="label">اتصل بنا</span>
-                    <h1 class="display" style="margin-top: 16px">اتصل بنا</h1>
+                    <h1 class="display" style="margin-top: 16px">الاتصال بإكسبرس نديمي</h1>
                     <p>تواصلوا معنا لمعرفة سعر اليوم والمتوفر من المنتجات أو لطلب التعاون أو للتواصل مع فريق المبيعات.
                         ويمكنكم أيضاً إرسال اقتراح أو شكوى.</p>
                 </div>

@@ -15,7 +15,7 @@
     $schemaLang = $lang ?? 'en';
     $schemaBrand = [
         'fa' => 'اکسپرس ندیمی',
-        'en' => 'Express Nadimi',
+        'en' => 'Nadimi International',
         'ar' => 'إكسبرس نديمي',
     ];
     $orgId     = url('/') . '#organization';
@@ -24,7 +24,7 @@
     $graph = [[
         '@type'         => 'Organization',
         '@id'           => $orgId,
-        'name'          => 'Express Nadimi',
+        'name'          => 'Nadimi International',
         'legalName'     => 'Nadimi International LLC',
         'alternateName' => array_values(array_unique(array_filter([$schemaBrand[$schemaLang] ?? null, 'Nadimi International']))),
         'url'           => url('/'),
@@ -41,7 +41,7 @@
             '@type'      => 'WebSite',
             '@id'        => $websiteId,
             'url'        => url('/'),
-            'name'       => 'Express Nadimi',
+            'name'       => 'Nadimi International',
             'inLanguage' => ['fa', 'en', 'ar'],
             'publisher'  => ['@id' => $orgId],
         ];

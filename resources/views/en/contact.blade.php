@@ -1,7 +1,7 @@
 @extends('layouts.en.master')
 
 @section('title')
-    Contact Us | Iran & Oman Offices – Express Nadimi
+    Contact Us | Iran & Oman Offices – Nadimi International
 @endsection
 
 @section('description')
@@ -35,7 +35,7 @@
                         <i></i><span aria-current="page">Contact</span>
                     </nav>
                     <span class="label">Contact</span>
-                    <h1 class="display" style="margin-top: 16px">Contact us</h1>
+                    <h1 class="display" style="margin-top: 16px">Contact Nadimi International</h1>
                     <p>Contact us for today's price, availability, partnership requests or our sales team. You can also send
                         a suggestion or complaint.</p>
                 </div>

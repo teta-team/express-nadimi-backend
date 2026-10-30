@@ -1,7 +1,7 @@
 @extends('layouts.en.master')
 
 @section('title')
-    About Us | Nadimi International LLC – Express Nadimi
+    About Us | Nadimi International LLC – Nadimi International
 @endsection
 
 @section('description')

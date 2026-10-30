@@ -38,7 +38,7 @@
 
                     <span class="label">المنتجات</span>
 
-                    <h1 class="display" style="margin-top: 16px">منتجاتنا</h1>
+                    <h1 class="display" style="margin-top: 16px">منتجاتنا للتصدير</h1>
 
                     <p>
                         بالتعاون مع المنتجين والمزارعين وأصحاب البساتين ومراكز التوريد في إيران، توفّر شركة نديمي مجموعة من

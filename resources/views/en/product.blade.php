@@ -117,13 +117,13 @@
     |--------------------------------------------------------------------------
     */
 
-    $pageTitle = $name . ' for export from Iran | Express Nadimi';
+    $pageTitle = $name . ' for export from Iran | Nadimi International';
 
     $pageDescription = trim(strip_tags($summary));
 
     if ($pageDescription === '') {
         $pageDescription = $name
-            . ' for export from Iran by Express Nadimi. Contact us for export specifications, packaging and pricing.';
+            . ' for export from Iran by Nadimi International. Contact us for export specifications, packaging and pricing.';
     }
 
     $productUrl = route('product.show', [
@@ -182,7 +182,7 @@
         'image'       => [$imagePath],
         'category'    => $categoryName,
         'sku'         => (string) $product->slug,
-        'brand'       => ['@type' => 'Brand', 'name' => 'Express Nadimi'],
+        'brand'       => ['@type' => 'Brand', 'name' => 'Nadimi International'],
         'url'         => $productUrl,
     ];
 @endphp

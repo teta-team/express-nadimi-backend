@@ -22,10 +22,10 @@
         ],
         'en' => [
             'locale'   => 'en_US',
-            'site'     => 'Express Nadimi',
-            'title'    => 'Express Nadimi | Fresh Iranian Fruit & Vegetable Exporter',
-            'desc'     => 'Express Nadimi exports fresh Iranian fruit and vegetables to Oman and the region, with 15+ years of experience. Ask us for today\'s price and availability.',
-            'image_alt'=> 'Express Nadimi - exporter of fresh Iranian fruit and vegetables',
+            'site'     => 'Nadimi International',
+            'title'    => 'Nadimi International | Fresh Iranian Fruit & Vegetable Exporter',
+            'desc'     => 'Nadimi International exports fresh Iranian fruit and vegetables to Oman and the region, with 15+ years of experience. Ask us for today\'s price and availability.',
+            'image_alt'=> 'Nadimi International - exporter of fresh Iranian fruit and vegetables',
         ],
         'ar' => [
             'locale'   => 'ar_AR',
