@@ -1,29 +1,28 @@
 @extends('layouts.ar.master')
 
 @section('title')
-    من نحن — نديمي إنترناشونال | إكسبرس نديمي
+    من نحن | نديمي إنترناشيونال – إكسبرس نديمي
 @endsection
 
 @section('description')
-    تعرّف على شركة نديمي: من المزرعة إلى عُمان، التوريد ومراقبة الجودة والتغليف وخبرتنا في أسواق التصدير.
+    تعرّفوا على نديمي: مسار التوريد من المزرعة إلى السوق العُماني، ومراقبة الجودة والتعبئة، وخبرة تزيد على 15 عاماً في تصدير الفواكه والخضروات.
 @endsection
 
+@section('canonical', route('about', ['lang' => 'ar']))
+@section('og_image', asset('assets/images/scenes/field-sunrise-1600.webp'))
+
 @section('meta')
-    <link rel="canonical" href="{{ route('about', ['lang' => 'ar']) }}">
     <link rel="alternate" hreflang="en" href="{{ route('about', ['lang' => 'en']) }}">
     <link rel="alternate" hreflang="fa" href="{{ route('about', ['lang' => 'fa']) }}">
     <link rel="alternate" hreflang="ar" href="{{ route('about', ['lang' => 'ar']) }}">
     <link rel="alternate" hreflang="x-default" href="{{ route('about', ['lang' => 'en']) }}">
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="إكسبرس نديمي">
-    <meta property="og:title" content="من نحن — نديمي إنترناشونال | إكسبرس نديمي">
-    <meta property="og:description"
-        content="تعرّف على شركة نديمي: من المزرعة إلى عُمان، التوريد ومراقبة الجودة والتغليف وخبرتنا في أسواق التصدير.">
-    <meta property="og:url" content="{{ route('about', ['lang' => 'ar']) }}">
-    <meta property="og:image" content="{{ asset('assets/images/scenes/field-sunrise-1600.webp') }}">
-    <meta property="og:locale" content="ar_OM">
-    <meta name="twitter:card" content="summary_large_image">
-    <script type="application/ld+json">{"@@context":"https://schema.org","@type":"Organization","name":"Nadimi International LLC","alternateName":["Express Nadimi","إكسبرس نديمي"],"url":"{{ url('/') }}","logo":"{{ asset('assets/images/logo/nadimi-logo-512.png') }}","email":"info@nadimi.example","telephone":"+968 9948 2094","address":[{"@type":"PostalAddress","addressLocality":"Tabriz","addressCountry":"IR"},{"@type":"PostalAddress","addressLocality":"Muscat","addressCountry":"OM"}]}</script>
+    @include('partials.seo-schema', [
+        'lang' => 'ar',
+        'crumbs' => [
+            ['الرئيسية', route('home', ['lang' => 'ar'])],
+            ['من نحن', route('about', ['lang' => 'ar'])],
+        ],
+    ])
 @endsection
 
 @section('content')

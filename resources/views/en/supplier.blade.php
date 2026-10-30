@@ -1,29 +1,28 @@
 @extends('layouts.en.master')
 
 @section('title')
-    Supplier partnership form | Express Nadimi
+    Become a Supplier | Register Your Produce for Export – Nadimi
 @endsection
 
 @section('description')
-    Farmers, orchard owners, greenhouse growers and suppliers: register your produce for export with Nadimi.
+    Farmers, orchard owners and greenhouse growers: register your produce for export to Oman and the region with Nadimi. Fill in the form and we will contact you.
 @endsection
 
+@section('canonical', route('supplier', ['lang' => 'en']))
+@section('og_image', asset('assets/images/scenes/field-sunrise-1600.webp'))
+
 @section('meta')
-    <link rel="canonical" href="{{ route('supplier', ['lang' => 'en']) }}">
     <link rel="alternate" hreflang="en" href="{{ route('supplier', ['lang' => 'en']) }}">
     <link rel="alternate" hreflang="fa" href="{{ route('supplier', ['lang' => 'fa']) }}">
     <link rel="alternate" hreflang="ar" href="{{ route('supplier', ['lang' => 'ar']) }}">
     <link rel="alternate" hreflang="x-default" href="{{ route('supplier', ['lang' => 'en']) }}">
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="Express Nadimi">
-    <meta property="og:title" content="Supplier partnership form | Express Nadimi">
-    <meta property="og:description"
-        content="Farmers, orchard owners, greenhouse growers and suppliers: register your produce for export with Nadimi.">
-    <meta property="og:url" content="{{ route('supplier', ['lang' => 'en']) }}">
-    <meta property="og:image" content="{{ asset('assets/images/scenes/field-sunrise-1600.webp') }}">
-    <meta property="og:locale" content="en_US">
-    <meta name="twitter:card" content="summary_large_image">
-    <script type="application/ld+json">{"@@context":"https://schema.org","@type":"Organization","name":"Nadimi International LLC","alternateName":["Express Nadimi","Express Nadimi"],"url":"{{ url('/') }}","logo":"{{ asset('assets/images/logo/nadimi-logo-512.png') }}","email":"info@nadimi.example","telephone":"+968 9948 2094","address":[{"@type":"PostalAddress","addressLocality":"Tabriz","addressCountry":"IR"},{"@type":"PostalAddress","addressLocality":"Muscat","addressCountry":"OM"}]}</script>
+    @include('partials.seo-schema', [
+        'lang' => 'en',
+        'crumbs' => [
+            ['Home', route('home', ['lang' => 'en'])],
+            ['Become a supplier', route('supplier', ['lang' => 'en'])],
+        ],
+    ])
 @endsection
 
 @section('content')

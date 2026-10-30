@@ -1,6 +1,6 @@
 @extends('layouts.fa.master')
 @php
-    $locale = app()->getLocale();
+    $locale = 'fa';
 
     $name = is_array($product->name)
         ? ($product->name[$locale] ?? $product->name['fa'] ?? $product->name['en'] ?? $product->slug)
@@ -74,119 +74,66 @@ $categoryName = $categoryNames[$product->category][$locale]
     ];
 @endphp
 
-@section('title')
-    {{ $name }} | محصولات صادراتی اکسپرس ندیمی
-@endsection
+@php
+    $image = $product->image ?: 'assets/images/products/tomato-900.webp';
+    if (!preg_match('#^https?://#i', $image)) {
+        $image = asset(ltrim($image, '/'));
+    }
 
-@section('description')
-    {{ $summary ?: 'مشخصات، فصل عرضه و اطلاعات سفارش ' . $name . ' از اکسپرس ندیمی.' }}
-@endsection
+    $productUrl = route('product.show', ['lang' => 'fa', 'slug' => $product->slug]);
+
+    $alternateUrls = [
+        'en' => route('product.show', ['lang' => 'en', 'slug' => $product->slug]),
+        'fa' => route('product.show', ['lang' => 'fa', 'slug' => $product->slug]),
+        'ar' => route('product.show', ['lang' => 'ar', 'slug' => $product->slug]),
+    ];
+
+    $title = $name . ' صادراتی از ایران | اکسپرس ندیمی';
+
+    $summaryText = trim(strip_tags((string) $summary));
+    $description = \Illuminate\Support\Str::limit(
+        $summaryText !== '' ? $summaryText : $name . ' صادراتی از ایران: مشخصات، فصل عرضه، بسته‌بندی و حداقل سفارش. برای قیمت روز و موجودی با اکسپرس ندیمی تماس بگیرید.',
+        160
+    );
+@endphp
+
+@php
+    $crumbs = [
+        ['خانه', route('home', ['lang' => 'fa'])],
+        ['محصولات', route('products', ['lang' => 'fa'])],
+        [$categoryName, route('products', ['lang' => 'fa', 'category' => $product->category])],
+        [$name, $productUrl],
+    ];
+    $productSchema = [
+        '@context' => 'https://schema.org',
+        '@type'    => 'Product',
+        '@id'      => $productUrl . '#product',
+        'name'        => $name,
+        'description' => $description,
+        'image'       => [$image],
+        'category'    => $categoryName,
+        'sku'         => (string) $product->slug,
+        'brand'       => ['@type' => 'Brand', 'name' => 'Express Nadimi'],
+        'url'         => $productUrl,
+    ];
+@endphp
+
+@section('title', $title)
+@section('description', $description)
+@section('canonical', $productUrl)
+@section('og_type', 'product')
+@section('og_image', $image)
+@section('og_image_alt', $name)
 
 @section('meta')
-    @php
-        $locale = app()->getLocale();
-
-        $name = is_array($product->name)
-            ? ($product->name[$locale] ?? $product->name['fa'] ?? $product->name['en'] ?? $product->slug)
-            : ($product->name ?: $product->slug);
-
-        $summary = is_array($product->summary)
-            ? ($product->summary[$locale] ?? $product->summary['fa'] ?? $product->summary['en'] ?? '')
-            : ($product->summary ?? '');
-
-        $image = $product->image ?: asset('assets/images/products/tomato-900.webp');
-
-        $categoryNames = [
-            'vegetables' => ['fa' => 'صیفی‌جات', 'en' => 'Vegetables', 'ar' => 'الخضروات'],
-            'stone-fruits' => ['fa' => 'میوه‌های هسته‌دار', 'en' => 'Stone Fruits', 'ar' => 'الفواكه ذات النواة'],
-            'orchard-fruits' => ['fa' => 'میوه‌های باغی', 'en' => 'Orchard Fruits', 'ar' => 'فواكه البساتين'],
-            'citrus-melons' => ['fa' => 'مرکبات و جالیزی', 'en' => 'Citrus & Melons', 'ar' => 'الحمضيات والبطيخ'],
-        ];
-
-        $categoryName = $categoryNames[$product->category][$locale]
-            ?? $categoryNames[$product->category]['en']
-            ?? 'Products';
-
-        $productUrl = route('product.show', [
-            'lang' => $locale,
-            'slug' => $product->slug,
-        ]);
-
-        $title = $name . ' | Express Nadimi';
-        $description = \Illuminate\Support\Str::limit(strip_tags($summary), 160);
-    @endphp
-
-    <link rel="canonical" href="{{ $productUrl }}">
-
-    @foreach (['en', 'fa', 'ar'] as $alternateLang)
-        <link
-            rel="alternate"
-            hreflang="{{ $alternateLang }}"
-            href="{{ route('product.show', ['lang' => $alternateLang, 'slug' => $product->slug]) }}"
-        >
+    @foreach ($alternateUrls as $alternateLang => $alternateUrl)
+        <link rel="alternate" hreflang="{{ $alternateLang }}" href="{{ $alternateUrl }}">
     @endforeach
-
-    <link
-        rel="alternate"
-        hreflang="x-default"
-        href="{{ route('product.show', ['lang' => 'en', 'slug' => $product->slug]) }}"
-    >
-
-    <meta name="description" content="{{ $description }}">
-
-    <meta property="og:type" content="product">
-    <meta property="og:site_name" content="اکسپرس ندیمی">
-    <meta property="og:title" content="{{ $title }}">
-    <meta property="og:description" content="{{ $description }}">
-    <meta property="og:url" content="{{ $productUrl }}">
-    <meta property="og:image" content="{{ $image }}">
-    <meta property="og:locale" content="{{ ['fa' => 'fa_IR', 'ar' => 'ar_AR', 'en' => 'en_US'][$locale] ?? 'en_US' }}">
-
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="{{ $title }}">
-    <meta name="twitter:description" content="{{ $description }}">
-    <meta name="twitter:image" content="{{ $image }}">
-
-    <script type="application/ld+json">
-        {!! json_encode([
-            '@context' => 'https://schema.org',
-            '@type' => 'Organization',
-            'name' => 'Nadimi International LLC',
-            'alternateName' => ['Express Nadimi', 'اکسپرس ندیمی'],
-            'url' => url('/'),
-            'logo' => asset('assets/images/logo/nadimi-logo-512.png'),
-            'telephone' => '+968 9948 2094',
-            'address' => [
-                [
-                    '@type' => 'PostalAddress',
-                    'addressLocality' => 'Tabriz',
-                    'addressCountry' => 'IR',
-                ],
-                [
-                    '@type' => 'PostalAddress',
-                    'addressLocality' => 'Muscat',
-                    'addressCountry' => 'OM',
-                ],
-            ],
-        ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT) !!}
-    </script>
-
-    <script type="application/ld+json">
-        {!! json_encode([
-            '@context' => 'https://schema.org',
-            '@type' => 'Product',
-            'name' => $name,
-            'description' => $description,
-            'image' => $image,
-            'category' => $categoryName,
-            'brand' => [
-                '@type' => 'Brand',
-                'name' => 'Express Nadimi',
-            ],
-            'url' => $productUrl,
-        ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT) !!}
-    </script>
+    <link rel="alternate" hreflang="x-default" href="{{ $alternateUrls['en'] }}">
+    @include('partials.seo-schema', ['lang' => 'fa', 'crumbs' => $crumbs])
+    <script type="application/ld+json">{!! json_encode($productSchema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) !!}</script>
 @endsection
+
 @section('content')
     <main id="main" tabindex="-1">
         <div class="container">

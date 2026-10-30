@@ -1,29 +1,28 @@
 @extends('layouts.en.master')
 
 @section('title')
-    About us — Nadimi International LLC | Express Nadimi
+    About Us | Nadimi International LLC – Express Nadimi
 @endsection
 
 @section('description')
-    About Nadimi: from farm to Oman — sourcing, quality control, packaging and our export market experience.
+    Meet Nadimi: our farm-to-Oman sourcing route, quality control, packaging and 15+ years of experience exporting fresh Iranian fruit and vegetables.
 @endsection
 
+@section('canonical', route('about', ['lang' => 'en']))
+@section('og_image', asset('assets/images/scenes/field-sunrise-1600.webp'))
+
 @section('meta')
-    <link rel="canonical" href="{{ route('about', ['lang' => 'en']) }}">
     <link rel="alternate" hreflang="en" href="{{ route('about', ['lang' => 'en']) }}">
     <link rel="alternate" hreflang="fa" href="{{ route('about', ['lang' => 'fa']) }}">
     <link rel="alternate" hreflang="ar" href="{{ route('about', ['lang' => 'ar']) }}">
     <link rel="alternate" hreflang="x-default" href="{{ route('about', ['lang' => 'en']) }}">
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="Express Nadimi">
-    <meta property="og:title" content="About us — Nadimi International LLC | Express Nadimi">
-    <meta property="og:description"
-        content="About Nadimi: from farm to Oman — sourcing, quality control, packaging and our export market experience.">
-    <meta property="og:url" content="{{ route('about', ['lang' => 'en']) }}">
-    <meta property="og:image" content="{{ asset('assets/images/scenes/field-sunrise-1600.webp') }}">
-    <meta property="og:locale" content="en_US">
-    <meta name="twitter:card" content="summary_large_image">
-    <script type="application/ld+json">{"@@context":"https://schema.org","@type":"Organization","name":"Nadimi International LLC","alternateName":["Express Nadimi","Express Nadimi"],"url":"{{ url('/') }}","logo":"{{ asset('assets/images/logo/nadimi-logo-512.png') }}","email":"info@nadimi.example","telephone":"+968 9948 2094","address":[{"@type":"PostalAddress","addressLocality":"Tabriz","addressCountry":"IR"},{"@type":"PostalAddress","addressLocality":"Muscat","addressCountry":"OM"}]}</script>
+    @include('partials.seo-schema', [
+        'lang' => 'en',
+        'crumbs' => [
+            ['Home', route('home', ['lang' => 'en'])],
+            ['About us', route('about', ['lang' => 'en'])],
+        ],
+    ])
 @endsection
 
 @section('content')

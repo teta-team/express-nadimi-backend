@@ -1,55 +1,28 @@
 @extends('layouts.en.master')
 
 @section('title')
-    Products — Fresh fruits &amp; vegetables for export | Express Nadimi
+    Export Products | Fresh Fruit & Vegetables – Express Nadimi
 @endsection
 
 @section('description')
-    Seasonal availability, origins, sizes and packaging for the fresh produce we export from Iran.
+    Browse fresh Iranian fruit and vegetables for export: seasonal availability, origin, size and packaging for each product. Contact us for today's price.
 @endsection
 
+@section('canonical', route('products', ['lang' => 'en']))
+@section('og_image', asset('assets/images/scenes/field-sunrise-1600.webp'))
+
 @section('meta')
-    <link rel="canonical" href="{{ route('products', ['lang' => 'en']) }}">
     <link rel="alternate" hreflang="en" href="{{ route('products', ['lang' => 'en']) }}">
     <link rel="alternate" hreflang="fa" href="{{ route('products', ['lang' => 'fa']) }}">
     <link rel="alternate" hreflang="ar" href="{{ route('products', ['lang' => 'ar']) }}">
     <link rel="alternate" hreflang="x-default" href="{{ route('products', ['lang' => 'en']) }}">
-
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="Express Nadimi">
-    <meta property="og:title" content="Products — Fresh fruits &amp; vegetables for export | Express Nadimi">
-    <meta property="og:description"
-          content="Seasonal availability, origins, sizes and packaging for the fresh produce we export from Iran.">
-    <meta property="og:url" content="{{ route('products', ['lang' => 'en']) }}">
-    <meta property="og:image" content="{{ asset('assets/images/scenes/field-sunrise-1600.webp') }}">
-    <meta property="og:locale" content="en_US">
-
-    <meta name="twitter:card" content="summary_large_image">
-
-    <script type="application/ld+json">
-        {
-            "@@context": "https://schema.org",
-            "@type": "Organization",
-            "name": "Nadimi International LLC",
-            "alternateName": ["Express Nadimi", "اکسپرس ندیمی"],
-            "url": "{{ url('/') }}",
-            "logo": "{{ asset('assets/images/logo/nadimi-logo-512.png') }}",
-            "email": "info@nadimi.example",
-            "telephone": "+968 9948 2094",
-            "address": [
-                {
-                    "@type": "PostalAddress",
-                    "addressLocality": "Tabriz",
-                    "addressCountry": "IR"
-                },
-                {
-                    "@type": "PostalAddress",
-                    "addressLocality": "Muscat",
-                    "addressCountry": "OM"
-                }
-            ]
-        }
-    </script>
+    @include('partials.seo-schema', [
+        'lang' => 'en',
+        'crumbs' => [
+            ['Home', route('home', ['lang' => 'en'])],
+            ['Products', route('products', ['lang' => 'en'])],
+        ],
+    ])
 @endsection
 
 @section('content')

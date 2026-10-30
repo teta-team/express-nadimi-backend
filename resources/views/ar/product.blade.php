@@ -156,77 +156,41 @@
     $relatedProducts = $relatedProducts ?? collect();
 @endphp
 
-@section('title')
-    {{ $title }}
-@endsection
+@php
+    $crumbs = [
+        ['الرئيسية', route('home', ['lang' => 'ar'])],
+        ['المنتجات', route('products', ['lang' => 'ar'])],
+        [$categoryName, route('products', ['lang' => 'ar', 'category' => $product->category])],
+        [$name, $productUrl],
+    ];
+    $productSchema = [
+        '@context' => 'https://schema.org',
+        '@type'    => 'Product',
+        '@id'      => $productUrl . '#product',
+        'name'        => $name,
+        'description' => $description,
+        'image'       => [$image],
+        'category'    => $categoryName,
+        'sku'         => (string) $product->slug,
+        'brand'       => ['@type' => 'Brand', 'name' => 'Express Nadimi'],
+        'url'         => $productUrl,
+    ];
+@endphp
 
-@section('description')
-    {{ $description }}
-@endsection
+@section('title', $title)
+@section('description', $description)
+@section('canonical', $productUrl)
+@section('og_type', 'product')
+@section('og_image', $image)
+@section('og_image_alt', $name)
 
 @section('meta')
-    <link rel="canonical" href="{{ $productUrl }}">
-
     @foreach ($alternateUrls as $alternateLang => $alternateUrl)
         <link rel="alternate" hreflang="{{ $alternateLang }}" href="{{ $alternateUrl }}">
     @endforeach
-
     <link rel="alternate" hreflang="x-default" href="{{ $alternateUrls['en'] }}">
-
-    <meta name="description" content="{{ $description }}">
-
-    <meta property="og:type" content="product">
-    <meta property="og:site_name" content="إكسبرس نديمي">
-    <meta property="og:title" content="{{ $title }}">
-    <meta property="og:description" content="{{ $description }}">
-    <meta property="og:url" content="{{ $productUrl }}">
-    <meta property="og:image" content="{{ $image }}">
-    <meta property="og:locale" content="ar_OM">
-
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="{{ $title }}">
-    <meta name="twitter:description" content="{{ $description }}">
-    <meta name="twitter:image" content="{{ $image }}">
-
-    <script type="application/ld+json">
-        {!! json_encode([
-            '@context' => 'https://schema.org',
-            '@type' => 'Organization',
-            'name' => 'Nadimi International LLC',
-            'alternateName' => ['Express Nadimi', 'إكسبرس نديمي'],
-            'url' => url('/'),
-            'logo' => asset('assets/images/logo/nadimi-logo-512.png'),
-            'telephone' => '+968 9948 2094',
-            'address' => [
-                [
-                    '@type' => 'PostalAddress',
-                    'addressLocality' => 'Tabriz',
-                    'addressCountry' => 'IR',
-                ],
-                [
-                    '@type' => 'PostalAddress',
-                    'addressLocality' => 'Muscat',
-                    'addressCountry' => 'OM',
-                ],
-            ],
-        ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT) !!}
-    </script>
-
-    <script type="application/ld+json">
-        {!! json_encode([
-            '@context' => 'https://schema.org',
-            '@type' => 'Product',
-            'name' => $name,
-            'description' => $description,
-            'image' => $image,
-            'category' => $categoryName,
-            'brand' => [
-                '@type' => 'Brand',
-                'name' => 'Express Nadimi',
-            ],
-            'url' => $productUrl,
-        ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT) !!}
-    </script>
+    @include('partials.seo-schema', ['lang' => 'ar', 'crumbs' => $crumbs])
+    <script type="application/ld+json">{!! json_encode($productSchema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) !!}</script>
 @endsection
 
 @section('content')

@@ -1,29 +1,28 @@
 @extends('layouts.ar.master')
 
 @section('title')
-    اتصل بنا، الاقتراحات والشكاوى | إكسبرس نديمي
+    اتصل بنا | مكاتب إيران وعُمان – إكسبرس نديمي
 @endsection
 
 @section('description')
-    تواصل مع مكتبينا في إيران وعُمان بالهاتف أو واتساب أو البريد، وأرسل رسالة أو اقتراحاً أو شكوى.
+    تواصلوا مع مكتبينا في إيران (تبريز) وعُمان (مسقط) عبر الهاتف أو واتساب أو البريد الإلكتروني، وأرسلوا رسالتكم أو اقتراحكم أو شكواكم.
 @endsection
 
+@section('canonical', route('contact', ['lang' => 'ar']))
+@section('og_image', asset('assets/images/scenes/field-sunrise-1600.webp'))
+
 @section('meta')
-    <link rel="canonical" href="{{ route('contact', ['lang' => 'ar']) }}">
     <link rel="alternate" hreflang="en" href="{{ route('contact', ['lang' => 'en']) }}">
     <link rel="alternate" hreflang="fa" href="{{ route('contact', ['lang' => 'fa']) }}">
     <link rel="alternate" hreflang="ar" href="{{ route('contact', ['lang' => 'ar']) }}">
     <link rel="alternate" hreflang="x-default" href="{{ route('contact', ['lang' => 'en']) }}">
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="إكسبرس نديمي">
-    <meta property="og:title" content="اتصل بنا، الاقتراحات والشكاوى | إكسبرس نديمي">
-    <meta property="og:description"
-        content="تواصل مع مكتبينا في إيران وعُمان بالهاتف أو واتساب أو البريد، وأرسل رسالة أو اقتراحاً أو شكوى.">
-    <meta property="og:url" content="{{ route('contact', ['lang' => 'ar']) }}">
-    <meta property="og:image" content="{{ asset('assets/images/scenes/field-sunrise-1600.webp') }}">
-    <meta property="og:locale" content="ar_OM">
-    <meta name="twitter:card" content="summary_large_image">
-    <script type="application/ld+json">{"@@context":"https://schema.org","@type":"Organization","name":"Nadimi International LLC","alternateName":["Express Nadimi","إكسبرس نديمي"],"url":"{{ url('/') }}","logo":"{{ asset('assets/images/logo/nadimi-logo-512.png') }}","email":"info@nadimi.example","telephone":"+968 9948 2094","address":[{"@type":"PostalAddress","addressLocality":"Tabriz","addressCountry":"IR"},{"@type":"PostalAddress","addressLocality":"Muscat","addressCountry":"OM"}]}</script>
+    @include('partials.seo-schema', [
+        'lang' => 'ar',
+        'crumbs' => [
+            ['الرئيسية', route('home', ['lang' => 'ar'])],
+            ['اتصل بنا', route('contact', ['lang' => 'ar'])],
+        ],
+    ])
 @endsection
 
 @section('content')
