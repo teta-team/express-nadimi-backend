@@ -15,7 +15,7 @@
     <title>ورود | ندیمی اینترنشنال</title>
     <link rel="icon" href="{{ asset('assets/images/nadimi-logo.png') }}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;700&display=swap">
-    <link rel="stylesheet" href="{{ asset('assets/css/admin.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/admin.css') }}">
 </head>
 
 <body>

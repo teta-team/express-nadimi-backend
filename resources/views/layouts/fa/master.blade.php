@@ -96,11 +96,11 @@
           crossorigin>
 
     <!-- Styles -->
-    <link rel="stylesheet" href="{{ asset('assets/css/site.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/site.css') }}">
 
     @yield('styles')
 
-    <script src="{{ asset('assets/js/theme.min.js') }}"></script>
+    <script src="{{ asset('assets/js/theme.js') }}"></script>
 </head>
 
 <body>
@@ -109,8 +109,8 @@
     @yield('content')
     @include('layouts.fa.footer')
 
-    <script src="{{ asset('assets/js/site.min.js') }}" defer></script>
-    <script src="{{ asset('assets/js/whatsapp-form.min.js') }}" defer></script>
+    <script src="{{ asset('assets/js/site.js') }}" defer></script>
+    <script src="{{ asset('assets/js/whatsapp-form.js') }}" defer></script>
     @yield('scripts')
 </body>
 

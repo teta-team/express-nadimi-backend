@@ -5,7 +5,7 @@
 @section('page-subtitle', 'مشاهده و مدیریت درخواست ثبت‌شده')
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('assets/css/admin-detail.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/admin-detail.css') }}">
 @endpush
 
 @section('content')
@@ -634,5 +634,5 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('assets/js/admin-detail.min.js') }}" defer></script>
+    <script src="{{ asset('assets/js/admin-detail.js') }}" defer></script>
 @endpush

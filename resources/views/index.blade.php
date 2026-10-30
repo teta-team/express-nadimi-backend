@@ -25,7 +25,7 @@
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" href="{{ asset('assets/images/logo/favicon-64.png') }}" type="image/png" sizes="64x64" />
     <link rel="apple-touch-icon" href="{{ asset('assets/images/logo/apple-touch-icon.png') }}" />
-    <script src="{{ asset('assets/js/lang-redirect.min.js') }}"></script>
+    <script src="{{ asset('assets/js/lang-redirect.js') }}"></script>
     <style>
         body {
             margin: 0;
