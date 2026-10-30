@@ -12,7 +12,7 @@
     <meta property="og:site_name" content="Express Nadimi">
     <meta property="og:title" content="404 — این صفحه پیدا نشد | اکسپرس ندیمی">
     <meta property="og:image" content="{{ asset('assets/images/scenes/field-sunrise-1600.webp') }}">
-    <script src="{{ asset('assets/js/theme.js') }}"></script>
+    <script src="{{ asset('assets/js/theme.min.js') }}"></script>
 
     <link rel="icon" href="{{ asset('assets/images/logo/favicon-64.png') }}" type="image/png" sizes="64x64">
     <link rel="apple-touch-icon" href="{{ asset('assets/images/logo/apple-touch-icon.png') }}">
@@ -20,9 +20,9 @@
         crossorigin>
     <link rel="preload" href="{{ asset('assets/fonts/dm-serif-display-latin.woff2') }}" as="font"
         type="font/woff2" crossorigin>
-    <link rel="stylesheet" href="{{ asset('assets/css/site.css') }}">
-    <script src="{{ asset('assets/js/site.js') }}" defer></script>
-    <script src="{{ asset('assets/js/error-page.js') }}" defer></script>
+    <link rel="stylesheet" href="{{ asset('assets/css/site.min.css') }}">
+    <script src="{{ asset('assets/js/site.min.js') }}" defer></script>
+    <script src="{{ asset('assets/js/error-page.min.js') }}" defer></script>
 </head>
 
 <body class="page-404">

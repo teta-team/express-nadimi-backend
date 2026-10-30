@@ -54,7 +54,7 @@
   --f-display: "Vazirmatn", Tahoma, sans-serif;
 }
 
-/* ---------- Dark theme (set by js/theme.js from the saved choice or the system setting) ---------- */
+/* ---------- Dark theme (set by js/theme.min.js from the saved choice or the system setting) ---------- */
 [data-theme="dark"] {
   color-scheme: dark;
   --forest: #eef1ee;
@@ -472,7 +472,7 @@ main { display: block; outline: none; }
 [lang="fa"] .waybill-head b, [lang="ar"] .waybill-head b { letter-spacing: 0; font-size: .88rem; }
 .waybill-head span { font-size: .78rem; color: var(--muted); font-weight: 600; font-variant-numeric: tabular-nums; }
 .waybill-body { padding: clamp(18px, 3vw, 30px); }
-[lang="fa"] .stamp, [lang="ar"] 
+[lang="fa"] .stamp, [lang="ar"]
 /* ---------- Forms ---------- */
 .field { display: grid; gap: 6px; min-width: 0; align-content: start; }
 .field > label, .legend { font-size: .82rem; font-weight: 700; color: var(--ink-2); }
@@ -722,7 +722,7 @@ fieldset.field legend { padding: 0; margin-bottom: 8px; }
 .footer-word { font-family: "DM Serif Display", Georgia, serif; font-size: clamp(5rem, 24vw, 22rem); line-height: .78; text-align: center; color: transparent; -webkit-text-stroke: 1px rgb(255 255 255 / .14); letter-spacing: -.02em; margin-top: 24px; margin-bottom: -.12em; user-select: none; white-space: nowrap; direction: ltr; }
 
 /* ---------- 404 page (one file, three languages) ---------- */
-/* Language panes: only the active language is shown (html[lang] is set by js/error-page.js; Persian without JS) */
+/* Language panes: only the active language is shown (html[lang] is set by js/error-page.min.js; Persian without JS) */
 html[lang="fa"] [data-l]:not([data-l="fa"]),
 html[lang="en"] [data-l]:not([data-l="en"]),
 html[lang="ar"] [data-l]:not([data-l="ar"]) { display: none !important; }

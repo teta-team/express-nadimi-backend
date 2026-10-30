@@ -35,7 +35,7 @@
                     <a href="https://wa.me/989144172605" aria-label="WhatsApp" target="_blank" rel="noopener"><svg
                             class="ic">
                             <use href="#i-whatsapp" />
-                        </svg></a><a href="https://www.instagram.com/export_nadimi?mdxt=MTV2cHA3c3NzZmd4bg=="
+                        </svg></a><a href="https://www.instagram.com/export_nadimi"
                         aria-label="Instagram" target="_blank" rel="noopener"><svg class="ic">
                             <use href="#i-instagram" />
                         </svg></a>

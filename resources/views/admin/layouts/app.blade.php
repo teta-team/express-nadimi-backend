@@ -8,7 +8,7 @@
     <title>@yield('title', 'پنل مدیریت') - اکسپرس ندیمی</title>
     <link rel="icon" href="{{ asset('assets/images/nadimi-logo.png') }}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap">
-    <link rel="stylesheet" href="{{ asset('assets/css/admin.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/admin.min.css') }}">
     <style>
         :root{--bg:#0b1020;--card:#121a2c;--line:#1f2a44;--text:#e7e9ee;--sub:#9aa3b9;--side:#0f1628;--brand:#22c55e}
         *{box-sizing:border-box}
