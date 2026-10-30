@@ -35,4 +35,13 @@ return [
         ],
     ],
 
+    'whatsapp' => [
+        // "meta" (WhatsApp Cloud API) or "webhook" (any custom gateway).
+        'driver' => env('WHATSAPP_DRIVER'),
+        'api_url' => env('WHATSAPP_API_URL'),
+        'token' => env('WHATSAPP_API_TOKEN'),
+        'phone_number_id' => env('WHATSAPP_PHONE_NUMBER_ID'),
+        'admin_number' => env('WHATSAPP_ADMIN_NUMBER'),
+    ],
+
 ];

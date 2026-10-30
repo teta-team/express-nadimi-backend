@@ -173,13 +173,42 @@
             });
         });
 
-        // Submit the search to Laravel instead of filtering only the
-        // products currently loaded on this pagination page.
+        // Submit the search to Laravel (server-side) and swap the results in
+        // place. This searches across every page, not only the current one.
         if (searchInput) {
             const params = new URLSearchParams(window.location.search);
             searchInput.value = params.get('search') || '';
 
             let searchTimer;
+            let controller = null;
+
+            const replaceResults = (doc) => {
+                const newGrid = doc.querySelector('[data-products]');
+                const currentGrid = document.querySelector('[data-products]');
+
+                if (newGrid && currentGrid) {
+                    currentGrid.innerHTML = newGrid.innerHTML;
+                }
+
+                const newPagination = doc.querySelector('.products-pagination');
+                const currentPagination = document.querySelector('.products-pagination');
+
+                if (currentPagination && newPagination) {
+                    currentPagination.innerHTML = newPagination.innerHTML;
+                } else if (currentPagination) {
+                    currentPagination.remove();
+                }
+
+                const newCount = doc.querySelector('[data-count]');
+                const currentCount = document.querySelector('[data-count]');
+
+                if (newCount && currentCount) {
+                    currentCount.innerHTML = newCount.innerHTML;
+                    if (newCount.dataset.many) {
+                        currentCount.dataset.many = newCount.dataset.many;
+                    }
+                }
+            };
 
             searchInput.addEventListener('input', () => {
                 clearTimeout(searchTimer);
@@ -206,8 +235,32 @@
                         // Ignore storage restrictions.
                     }
 
-                    window.location.assign(url.toString());
-                }, 500);
+                    if (controller) {
+                        controller.abort();
+                    }
+                    controller = new AbortController();
+
+                    fetch(url.toString(), {
+                        method: 'GET',
+                        signal: controller.signal,
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    })
+                    .then(response => response.text())
+                    .then(html => {
+                        const parser = new DOMParser();
+                        replaceResults(parser.parseFromString(html, 'text/html'));
+                        history.replaceState(null, '', url.toString());
+                    })
+                    .catch(error => {
+                        if (error.name === 'AbortError') {
+                            return;
+                        }
+                        console.error('Error fetching products:', error);
+                        window.location.assign(url.toString()); // Fallback
+                    });
+                }, 400);
             });
         }
     }

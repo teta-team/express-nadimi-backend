@@ -4,11 +4,9 @@ namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use App\Services\ImageProcessor;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Storage;
 
 class PageController extends Controller
 {
@@ -19,7 +17,8 @@ class PageController extends Controller
 
     public function index()
     {
-        $products = Product::orderBy('sort_order')->orderBy('id')->get();
+        $products = Product::orderBy('sort_order')->orderBy('id')->paginate(12);
+
         return view('panel.pages.products', compact('products'));
     }
 
@@ -28,7 +27,7 @@ class PageController extends Controller
         return view('panel.products.create');
     }
 
-    public function storeProduct(Request $request)
+    public function storeProduct(Request $request, ImageProcessor $imageProcessor)
     {
         $data = $request->validate([
             'name.fa' => ['required', 'string', 'max:191'],
@@ -43,7 +42,7 @@ class PageController extends Controller
             'packaging' => ['nullable', 'string', 'max:191'],
             'min_order' => ['nullable', 'string', 'max:191'],
             'hidden' => ['nullable', 'boolean'],
-            'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
+            'image' => ['nullable'],
         ]);
 
         $name = [
@@ -67,10 +66,12 @@ class PageController extends Controller
             $slug = $baseSlug.'-'.$count++;
         }
 
-        $imageUrl = null;
         if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('products', 'public');
-            $imageUrl = asset('storage/'.$path);
+            $imageUrl = $imageProcessor->storeImage($request->file('image'));
+        } elseif (is_string($data['image'] ?? null) && str_starts_with($data['image'], 'data:image')) {
+            $imageUrl = $imageProcessor->storeDataUrl($data['image']);
+        } else {
+            $imageUrl = null;
         }
 
         Product::create([
@@ -96,7 +97,7 @@ class PageController extends Controller
         return view('panel.products.edit', compact('product'));
     }
 
-    public function updateProduct(Request $request, Product $product)
+    public function updateProduct(Request $request, Product $product, ImageProcessor $imageProcessor)
     {
         $data = $request->validate([
             'name.fa' => ['required', 'string', 'max:191'],
@@ -111,7 +112,7 @@ class PageController extends Controller
             'packaging' => ['nullable', 'string', 'max:191'],
             'min_order' => ['nullable', 'string', 'max:191'],
             'hidden' => ['nullable', 'boolean'],
-            'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
+            'image' => ['nullable'],
         ]);
 
         $name = [
@@ -127,8 +128,9 @@ class PageController extends Controller
 
         $imageUrl = $product->image;
         if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('products', 'public');
-            $imageUrl = asset('storage/'.$path);
+            $imageUrl = $imageProcessor->storeImage($request->file('image')) ?: $product->image;
+        } elseif (is_string($data['image'] ?? null) && str_starts_with($data['image'], 'data:image')) {
+            $imageUrl = $imageProcessor->storeDataUrl($data['image']) ?: $product->image;
         }
 
         $product->update([
@@ -149,6 +151,7 @@ class PageController extends Controller
     public function destroyProduct(Product $product)
     {
         $product->delete();
+
         return redirect()->route('panel.products')->with('success', 'محصول حذف شد');
     }
 }

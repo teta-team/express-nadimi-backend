@@ -118,6 +118,11 @@
     },
   };
   const t = TEXT[lang];
+  const extraText = {
+    fa: { add: 'افزودن محصول دیگر', remove: 'حذف' },
+    en: { add: 'Add another product', remove: 'Remove' },
+    ar: { add: 'إضافة منتج آخر', remove: 'إزالة' },
+  }[lang];
 
   /* ---------- Reading the form ---------- */
   const normalizeDigits = (value) => value
@@ -152,30 +157,70 @@
 
     const email = valueOf(form, 'email');
     const phone = valueOf(form, 'phone');
-    if (!email && !phone) {
+
+    if (kind === 'contact') {
+      // The contact endpoint requires both an email address and a phone number.
+      if (!email) add(['email'], t.errors.required);
+      if (!phone) add(['phone'], t.errors.required);
+    } else if (!email && !phone) {
       add(CONTACT_FIELDS, t.errors.contact);
-    } else {
-      if (email && controlOf(form, 'email').validity.typeMismatch) add(['email'], t.errors.email);
-      if (phone && normalizeDigits(phone).replace(/\D/g, '').length < MIN_PHONE_DIGITS) add(['phone'], t.errors.phone);
     }
+
+    // When the visitor adds extra products, the first product also becomes
+    // mandatory, and every extra row needs a product and a quantity.
+    if (kind === 'inquiry') {
+      const extras = $$('[data-extra-row]', form);
+
+      if (extras.length) {
+        if (!valueOf(form, 'product')) add(['product'], t.errors.required);
+
+        extras.forEach((row) => {
+          const product = $('[data-extra-product]', row);
+          const quantity = $('[data-extra-quantity]', row);
+
+          if (product && !product.value) add([product.name], t.errors.required);
+          if (quantity && !quantity.value.trim()) add([quantity.name], t.errors.required);
+        });
+      }
+    }
+
+    const emailControl = controlOf(form, 'email');
+    const phoneControl = controlOf(form, 'phone');
+
+    if (email && emailControl && emailControl.validity.typeMismatch) {
+      add(['email'], t.errors.email);
+    }
+
+    if (phone && normalizeDigits(phone).replace(/\D/g, '').length < MIN_PHONE_DIGITS) {
+      add(['phone'], t.errors.phone);
+    }
+
     return problems;
   };
 
   const showProblem = (form, { names, message }) => {
     names.forEach((name) => {
       const el = controlOf(form, name);
+      if (!el) return;
       el.closest('.field')?.classList.add('bad');
       el.setAttribute('aria-invalid', 'true');
     });
 
     const first = controlOf(form, names[0]);
+    if (!first) return null;
+
     const text = document.createElement('p');
     text.className = 'err';
-    text.id = `${first.id}-error`;
+    if (first.id) {
+      text.id = `${first.id}-error`;
+    }
     text.dataset.whatsappError = '';
     text.textContent = message;
-    first.closest('.field').append(text);
-    first.setAttribute('aria-describedby', text.id);
+
+    const wrapper = first.closest('.field') || first.parentElement;
+    if (wrapper) wrapper.append(text);
+
+    if (text.id) first.setAttribute('aria-describedby', text.id);
     return first;
   };
 
@@ -202,17 +247,60 @@
   };
 
   /* ---------- Message ---------- */
+  const selectedText = (el) => {
+    if (!el) return '';
+    if (el.tagName === 'SELECT') return el.selectedOptions[0]?.textContent.trim() ?? '';
+    return el.value.trim();
+  };
+
+  const extraItems = (form) => $$('[data-extra-row]', form).map((row) => ({
+    product: selectedText($('[data-extra-product]', row)),
+    quantity: selectedText($('[data-extra-quantity]', row)),
+    packaging: $('[data-extra-packaging]', row)?.value
+      ? selectedText($('[data-extra-packaging]', row))
+      : '',
+  }));
+
   const buildMessage = (form, kind, note) => {
     const { groups, note: noteName } = FORMS[kind];
     const lines = [t.intro[kind], ''];
 
-    groups.forEach((group) => {
-      const rows = group
-        .map((name) => ({ name, value: valueOf(form, name) }))
-        .filter(({ value }) => value)
-        .map(({ name, value }) => `*${t.labels[name]}:* ${value}`);
-      if (rows.length) lines.push(...rows, '');
-    });
+    const extras = kind === 'inquiry' ? extraItems(form) : [];
+
+    if (extras.length) {
+      const first = {
+        product: selectedText($('select[name="product"]', form)),
+        quantity: selectedText($('input[name="quantity"]', form)),
+        packaging: $('select[name="packaging"]', form)?.value
+          ? selectedText($('select[name="packaging"]', form))
+          : '',
+      };
+
+      [first, ...extras].forEach((item, index) => {
+        lines.push(
+          `${index + 1}. ${t.labels.product}: ${item.product} — ${t.labels.quantity}: ${item.quantity}`
+          + (item.packaging ? ` — ${t.labels.packaging}: ${item.packaging}` : '')
+        );
+      });
+      lines.push('');
+
+      groups.forEach((group) => {
+        const rows = group
+          .filter((name) => !['product', 'quantity', 'packaging'].includes(name))
+          .map((name) => ({ name, value: valueOf(form, name) }))
+          .filter(({ value }) => value)
+          .map(({ name, value }) => `*${t.labels[name]}:* ${value}`);
+        if (rows.length) lines.push(...rows, '');
+      });
+    } else {
+      groups.forEach((group) => {
+        const rows = group
+          .map((name) => ({ name, value: valueOf(form, name) }))
+          .filter(({ value }) => value)
+          .map(({ name, value }) => `*${t.labels[name]}:* ${value}`);
+        if (rows.length) lines.push(...rows, '');
+      });
+    }
 
     if (note) lines.push(`*${t.labels[noteName]}:*`, note);
     return lines.join('\n').trim();
@@ -271,25 +359,200 @@
     text.append(link);
   };
 
+  /* Shows a server-side validation message that could not be attached to a field. */
+  const showServerError = (form, message) => {
+    let box = $('[data-whatsapp-server-error]', form);
+    if (!box) {
+      box = document.createElement('p');
+      box.className = 'notice notice-bad w';
+      box.dataset.whatsappServerError = '';
+      box.setAttribute('role', 'alert');
+      const foot = $('.iform-foot', form);
+      if (foot) foot.before(box);
+      else form.append(box);
+    }
+    box.textContent = message;
+    box.scrollIntoView({ block: 'center', behavior: reduceMotion ? 'auto' : 'smooth' });
+  };
+
+  /* ---------- Persisting to the server ---------- */
+  const persist = async (form) => {
+    const body = new FormData(form);
+
+    // The first product uses the simple product/quantity/packaging fields.
+    // When extra rows exist the endpoint expects every product in the
+    // products[] array, so mirror the first product into products[0].
+    if ($$('[data-extra-row]', form).length) {
+      const summary = ['product', 'quantity', 'packaging'];
+      const selectors = {
+        product: 'select[name="product"]',
+        quantity: 'input[name="quantity"]',
+        packaging: 'select[name="packaging"]',
+      };
+
+      summary.forEach((name) => {
+        const control = $(selectors[name], form);
+        body.append(`products[0][${name}]`, control ? control.value : '');
+      });
+    }
+
+    const response = await fetch(form.action, {
+      method: 'POST',
+      body,
+      credentials: 'same-origin',
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest',
+        Accept: 'application/json',
+      },
+    });
+
+    if (response.status === 422) {
+      const payload = await response.json().catch(() => null);
+      const errors = payload && payload.errors ? Object.values(payload.errors) : [];
+      return {
+        ok: false,
+        message: errors.length ? [].concat(errors[0])[0] : null,
+      };
+    }
+
+    return { ok: response.ok, message: null };
+  };
+
+  /* ---------- Multiple products ---------- */
+  const setupInquiryRepeater = (form) => {
+    const grid = $('.iform-grid', form);
+    const baseProduct = $('select[name="product"]', form);
+    const baseQuantity = $('input[name="quantity"]', form);
+    const basePackaging = $('select[name="packaging"]', form);
+
+    if (!grid || !baseProduct || !baseQuantity || !basePackaging) return;
+
+    const box = document.createElement('div');
+    box.className = 'field w';
+    box.style.gridColumn = '1 / -1';
+
+    const list = document.createElement('div');
+    list.dataset.extraRows = '';
+    list.style.display = 'grid';
+    list.style.gap = '10px';
+
+    const add = document.createElement('button');
+    add.type = 'button';
+    add.className = 'btn';
+    add.style.marginTop = '10px';
+    add.textContent = extraText.add;
+
+    let index = 1;
+
+    add.addEventListener('click', () => {
+      const row = document.createElement('div');
+      row.dataset.extraRow = '';
+      row.style.display = 'grid';
+      row.style.gridTemplateColumns = 'minmax(0,1fr) minmax(0,1fr) minmax(0,1fr) auto';
+      row.style.gap = '8px';
+      row.style.alignItems = 'end';
+
+      const product = baseProduct.cloneNode(true);
+      product.name = `products[${index}][product]`;
+      product.removeAttribute('id');
+      product.value = '';
+      product.required = true;
+      product.dataset.extraProduct = '';
+      product.setAttribute('aria-label', t.labels.product);
+
+      const quantity = baseQuantity.cloneNode(true);
+      quantity.name = `products[${index}][quantity]`;
+      quantity.removeAttribute('id');
+      quantity.value = '';
+      quantity.required = true;
+      quantity.dataset.extraQuantity = '';
+      quantity.setAttribute('aria-label', t.labels.quantity);
+
+      const packaging = basePackaging.cloneNode(true);
+      packaging.name = `products[${index}][packaging]`;
+      packaging.removeAttribute('id');
+      packaging.value = '';
+      packaging.dataset.extraPackaging = '';
+      packaging.setAttribute('aria-label', t.labels.packaging);
+
+      const remove = document.createElement('button');
+      remove.type = 'button';
+      remove.className = 'btn';
+      remove.textContent = '×';
+      remove.title = extraText.remove;
+      remove.setAttribute('aria-label', extraText.remove);
+      remove.addEventListener('click', () => {
+        row.remove();
+        if (!list.children.length) {
+          box.style.display = 'none';
+        }
+      });
+
+      row.append(product, quantity, packaging, remove);
+      list.append(row);
+      index += 1;
+      box.style.display = '';
+    });
+
+    box.append(list, add);
+    grid.append(box);
+  };
+
   /* ---------- Wiring ---------- */
   const initForm = (form) => {
     const kind = form.dataset.whatsappForm;
     if (!FORMS[kind]) return;
+    const submitButton = $('[type="submit"]', form);
 
-    form.addEventListener('submit', (event) => {
+    if (kind === 'inquiry') {
+      setupInquiryRepeater(form);
+    }
+
+    form.addEventListener('submit', async (event) => {
       event.preventDefault();
       clearProblems(form);
+      $$('[data-whatsapp-server-error]', form).forEach((node) => node.remove());
 
       const problems = validate(form, kind);
       if (problems.length) {
-        const [firstField] = problems.map((problem) => showProblem(form, problem));
-        firstField.scrollIntoView({ block: 'center', behavior: reduceMotion ? 'auto' : 'smooth' });
-        firstField.focus({ preventScroll: true });
+        const firstField = problems.map((problem) => showProblem(form, problem)).find(Boolean);
+        if (firstField) {
+          firstField.scrollIntoView({ block: 'center', behavior: reduceMotion ? 'auto' : 'smooth' });
+          firstField.focus({ preventScroll: true });
+        }
         return;
       }
 
       const { url, truncated } = buildLink(form, kind);
-      openWhatsApp(url);
+
+      // Reserve the tab synchronously so the browser does not block it while
+      // the request is in flight; it is redirected to WhatsApp on success.
+      const pendingTab = window.open('', '_blank');
+
+      if (submitButton) submitButton.disabled = true;
+
+      let result = { ok: true, message: null };
+      try {
+        result = await persist(form);
+      } catch (error) {
+        // The network failed, but the visitor can still reach us on WhatsApp.
+        result = { ok: true, message: null };
+      } finally {
+        if (submitButton) submitButton.disabled = false;
+      }
+
+      if (!result.ok) {
+        if (pendingTab) pendingTab.close();
+        showServerError(form, result.message || t.errors.required);
+        return;
+      }
+
+      if (pendingTab && !pendingTab.closed) {
+        pendingTab.location.href = url;
+      } else {
+        openWhatsApp(url);
+      }
+
       showNotice(form, url, truncated);
     });
 

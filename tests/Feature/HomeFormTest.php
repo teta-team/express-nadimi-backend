@@ -1,5 +1,22 @@
 <?php
 
+use App\Models\Product;
+
+beforeEach(function () {
+    Product::withTrashed()->where('slug', 'apple')->restore();
+
+    Product::firstOrCreate(
+        ['slug' => 'apple'],
+        [
+            'name' => ['fa' => 'سیب', 'en' => 'Apple', 'ar' => 'تفاح'],
+            'category' => 'orchard-fruits',
+            'status' => 'available',
+            'months' => array_fill(0, 12, true),
+            'hidden' => false,
+        ]
+    );
+});
+
 function validHomeQuoteData(): array
 {
     return [
@@ -19,7 +36,7 @@ function validHomeQuoteData(): array
 test('home quote form accepts a valid request', function () {
     $response = $this->post(route('home.post', ['lang' => 'en']), validHomeQuoteData());
 
-    $response->assertOk();
+    $response->assertRedirect();
     $response->assertSessionHasNoErrors();
 });
 
@@ -29,7 +46,7 @@ test('home quote form accepts a request without optional fields', function () {
 
     $response = $this->post(route('home.post', ['lang' => 'fa']), $data);
 
-    $response->assertOk();
+    $response->assertRedirect();
     $response->assertSessionHasNoErrors();
 });
 

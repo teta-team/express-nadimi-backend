@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\SupplierSubmission;
+use App\Services\WhatsAppNotifier;
 use Illuminate\Http\Request;
 
 class SupplierController extends Controller
@@ -72,6 +73,14 @@ class SupplierController extends Controller
             : null;
 
         SupplierSubmission::create($data);
+
+        app(WhatsAppNotifier::class)->notify(sprintf(
+            "درخواست همکاری جدید\nنام: %s\nموبایل: %s\nشهر: %s\nمحصول: %s",
+            $data['name'],
+            $data['mobile'],
+            $data['city'],
+            $data['product'],
+        ));
 
         return redirect()
             ->back()

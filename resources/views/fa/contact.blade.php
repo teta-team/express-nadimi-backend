@@ -205,6 +205,26 @@
                         </div>
 
 
+                        @if (session('success'))
+
+
+
+                            <p role="status" style="padding:12px;margin-bottom:16px;border:1px solid #5D8060;border-radius:8px;color:#315C36">
+
+
+
+                                {{ session('success') }}
+
+
+
+                            </p>
+
+
+
+                        @endif
+
+
+
                         <form method="POST" action="{{ route('contact.post', ['lang' => app()->getLocale()]) }}"
                             novalidate data-whatsapp-form="contact">
                             @csrf
@@ -293,7 +313,7 @@
                                     @enderror
                                 </div>
                                 <div class="w iform-foot">
-                                    <p class="iform-hint">ایمیل یا تلفن کافی است؛ یکی از آن‌ها الزامی است.</p>
+                                    <p class="iform-hint">وارد کردن ایمیل و شماره تلفن هر دو الزامی است.</p>
                                     <button class="btn btn-leaf" type="submit">ارسال پیام<svg class="ic flip">
                                             <use href="#i-arrow" />
                                         </svg></button>

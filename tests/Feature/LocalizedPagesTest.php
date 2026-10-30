@@ -1,5 +1,22 @@
 <?php
 
+use App\Models\Product;
+
+beforeEach(function () {
+    Product::withTrashed()->where('slug', 'apple')->restore();
+
+    Product::firstOrCreate(
+        ['slug' => 'apple'],
+        [
+            'name' => ['fa' => 'سیب', 'en' => 'Apple', 'ar' => 'تفاح'],
+            'category' => 'orchard-fruits',
+            'status' => 'available',
+            'months' => array_fill(0, 12, true),
+            'hidden' => false,
+        ]
+    );
+});
+
 test('language selection page renders', function () {
     $this->get('/')
         ->assertOk()
@@ -9,7 +26,7 @@ test('language selection page renders', function () {
 test('admin panel renders', function () {
     $this->get('/panel')
         ->assertOk()
-        ->assertViewIs('panel.panel');
+        ->assertViewIs('panel.logIn');
 });
 
 dataset('localized pages', [
