@@ -4,9 +4,10 @@ namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use App\Services\ImageProcessor;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
 
 class ProductController extends Controller
@@ -25,26 +26,7 @@ class ProductController extends Controller
         ]);
     }
 
-    private function handleImage($image)
-    {
-        if (! $image) {
-            return null;
-        }
-        if (is_string($image) && Str::startsWith($image, 'data:image')) {
-            $image = preg_replace('/^data:image\/\w+;base64,/', '', $image);
-            $image = str_replace(' ', '+', $image);
-            $imageData = base64_decode($image);
-            if ($imageData === false) {
-                return null;
-            }
-            $filename = 'products/'.Str::uuid().'.jpg';
-            Storage::disk('public')->put($filename, $imageData);
-            return asset('storage/'.$filename);
-        }
-        return $image;
-    }
-
-    public function store(Request $request): JsonResponse
+    public function store(Request $request, ImageProcessor $imageProcessor): JsonResponse
     {
         $data = $request->validate([
             'name' => ['required', 'array'],
@@ -73,7 +55,12 @@ class ProductController extends Controller
             $slug = $baseSlug.'-'.$count++;
         }
 
-        $image = $this->handleImage($data['image'] ?? null);
+        $imageUrl = null;
+        if ($request->hasFile('image')) {
+            $imageUrl = $imageProcessor->storeImage($request->file('image'));
+        } elseif (is_string($data['image'] ?? null) && str_starts_with($data['image'], 'data:image')) {
+            $imageUrl = $imageProcessor->storeDataUrl($data['image']);
+        }
 
         $product = Product::create([
             'slug' => $slug,
@@ -85,7 +72,7 @@ class ProductController extends Controller
             'packaging' => $data['packaging'] ?? null,
             'min_order' => $data['min_order'] ?? null,
             'months' => $data['months'] ?? array_fill(0, 12, true),
-            'image' => $image,
+            'image' => $imageUrl,
             'hidden' => $data['hidden'] ?? false,
             'sort_order' => $data['sort_order'] ?? 0,
         ]);
@@ -93,7 +80,7 @@ class ProductController extends Controller
         return response()->json(['product' => $product], 201);
     }
 
-    public function update(Request $request, Product $product): JsonResponse
+    public function update(Request $request, Product $product, ImageProcessor $imageProcessor): JsonResponse
     {
         $data = $request->validate([
             'name' => ['sometimes', 'array'],
@@ -113,7 +100,13 @@ class ProductController extends Controller
         ]);
 
         if (array_key_exists('image', $data)) {
-            $data['image'] = $this->handleImage($data['image']);
+            if ($data['image'] instanceof UploadedFile) {
+                $data['image'] = $imageProcessor->storeImage($data['image']) ?: $product->image;
+            } elseif (is_string($data['image']) && str_starts_with($data['image'], 'data:image')) {
+                $data['image'] = $imageProcessor->storeDataUrl($data['image']) ?: $product->image;
+            } else {
+                unset($data['image']);
+            }
         }
 
         $product->update($data);

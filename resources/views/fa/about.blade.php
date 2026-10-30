@@ -1,29 +1,28 @@
 @extends('layouts.fa.master')
 
 @section('title')
-    درباره ما — ندیمی اینترنشنال | اکسپرس ندیمی
+    درباره ما | ندیمی اینترنشنال، اکسپرس ندیمی
 @endsection
 
 @section('description')
-    معرفی شرکت ندیمی، مسیر تأمین از مزرعه تا عمان، کنترل کیفیت، بسته‌بندی و تجربه بازارهای صادراتی.
+    آشنایی با شرکت ندیمی: مسیر تأمین از مزرعه تا بازار عمان، کنترل کیفیت، بسته‌بندی و بیش از ۱۵ سال تجربه در صادرات میوه و سبزیجات تازه.
 @endsection
 
+@section('canonical', route('about', ['lang' => 'fa']))
+@section('og_image', asset('assets/images/scenes/field-sunrise-1600.webp'))
+
 @section('meta')
-    <link rel="canonical" href="{{ route('about', ['lang' => 'fa']) }}">
     <link rel="alternate" hreflang="en" href="{{ route('about', ['lang' => 'en']) }}">
     <link rel="alternate" hreflang="fa" href="{{ route('about', ['lang' => 'fa']) }}">
     <link rel="alternate" hreflang="ar" href="{{ route('about', ['lang' => 'ar']) }}">
     <link rel="alternate" hreflang="x-default" href="{{ route('about', ['lang' => 'en']) }}">
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="اکسپرس ندیمی">
-    <meta property="og:title" content="درباره ما — ندیمی اینترنشنال | اکسپرس ندیمی">
-    <meta property="og:description"
-        content="معرفی شرکت ندیمی، مسیر تأمین از مزرعه تا عمان، کنترل کیفیت، بسته‌بندی و تجربه بازارهای صادراتی.">
-    <meta property="og:url" content="{{ route('about', ['lang' => 'fa']) }}">
-    <meta property="og:image" content="{{ asset('assets/images/scenes/field-sunrise-1600.webp') }}">
-    <meta property="og:locale" content="fa_IR">
-    <meta name="twitter:card" content="summary_large_image">
-    <script type="application/ld+json">{"@@context":"https://schema.org","@type":"Organization","name":"Nadimi International LLC","alternateName":["Express Nadimi","اکسپرس ندیمی"],"url":"{{ url('/') }}","logo":"{{ asset('assets/images/logo/nadimi-logo-512.png') }}","email":"info@nadimi.example","telephone":"+968 9948 2094","address":[{"@type":"PostalAddress","addressLocality":"Tabriz","addressCountry":"IR"},{"@type":"PostalAddress","addressLocality":"Muscat","addressCountry":"OM"}]}</script>
+    @include('partials.seo-schema', [
+        'lang' => 'fa',
+        'crumbs' => [
+            ['خانه', route('home', ['lang' => 'fa'])],
+            ['درباره ما', route('about', ['lang' => 'fa'])],
+        ],
+    ])
 @endsection
 
 @section('content')

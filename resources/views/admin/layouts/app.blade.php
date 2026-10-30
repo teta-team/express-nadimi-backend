@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
+    <meta name="robots" content="noindex, nofollow, noarchive">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -43,6 +44,25 @@
         .sbl{color:var(--sub)}
         .sbf small{color:var(--sub)}
         .tg{width:100%;border:1px solid var(--line);background:transparent;color:var(--text);border-radius:999px;padding:9px 14px;font-family:inherit;cursor:pointer}
+        .cd{border:1px solid var(--line);border-radius:20px;background:var(--card);color:var(--text);padding:0;max-width:420px;width:calc(100% - 32px)}
+        .cd::backdrop{background:rgba(3,7,18,.72)}
+        .cd-box{padding:24px}
+        .cd-box h3{margin:0 0 8px;font-size:19px}
+        .cd-box p{margin:0;color:var(--sub);line-height:1.9}
+        .cd-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:22px}
+        .empty{padding:48px 24px;text-align:center;color:var(--sub)}
+        .badge{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:3px 10px;font-size:12px;font-weight:700;border:1px solid var(--line)}
+        .badge.new{background:rgba(34,197,94,.15);color:#4ade80;border-color:rgba(74,222,128,.4)}
+        .badge.mid{background:rgba(234,179,8,.15);color:#facc15;border-color:rgba(250,204,21,.4)}
+        .badge.done{background:rgba(148,163,184,.15);color:#cbd5e1}
+        .filters{display:flex;gap:10px;flex-wrap:wrap;padding:16px 24px;border-bottom:1px solid var(--line)}
+        .filters input,.filters select{border:1px solid var(--line);border-radius:12px;padding:9px 13px;background:transparent;color:var(--text);font-family:inherit}
+        .pag{padding:16px 24px}
+        .pag nav{display:flex;gap:6px;flex-wrap:wrap}
+        .pag a,.pag span{border:1px solid var(--line);border-radius:10px;padding:6px 11px;text-decoration:none;color:var(--text);font-size:14px}
+        .pag .active span{background:var(--brand);color:#04120a;border-color:transparent;font-weight:800}
+        .btn.sm{padding:6px 12px;font-size:13px}
+        @media (max-width:820px){.app{grid-template-columns:1fr}.sb{display:none}main{padding:18px}.table th,.table td{padding:11px 12px}.form-grid{grid-template-columns:1fr}.page-head{flex-direction:column}}
     </style>
     @stack('styles')
 </head>
@@ -77,6 +97,46 @@
             </main>
         </div>
     </div>
+<dialog id="confirmDelete" class="cd" aria-labelledby="confirmDeleteTitle">
+    <form method="dialog" class="cd-box">
+        <h3 id="confirmDeleteTitle">تأیید حذف</h3>
+        <p data-confirm-text>آیا از انجام این عملیات مطمئن هستید؟</p>
+        <div class="cd-actions">
+            <button value="cancel" class="btn">انصراف</button>
+            <button value="confirm" class="btn dn">تأیید و حذف</button>
+        </div>
+    </form>
+</dialog>
+<script>
+    document.addEventListener('submit', function (event) {
+        const form = event.target.closest('form[data-confirm-delete]');
+        if (!form || form.dataset.confirmed === '1') {
+            return;
+        }
+
+        event.preventDefault();
+        const dialog = document.getElementById('confirmDelete');
+        if (!dialog) {
+            form.dataset.confirmed = '1';
+            form.submit();
+            return;
+        }
+
+        const text = dialog.querySelector('[data-confirm-text]');
+        if (text) {
+            text.textContent = form.dataset.confirmDelete || 'آیا از انجام این عملیات مطمئن هستید؟';
+        }
+
+        dialog.returnValue = '';
+        dialog.showModal();
+        dialog.addEventListener('close', function () {
+            if (dialog.returnValue === 'confirm') {
+                form.dataset.confirmed = '1';
+                form.submit();
+            }
+        }, { once: true });
+    });
+</script>
 @stack('scripts')
 </body>
 </html>

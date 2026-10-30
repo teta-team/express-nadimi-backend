@@ -5,10 +5,26 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Express Nadimi — Fresh Iranian Fruit &amp; Vegetable Exporter</title>
+    <title>Express Nadimi — Iranian Fruit &amp; Vegetable Exporter | English · فارسی · العربية</title>
     <meta name="description"
-        content="Express Nadimi (Nadimi International LLC) exports fresh Iranian fruits and vegetables. English · فارسی · العربية" />
-    <link rel="icon" href="{{ asset('assets/images/logo/nadimi-logo-4096.png') }}" type="image" />
+        content="Express Nadimi (Nadimi International LLC) exports fresh Iranian fruits and vegetables. Choose your language: English, فارسی or العربية." />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="theme-color" content="#fbfdfb" />
+    <link rel="canonical" href="{{ url('/') }}" />
+    <link rel="alternate" hreflang="en" href="{{ route('home', ['lang' => 'en']) }}" />
+    <link rel="alternate" hreflang="fa" href="{{ route('home', ['lang' => 'fa']) }}" />
+    <link rel="alternate" hreflang="ar" href="{{ route('home', ['lang' => 'ar']) }}" />
+    <link rel="alternate" hreflang="x-default" href="{{ url('/') }}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Express Nadimi" />
+    <meta property="og:title" content="Express Nadimi — Iranian Fruit &amp; Vegetable Exporter" />
+    <meta property="og:description"
+        content="Fresh Iranian fruits and vegetables for Oman and the region. English · فارسی · العربية" />
+    <meta property="og:url" content="{{ url('/') }}" />
+    <meta property="og:image" content="{{ asset('assets/images/scenes/field-sunrise-1600.webp') }}" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="{{ asset('assets/images/logo/favicon-64.png') }}" type="image/png" sizes="64x64" />
+    <link rel="apple-touch-icon" href="{{ asset('assets/images/logo/apple-touch-icon.png') }}" />
     <script src="{{ asset('assets/js/lang-redirect.js') }}"></script>
     <style>
         body {

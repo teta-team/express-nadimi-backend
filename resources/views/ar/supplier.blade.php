@@ -1,29 +1,28 @@
 @extends('layouts.ar.master')
 
 @section('title')
-    نموذج التعاون مع الموردين | إكسبرس نديمي
+    التعاون مع الموردين | سجّلوا منتجكم للتصدير – نديمي
 @endsection
 
 @section('description')
-    المزارعون وأصحاب البساتين ومزارعو البيوت المحمية والموردون: سجّلوا منتجاتكم للتصدير مع نديمي.
+    للمزارعين وأصحاب البساتين والبيوت المحمية: سجّلوا محصولكم للتصدير إلى عُمان والمنطقة مع نديمي. املؤوا النموذج وسنتواصل معكم.
 @endsection
 
+@section('canonical', route('supplier', ['lang' => 'ar']))
+@section('og_image', asset('assets/images/scenes/field-sunrise-1600.webp'))
+
 @section('meta')
-    <link rel="canonical" href="{{ route('supplier', ['lang' => 'ar']) }}">
     <link rel="alternate" hreflang="en" href="{{ route('supplier', ['lang' => 'en']) }}">
     <link rel="alternate" hreflang="fa" href="{{ route('supplier', ['lang' => 'fa']) }}">
     <link rel="alternate" hreflang="ar" href="{{ route('supplier', ['lang' => 'ar']) }}">
     <link rel="alternate" hreflang="x-default" href="{{ route('supplier', ['lang' => 'en']) }}">
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="إكسبرس نديمي">
-    <meta property="og:title" content="نموذج التعاون مع الموردين | إكسبرس نديمي">
-    <meta property="og:description"
-        content="المزارعون وأصحاب البساتين ومزارعو البيوت المحمية والموردون: سجّلوا منتجاتكم للتصدير مع نديمي.">
-    <meta property="og:url" content="{{ route('supplier', ['lang' => 'ar']) }}">
-    <meta property="og:image" content="{{ asset('assets/images/scenes/field-sunrise-1600.webp') }}">
-    <meta property="og:locale" content="ar_OM">
-    <meta name="twitter:card" content="summary_large_image">
-    <script type="application/ld+json">{"@@context":"https://schema.org","@type":"Organization","name":"Nadimi International LLC","alternateName":["Express Nadimi","إكسبرس نديمي"],"url":"{{ url('/') }}","logo":"{{ asset('assets/images/logo/nadimi-logo-512.png') }}","email":"info@nadimi.example","telephone":"+968 9948 2094","address":[{"@type":"PostalAddress","addressLocality":"Tabriz","addressCountry":"IR"},{"@type":"PostalAddress","addressLocality":"Muscat","addressCountry":"OM"}]}</script>
+    @include('partials.seo-schema', [
+        'lang' => 'ar',
+        'crumbs' => [
+            ['الرئيسية', route('home', ['lang' => 'ar'])],
+            ['كن مورّداً', route('supplier', ['lang' => 'ar'])],
+        ],
+    ])
 @endsection
 
 @section('content')

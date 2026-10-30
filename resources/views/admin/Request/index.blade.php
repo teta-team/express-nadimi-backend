@@ -221,7 +221,7 @@
                                         </form>
 
                                         <form method="POST" action="{{ route('admin.Request.destroy', [$requestType, $item->id]) }}"
-                                              onsubmit="return confirm('این درخواست به زباله‌دان منتقل شود؟')">
+                                              data-confirm-delete="این درخواست به زباله‌دان منتقل شود؟">
                                             @csrf
                                             @method('DELETE')
                                             <button class="request-action danger" type="submit">حذف</button>

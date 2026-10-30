@@ -1,29 +1,28 @@
 @extends('layouts.fa.master')
 
 @section('title')
-    محصولات — میوه و صیفی‌جات صادراتی | اکسپرس ندیمی
+    محصولات صادراتی | میوه و صیفی‌جات تازه ایران – اکسپرس ندیمی
 @endsection
 
 @section('description')
-    فصل عرضه، مبدأ تولید، سایز و بسته‌بندی محصولات تازه‌ای که از ایران صادر می‌کنیم.
+    فهرست میوه و صیفی‌جات صادراتی ایران: فصل عرضه، مبدأ تولید، سایز و بسته‌بندی هر محصول. برای قیمت روز و موجودی با ما تماس بگیرید.
 @endsection
 
+@section('canonical', route('products', ['lang' => 'fa']))
+@section('og_image', asset('assets/images/scenes/field-sunrise-1600.webp'))
+
 @section('meta')
-    <link rel="canonical" href="{{ route('products', ['lang' => 'fa']) }}">
     <link rel="alternate" hreflang="en" href="{{ route('products', ['lang' => 'en']) }}">
     <link rel="alternate" hreflang="fa" href="{{ route('products', ['lang' => 'fa']) }}">
     <link rel="alternate" hreflang="ar" href="{{ route('products', ['lang' => 'ar']) }}">
     <link rel="alternate" hreflang="x-default" href="{{ route('products', ['lang' => 'en']) }}">
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="اکسپرس ندیمی">
-    <meta property="og:title" content="محصولات — میوه و صیفی‌جات صادراتی | اکسپرس ندیمی">
-    <meta property="og:description"
-        content="فصل عرضه، مبدأ تولید، سایز و بسته‌بندی محصولات تازه‌ای که از ایران صادر می‌کنیم.">
-    <meta property="og:url" content="{{ route('products', ['lang' => 'fa']) }}">
-    <meta property="og:image" content="{{ asset('assets/images/scenes/field-sunrise-1600.webp') }}">
-    <meta property="og:locale" content="fa_IR">
-    <meta name="twitter:card" content="summary_large_image">
-    <script type="application/ld+json">{"@@context":"https://schema.org","@type":"Organization","name":"Nadimi International LLC","alternateName":["Express Nadimi","اکسپرس ندیمی"],"url":"{{ url('/') }}","logo":"{{ asset('assets/images/logo/nadimi-logo-512.png') }}","email":"info@nadimi.example","telephone":"+968 9948 2094","address":[{"@type":"PostalAddress","addressLocality":"Tabriz","addressCountry":"IR"},{"@type":"PostalAddress","addressLocality":"Muscat","addressCountry":"OM"}]}</script>
+    @include('partials.seo-schema', [
+        'lang' => 'fa',
+        'crumbs' => [
+            ['خانه', route('home', ['lang' => 'fa'])],
+            ['محصولات', route('products', ['lang' => 'fa'])],
+        ],
+    ])
 @endsection
 
 @section('content')

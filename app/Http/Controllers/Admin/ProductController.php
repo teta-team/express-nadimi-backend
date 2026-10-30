@@ -4,12 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use App\Services\ImageProcessor;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Throwable;
-
 
 class ProductController extends Controller
 {
@@ -29,11 +29,14 @@ class ProductController extends Controller
         return view('admin.products.create');
     }
 
-    public function store(Request $request)
+    public function store(Request $request, ImageProcessor $imageProcessor)
     {
         $validated = $request->validate($this->validationRules());
 
-        $imageUrl = $this->storeImage($request);
+        $imageUrl = null;
+        if ($request->hasFile('image')) {
+            $imageUrl = $imageProcessor->storeImage($request->file('image'));
+        }
 
         if ($request->hasFile('image') && $imageUrl === null) {
             return back()
@@ -102,7 +105,9 @@ class ProductController extends Controller
             });
         } catch (Throwable $exception) {
             // Avoid leaving an uploaded image behind if database persistence fails.
-            $this->deleteManagedImage($imageUrl);
+            if ($imageUrl) {
+                $imageProcessor->deleteImage($imageUrl);
+            }
 
             report($exception);
 
@@ -123,7 +128,7 @@ class ProductController extends Controller
         return view('admin.products.edit', compact('product'));
     }
 
-    public function update(Request $request, Product $product)
+    public function update(Request $request, Product $product, ImageProcessor $imageProcessor)
     {
         $validated = $request->validate($this->validationRules());
 
@@ -132,7 +137,7 @@ class ProductController extends Controller
         $uploadedNewImage = false;
 
         if ($request->hasFile('image')) {
-            $newImageUrl = $this->storeImage($request);
+            $newImageUrl = $imageProcessor->storeImage($request->file('image'));
 
             if ($newImageUrl === null) {
                 return back()
@@ -204,7 +209,7 @@ class ProductController extends Controller
         } catch (Throwable $exception) {
             // The old image remains untouched if the update fails.
             if ($uploadedNewImage) {
-                $this->deleteManagedImage($newImageUrl);
+                $imageProcessor->deleteImage($newImageUrl);
             }
 
             report($exception);
@@ -218,7 +223,7 @@ class ProductController extends Controller
 
         // Delete the previous image only after the database update succeeds.
         if ($uploadedNewImage && $oldImageUrl !== $newImageUrl) {
-            $this->deleteManagedImage($oldImageUrl);
+            $imageProcessor->deleteImage($oldImageUrl);
         }
 
         return redirect()
@@ -226,7 +231,7 @@ class ProductController extends Controller
             ->with('success', 'محصول با موفقیت به‌روزرسانی شد.');
     }
 
-// داخل کلاس ProductController:
+    // داخل کلاس ProductController:
     public function destroy(Product $product)
     {
         try {
@@ -255,7 +260,7 @@ class ProductController extends Controller
             return redirect()
                 ->route('admin.products.trash')
                 ->with('success', 'محصول با موفقیت بازیابی شد.');
-        } catch (\Illuminate\Database\QueryException $exception) {
+        } catch (QueryException $exception) {
             report($exception);
 
             return redirect()
@@ -285,7 +290,7 @@ class ProductController extends Controller
         return view('admin.products.trash', compact('products'));
     }
 
-    public function forceDelete(int $id)
+    public function forceDelete(int $id, ImageProcessor $imageProcessor)
     {
         try {
             $product = Product::onlyTrashed()->findOrFail($id);
@@ -304,7 +309,7 @@ class ProductController extends Controller
 
         if ($imageUrl) {
             try {
-                $this->deleteManagedImage($imageUrl);
+                $imageProcessor->deleteImage($imageUrl);
             } catch (Throwable $exception) {
                 report($exception);
             }
@@ -389,23 +394,24 @@ class ProductController extends Controller
      */
     private function generateUniqueSlug(string $source): string
     {
-        $baseSlug = \Illuminate\Support\Str::slug($source);
+        $baseSlug = Str::slug($source);
 
         if ($baseSlug === '') {
-            $baseSlug = 'product-' . \Illuminate\Support\Str::lower(
-                    \Illuminate\Support\Str::random(8)
-                );
+            $baseSlug = 'product-'.Str::lower(
+                Str::random(8)
+            );
         }
 
         $slug = $baseSlug;
         $counter = 1;
 
         while (Product::withTrashed()->where('slug', $slug)->exists()) {
-            $slug = $baseSlug . '-' . $counter++;
+            $slug = $baseSlug.'-'.$counter++;
         }
 
         return $slug;
     }
+
     /**
      * Convert selected month numbers (1–12) into a 12-boolean array.
      *
@@ -417,7 +423,7 @@ class ProductController extends Controller
         Request $request,
         mixed $existingMonths = null
     ): array {
-        if (!$request->boolean('months_submitted')) {
+        if (! $request->boolean('months_submitted')) {
             if (is_array($existingMonths)) {
                 $existingMonths = array_slice($existingMonths, 0, 12);
 
@@ -441,7 +447,7 @@ class ProductController extends Controller
 
         $submittedMonths = $request->input('months', []);
 
-        if (!is_array($submittedMonths)) {
+        if (! is_array($submittedMonths)) {
             $submittedMonths = [];
         }
 
@@ -457,6 +463,7 @@ class ProductController extends Controller
             range(1, 12)
         );
     }
+
     /**
      * Normalize translations and use a legacy value as the Persian fallback.
      */
@@ -469,139 +476,5 @@ class ProductController extends Controller
             'en' => $translations['en'] ?? null,
             'ar' => $translations['ar'] ?? null,
         ];
-    }
-
-    /**
-     * Store an uploaded image on the public disk.
-     *
-     * Returns its public URL, or null when processing/storage fails.
-     */
-    private function storeImage(Request $request): ?string
-    {
-        if (! $request->hasFile('image')) {
-            return null;
-        }
-
-        $file = $request->file('image');
-
-        if (! $file || ! $file->isValid()) {
-            return null;
-        }
-
-        try {
-            $contents = file_get_contents($file->getRealPath());
-
-            if ($contents === false) {
-                return null;
-            }
-
-            $image = @imagecreatefromstring($contents);
-
-            // If GD or WebP support is unavailable, store the validated original.
-            if (! $image || ! function_exists('imagewebp')) {
-                if ($image) {
-                    imagedestroy($image);
-                }
-
-                $path = $file->store('products', 'public');
-
-                return $path ? asset('storage/' . $path) : null;
-            }
-
-            $width = imagesx($image);
-            $height = imagesy($image);
-            $maxDimension = 1600;
-
-            if ($width > $maxDimension || $height > $maxDimension) {
-                $ratio = min(
-                    $maxDimension / $width,
-                    $maxDimension / $height
-                );
-
-                $newWidth = max(1, (int) round($width * $ratio));
-                $newHeight = max(1, (int) round($height * $ratio));
-
-                $resized = imagecreatetruecolor($newWidth, $newHeight);
-
-                imagealphablending($resized, false);
-                imagesavealpha($resized, true);
-
-                imagecopyresampled(
-                    $resized,
-                    $image,
-                    0,
-                    0,
-                    0,
-                    0,
-                    $newWidth,
-                    $newHeight,
-                    $width,
-                    $height
-                );
-
-                imagedestroy($image);
-                $image = $resized;
-            }
-
-            $filename = 'products/' . Str::uuid() . '.webp';
-
-            ob_start();
-            $success = imagewebp($image, null, 82);
-            $webpContents = ob_get_clean();
-
-            imagedestroy($image);
-
-            if (
-                ! $success
-                || ! is_string($webpContents)
-                || $webpContents === ''
-            ) {
-                return null;
-            }
-
-            if (! Storage::disk('public')->put($filename, $webpContents)) {
-                return null;
-            }
-
-            return asset('storage/' . $filename);
-        } catch (Throwable $exception) {
-            report($exception);
-
-            return null;
-        }
-    }
-
-    /**
-     * Delete an image only when its URL points to managed product storage.
-     */
-    private function deleteManagedImage(?string $imageUrl): void
-    {
-        if (! $imageUrl) {
-            return;
-        }
-
-        $path = parse_url($imageUrl, PHP_URL_PATH);
-
-        if (! is_string($path)) {
-            return;
-        }
-
-        $prefix = '/storage/';
-
-        if (! str_starts_with($path, $prefix)) {
-            return;
-        }
-
-        $relativePath = substr($path, strlen($prefix));
-
-        if (
-            $relativePath === ''
-            || str_contains($relativePath, '..')
-            || ! str_starts_with($relativePath, 'products/')
-        ) {
-            return;
-        }
-
-        Storage::disk('public')->delete($relativePath);
     }
 }

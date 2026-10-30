@@ -1,32 +1,23 @@
 @extends('layouts.ar.master')
 
 @section('title')
-    إكسبرس نديمي — تصدير الفواكه والخضروات الإيرانية الطازجة
+    إكسبرس نديمي | تصدير الفواكه والخضروات الإيرانية إلى عُمان
 @endsection
 
 @section('description')
-    تصدّر شركة نديمي بخبرة تزيد على 15 عاماً الفواكه والخضروات الإيرانية الطازجة إلى السوق العُماني وأسواق المنطقة، بحضور
-    مباشر في سوق سلال، الجناح WMC04. اطلبوا سعر اليوم والمتوفر.
+    بخبرة تزيد على 15 عاماً، تصدّر إكسبرس نديمي الفواكه والخضروات الإيرانية الطازجة إلى عُمان والمنطقة. تجدوننا في سوق سلال، الجناح WMC04.
 @endsection
 
+@section('canonical', route('home', ['lang' => 'ar']))
+@section('og_image', asset('assets/images/scenes/field-sunrise-1600.webp'))
+
 @section('meta')
-    <link rel="canonical" href="{{ route('home', ['lang' => 'ar']) }}">
     <link rel="alternate" hreflang="en" href="{{ route('home', ['lang' => 'en']) }}">
     <link rel="alternate" hreflang="fa" href="{{ route('home', ['lang' => 'fa']) }}">
     <link rel="alternate" hreflang="ar" href="{{ route('home', ['lang' => 'ar']) }}">
     <link rel="alternate" hreflang="x-default" href="{{ route('home', ['lang' => 'en']) }}">
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="إكسبرس نديمي">
-    <meta property="og:title" content="إكسبرس نديمي — تصدير الفواكه والخضروات الإيرانية الطازجة">
-    <meta property="og:description"
-        content="تصدّر شركة نديمي بخبرة تزيد على 15 عاماً الفواكه والخضروات الإيرانية الطازجة إلى السوق العُماني وأسواق المنطقة، بحضور مباشر في سوق سلال، الجناح WMC04. اطلبوا سعر اليوم والمتوفر.">
-    <meta property="og:url" content="{{ route('home', ['lang' => 'ar']) }}">
-    <meta property="og:image" content="{{ asset('assets/images/scenes/field-sunrise-1600.webp') }}">
-    <meta property="og:locale" content="ar_OM">
-    <meta name="twitter:card" content="summary_large_image">
-    <link rel="preload" as="image" href="{{ asset('assets/images/scenes/field-sunrise-800.webp') }}"
-        fetchpriority="high">
-    <script type="application/ld+json">{"@@context":"https://schema.org","@type":"Organization","name":"Nadimi International LLC","alternateName":["Express Nadimi","إكسبرس نديمي"],"url":"{{ url('/') }}","logo":"{{ asset('assets/images/logo/nadimi-logo-512.png') }}","email":"info@nadimi.example","telephone":"+968 9948 2094","address":[{"@type":"PostalAddress","addressLocality":"Tabriz","addressCountry":"IR"},{"@type":"PostalAddress","addressLocality":"Muscat","addressCountry":"OM"}]}</script>
+    <link rel="preload" as="image" href="{{ asset('assets/images/scenes/field-sunrise-800.webp') }}" fetchpriority="high">
+    @include('partials.seo-schema', ['lang' => 'ar', 'website' => true])
 @endsection
 
 @section('content')

@@ -28,7 +28,7 @@
                 <td>{{ $p->hidden ? 'مخفی' : 'نمایش' }}</td>
                 <td class="row">
                     <a class="btn" href="{{ route('panel.products.edit', $p) }}">ویرایش</a>
-                    <form method="POST" action="{{ route('panel.products.destroy', $p) }}" onsubmit="return confirm('حذف شود؟');">
+                    <form method="POST" action="{{ route('panel.products.destroy', $p) }}" onsubmit="event.preventDefault(); showConfirm(this);">
                         @csrf
                         @method('DELETE')
                         <button class="btn dn" type="submit">حذف</button>
@@ -40,5 +40,7 @@
             @endforelse
         </tbody>
     </table>
+    {{ $products->links() }}
 </div>
+@include('panel.partials.modal')
 @endsection

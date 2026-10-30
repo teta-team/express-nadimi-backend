@@ -165,78 +165,42 @@
     }
 @endphp
 
-@section('title')
-    {{ $pageTitle }}
-@endsection
+@php
+    $seoDescription = \Illuminate\Support\Str::limit($pageDescription, 160);
+    $crumbs = [
+        ['Home', route('home', ['lang' => 'en'])],
+        ['Products', route('products', ['lang' => 'en'])],
+        [$categoryName, $categoryUrl],
+        [$name, $productUrl],
+    ];
+    $productSchema = [
+        '@context' => 'https://schema.org',
+        '@type'    => 'Product',
+        '@id'      => $productUrl . '#product',
+        'name'        => $name,
+        'description' => $seoDescription,
+        'image'       => [$imagePath],
+        'category'    => $categoryName,
+        'sku'         => (string) $product->slug,
+        'brand'       => ['@type' => 'Brand', 'name' => 'Express Nadimi'],
+        'url'         => $productUrl,
+    ];
+@endphp
 
-@section('description')
-    {{ $pageDescription }}
-@endsection
+@section('title', $pageTitle)
+@section('description', $seoDescription)
+@section('canonical', $productUrl)
+@section('og_type', 'product')
+@section('og_image', $imagePath)
+@section('og_image_alt', $name)
 
 @section('meta')
-    <link rel="canonical" href="{{ $productUrl }}">
-
-    @foreach ($alternateUrls as $language => $url)
-        <link rel="alternate" hreflang="{{ $language }}" href="{{ $url }}">
+    @foreach ($alternateUrls as $alternateLang => $alternateUrl)
+        <link rel="alternate" hreflang="{{ $alternateLang }}" href="{{ $alternateUrl }}">
     @endforeach
-
     <link rel="alternate" hreflang="x-default" href="{{ $alternateUrls['en'] }}">
-
-    <meta name="robots" content="index, follow">
-
-    <meta property="og:type" content="product">
-    <meta property="og:site_name" content="Express Nadimi">
-    <meta property="og:title" content="{{ $pageTitle }}">
-    <meta property="og:description" content="{{ $pageDescription }}">
-    <meta property="og:url" content="{{ $productUrl }}">
-    <meta property="og:image" content="{{ $imagePath }}">
-    <meta property="og:locale" content="en_US">
-
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="{{ $pageTitle }}">
-    <meta name="twitter:description" content="{{ $pageDescription }}">
-    <meta name="twitter:image" content="{{ $imagePath }}">
-
-    <script type="application/ld+json">
-        {!! json_encode([
-            '@context' => 'https://schema.org',
-            '@type' => 'Organization',
-            'name' => 'Nadimi International LLC',
-            'alternateName' => 'Express Nadimi',
-            'url' => url('/'),
-            'logo' => asset('assets/images/logo/nadimi-logo-512.png'),
-            'email' => 'info@nadimi.example',
-            'telephone' => '+968 9948 2094',
-            'address' => [
-                [
-                    '@type' => 'PostalAddress',
-                    'addressLocality' => 'Tabriz',
-                    'addressCountry' => 'IR',
-                ],
-                [
-                    '@type' => 'PostalAddress',
-                    'addressLocality' => 'Muscat',
-                    'addressCountry' => 'OM',
-                ],
-            ],
-        ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT) !!}
-    </script>
-
-    <script type="application/ld+json">
-        {!! json_encode([
-            '@context' => 'https://schema.org',
-            '@type' => 'Product',
-            'name' => $name,
-            'description' => $pageDescription,
-            'image' => $imagePath,
-            'category' => $categoryName,
-            'brand' => [
-                '@type' => 'Brand',
-                'name' => 'Express Nadimi',
-            ],
-            'url' => $productUrl,
-        ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT) !!}
-    </script>
+    @include('partials.seo-schema', ['lang' => 'en', 'crumbs' => $crumbs])
+    <script type="application/ld+json">{!! json_encode($productSchema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) !!}</script>
 @endsection
 
 @section('content')

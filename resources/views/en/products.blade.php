@@ -1,55 +1,28 @@
 @extends('layouts.en.master')
 
 @section('title')
-    Products — Fresh fruits &amp; vegetables for export | Express Nadimi
+    Export Products | Fresh Fruit & Vegetables – Express Nadimi
 @endsection
 
 @section('description')
-    Seasonal availability, origins, sizes and packaging for the fresh produce we export from Iran.
+    Browse fresh Iranian fruit and vegetables for export: seasonal availability, origin, size and packaging for each product. Contact us for today's price.
 @endsection
 
+@section('canonical', route('products', ['lang' => 'en']))
+@section('og_image', asset('assets/images/scenes/field-sunrise-1600.webp'))
+
 @section('meta')
-    <link rel="canonical" href="{{ route('products', ['lang' => 'en']) }}">
     <link rel="alternate" hreflang="en" href="{{ route('products', ['lang' => 'en']) }}">
     <link rel="alternate" hreflang="fa" href="{{ route('products', ['lang' => 'fa']) }}">
     <link rel="alternate" hreflang="ar" href="{{ route('products', ['lang' => 'ar']) }}">
     <link rel="alternate" hreflang="x-default" href="{{ route('products', ['lang' => 'en']) }}">
-
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="Express Nadimi">
-    <meta property="og:title" content="Products — Fresh fruits &amp; vegetables for export | Express Nadimi">
-    <meta property="og:description"
-          content="Seasonal availability, origins, sizes and packaging for the fresh produce we export from Iran.">
-    <meta property="og:url" content="{{ route('products', ['lang' => 'en']) }}">
-    <meta property="og:image" content="{{ asset('assets/images/scenes/field-sunrise-1600.webp') }}">
-    <meta property="og:locale" content="en_US">
-
-    <meta name="twitter:card" content="summary_large_image">
-
-    <script type="application/ld+json">
-        {
-            "@@context": "https://schema.org",
-            "@type": "Organization",
-            "name": "Nadimi International LLC",
-            "alternateName": ["Express Nadimi", "اکسپرس ندیمی"],
-            "url": "{{ url('/') }}",
-            "logo": "{{ asset('assets/images/logo/nadimi-logo-512.png') }}",
-            "email": "info@nadimi.example",
-            "telephone": "+968 9948 2094",
-            "address": [
-                {
-                    "@type": "PostalAddress",
-                    "addressLocality": "Tabriz",
-                    "addressCountry": "IR"
-                },
-                {
-                    "@type": "PostalAddress",
-                    "addressLocality": "Muscat",
-                    "addressCountry": "OM"
-                }
-            ]
-        }
-    </script>
+    @include('partials.seo-schema', [
+        'lang' => 'en',
+        'crumbs' => [
+            ['Home', route('home', ['lang' => 'en'])],
+            ['Products', route('products', ['lang' => 'en'])],
+        ],
+    ])
 @endsection
 
 @section('content')
@@ -182,145 +155,14 @@
                 </p>
 
                 <div class="pgrid" data-products>
-                    @php
-                        $lang = 'en';
-                    @endphp
-
-                    @forelse ($products as $p)
-                        @php
-                            $pname = is_array($p->name)
-                                ? ($p->name[$lang] ?? $p->name['en'] ?? $p->name['fa'] ?? $p->slug)
-                                : ($p->name ?? $p->slug);
-
-                            $pcat = $p->category ?? '';
-
-                            $months = is_array($p->months) && count($p->months) === 12
-                                ? array_values($p->months)
-                                : array_fill(0, 12, false);
-
-                            $months = array_map(
-                                fn ($value) => filter_var($value, FILTER_VALIDATE_BOOLEAN),
-                                $months
-                            );
-
-                            $img = $p->image ?: asset('assets/images/products/tomato.jpg');
-
-                            $status = $p->status === 'off_season'
-                                ? 'Out of season'
-                                : 'Available';
-
-                            $statusClass = $p->status === 'off_season'
-                                ? 'is-off'
-                                : 'is-available';
-
-                            $activeMonths = count(array_filter($months));
-
-                            $summary = is_array($p->summary)
-                                ? ($p->summary[$lang] ?? '')
-                                : ($p->summary ?? '');
-
-                            $monthNames = [
-                                'January',
-                                'February',
-                                'March',
-                                'April',
-                                'May',
-                                'June',
-                                'July',
-                                'August',
-                                'September',
-                                'October',
-                                'November',
-                                'December',
-                            ];
-                        @endphp
-
-                        <div
-                            data-product
-                            data-category="{{ $pcat }}"
-                            data-name="{{ mb_strtolower($pname, 'UTF-8') }}"
-                            data-months="{{ implode(',', array_map(
-                                fn ($on) => $on ? '1' : '0',
-                                $months
-                            )) }}"
-                        >
-                            <article class="pcard">
-                                <div class="pcard-media">
-                                    <img
-                                        src="{{ $img }}"
-                                        alt="{{ $pname }}"
-                                        width="480"
-                                        height="373"
-                                        loading="lazy"
-                                        decoding="async"
-                                    >
-
-                                    <span class="pcard-go" aria-hidden="true">
-                                        <svg class="ic flip">
-                                            <use href="#i-arrow" />
-                                        </svg>
-                                    </span>
-                                </div>
-
-                                <div class="pcard-body">
-                                    <div class="pcard-top">
-                                        <h3 class="pcard-title">
-                                            <a href="{{ route('product.show', [
-                                                'lang' => 'en',
-                                                'slug' => $p->slug,
-                                            ]) }}">
-                                                {{ $pname }}
-                                            </a>
-                                        </h3>
-
-                                        <span class="dot-badge {{ $statusClass }}">
-                                            {{ $status }}
-                                        </span>
-                                    </div>
-
-                                    <p class="pcard-origin">
-                                        {{ $summary }}
-                                    </p>
-
-                                    <div
-                                        class="season"
-                                        role="img"
-                                        aria-label="Availability by month for {{ $pname }}"
-                                    >
-                                        <ol class="season-bar" aria-hidden="true">
-                                            @foreach ($months as $index => $on)
-                                                <li
-                                                    class="{{ $on ? 'on' : '' }} {{ ($index + 1) === (int) date('n') ? 'now' : '' }}"
-                                                    title="{{ $monthNames[$index] }}"
-                                                ></li>
-                                            @endforeach
-                                        </ol>
-
-                                        <span class="season-label">
-                                            @if ($activeMonths === 12)
-                                                Available year-round
-                                            @elseif ($activeMonths === 0)
-                                                Availability not specified
-                                            @else
-                                                Available for {{ $activeMonths }} months of the year
-                                            @endif
-                                        </span>
-                                    </div>
-                                </div>
-                            </article>
-                        </div>
-                    @empty
-                        <p>No products are currently available to display.</p>
-                    @endforelse
+                    @include('en.products_partial')
                 </div>
 
-                <p class="empty" data-empty hidden>
-                    No products match your search.
-                </p>
-
-                <div class="products-pagination">
-                    {{ $products->links() }}
-                </div>
+                @if($products->hasPages())
+                    <div class="products-pagination">
+                        {{ $products->links() }}
+                    </div>
+                @endif
 
             </div>
         </section>

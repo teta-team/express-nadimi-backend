@@ -1,32 +1,23 @@
 @extends('layouts.fa.master')
 
 @section('title')
-    اکسپرس ندیمی — صادرات میوه و صیفی‌جات تازه ایران
+    اکسپرس ندیمی | صادرات میوه و صیفی‌جات تازه ایران به عمان
 @endsection
 
 @section('description')
-    شرکت ندیمی با بیش از ۱۵ سال تجربه، میوه و سبزیجات تازه ایران را به بازار عمان و بازارهای منطقه صادر می‌کند. حضور مستقیم
-    در سوق سلال عمان، جایگاه WMC04. درخواست قیمت روز و موجودی.
+    اکسپرس ندیمی با بیش از ۱۵ سال تجربه، میوه و سبزیجات تازه ایران را به عمان و منطقه صادر می‌کند. حضور در سوق سلال، جایگاه WMC04. قیمت روز را بپرسید.
 @endsection
 
+@section('canonical', route('home', ['lang' => 'fa']))
+@section('og_image', asset('assets/images/scenes/field-sunrise-1600.webp'))
+
 @section('meta')
-    <link rel="canonical" href="{{ route('home', ['lang' => 'fa']) }}">
     <link rel="alternate" hreflang="en" href="{{ route('home', ['lang' => 'en']) }}">
     <link rel="alternate" hreflang="fa" href="{{ route('home', ['lang' => 'fa']) }}">
     <link rel="alternate" hreflang="ar" href="{{ route('home', ['lang' => 'ar']) }}">
     <link rel="alternate" hreflang="x-default" href="{{ route('home', ['lang' => 'en']) }}">
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="اکسپرس ندیمی">
-    <meta property="og:title" content="اکسپرس ندیمی — صادرات میوه و صیفی‌جات تازه ایران">
-    <meta property="og:description"
-        content="شرکت ندیمی با بیش از ۱۵ سال تجربه، میوه و سبزیجات تازه ایران را به بازار عمان و بازارهای منطقه صادر می‌کند. حضور مستقیم در سوق سلال عمان، جایگاه WMC04. درخواست قیمت روز و موجودی.">
-    <meta property="og:url" content="{{ route('home', ['lang' => 'fa']) }}">
-    <meta property="og:image" content="{{ asset('assets/images/scenes/field-sunrise-1600.webp') }}">
-    <meta property="og:locale" content="fa_IR">
-    <meta name="twitter:card" content="summary_large_image">
-    <link rel="preload" as="image" href="{{ asset('assets/images/scenes/field-sunrise-800.webp') }}"
-        fetchpriority="high">
-    <script type="application/ld+json">{"@@context":"https://schema.org","@type":"Organization","name":"Nadimi International LLC","alternateName":["Express Nadimi","اکسپرس ندیمی"],"url":"{{ url('/') }}","logo":"{{ asset('assets/images/logo/nadimi-logo-512.png') }}","email":"info@nadimi.example","telephone":"+968 9948 2094","address":[{"@type":"PostalAddress","addressLocality":"Tabriz","addressCountry":"IR"},{"@type":"PostalAddress","addressLocality":"Muscat","addressCountry":"OM"}]}</script>
+    <link rel="preload" as="image" href="{{ asset('assets/images/scenes/field-sunrise-800.webp') }}" fetchpriority="high">
+    @include('partials.seo-schema', ['lang' => 'fa', 'website' => true])
 @endsection
 
 @section('content')

@@ -1,29 +1,28 @@
 @extends('layouts.en.master')
 
 @section('title')
-    Contact us, suggestions &amp;amp; complaints | Express Nadimi
+    Contact Us | Iran & Oman Offices – Express Nadimi
 @endsection
 
 @section('description')
-    Reach our Iran and Oman offices by phone, WhatsApp or email, send a message, a suggestion or a complaint.
+    Reach our Iran (Tabriz) and Oman (Muscat) offices by phone, WhatsApp or email. Send us a message, a suggestion or a complaint.
 @endsection
 
+@section('canonical', route('contact', ['lang' => 'en']))
+@section('og_image', asset('assets/images/scenes/field-sunrise-1600.webp'))
+
 @section('meta')
-    <link rel="canonical" href="{{ route('contact', ['lang' => 'en']) }}">
     <link rel="alternate" hreflang="en" href="{{ route('contact', ['lang' => 'en']) }}">
     <link rel="alternate" hreflang="fa" href="{{ route('contact', ['lang' => 'fa']) }}">
     <link rel="alternate" hreflang="ar" href="{{ route('contact', ['lang' => 'ar']) }}">
     <link rel="alternate" hreflang="x-default" href="{{ route('contact', ['lang' => 'en']) }}">
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="Express Nadimi">
-    <meta property="og:title" content="Contact us, suggestions &amp;amp; complaints | Express Nadimi">
-    <meta property="og:description"
-        content="Reach our Iran and Oman offices by phone, WhatsApp or email, send a message, a suggestion or a complaint.">
-    <meta property="og:url" content="{{ route('contact', ['lang' => 'en']) }}">
-    <meta property="og:image" content="{{ asset('assets/images/scenes/field-sunrise-1600.webp') }}">
-    <meta property="og:locale" content="en_US">
-    <meta name="twitter:card" content="summary_large_image">
-    <script type="application/ld+json">{"@@context":"https://schema.org","@type":"Organization","name":"Nadimi International LLC","alternateName":["Express Nadimi","Express Nadimi"],"url":"{{ url('/') }}","logo":"{{ asset('assets/images/logo/nadimi-logo-512.png') }}","email":"info@nadimi.example","telephone":"+968 9948 2094","address":[{"@type":"PostalAddress","addressLocality":"Tabriz","addressCountry":"IR"},{"@type":"PostalAddress","addressLocality":"Muscat","addressCountry":"OM"}]}</script>
+    @include('partials.seo-schema', [
+        'lang' => 'en',
+        'crumbs' => [
+            ['Home', route('home', ['lang' => 'en'])],
+            ['Contact', route('contact', ['lang' => 'en'])],
+        ],
+    ])
 @endsection
 
 @section('content')
@@ -205,6 +204,26 @@
                         </div>
 
 
+                        @if (session('success'))
+
+
+
+                            <p role="status" style="padding:12px;margin-bottom:16px;border:1px solid #5D8060;border-radius:8px;color:#315C36">
+
+
+
+                                {{ session('success') }}
+
+
+
+                            </p>
+
+
+
+                        @endif
+
+
+
                         <form method="POST" action="{{ route('contact.post', ['lang' => app()->getLocale()]) }}"
                             novalidate data-whatsapp-form="contact">
                             @csrf
@@ -295,7 +314,7 @@
                                     @enderror
                                 </div>
                                 <div class="w iform-foot">
-                                    <p class="iform-hint">Email or phone is enough; one of them is required.</p>
+                                    <p class="iform-hint">Email and phone are both required.</p>
                                     <button class="btn btn-leaf" type="submit">Send message<svg class="ic flip">
                                             <use href="#i-arrow" />
                                         </svg></button>

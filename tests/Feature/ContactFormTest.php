@@ -17,7 +17,7 @@ function validContactMessageData(): array
 test('contact form accepts a valid message', function () {
     $response = $this->post(route('contact.post', ['lang' => 'en']), validContactMessageData());
 
-    $response->assertOk();
+    $response->assertRedirect();
     $response->assertSessionHasNoErrors();
 });
 
@@ -27,7 +27,7 @@ test('contact form accepts every message type and office', function (string $typ
     $data['office'] = $office;
 
     $this->post(route('contact.post', ['lang' => 'fa']), $data)
-        ->assertOk()
+        ->assertRedirect()
         ->assertSessionHasNoErrors();
 })->with([
     ['message', 'any'],
@@ -73,6 +73,6 @@ test('contact form treats subject and order reference as optional', function () 
     unset($data['subject'], $data['order_ref']);
 
     $this->post(route('contact.post', ['lang' => 'ar']), $data)
-        ->assertOk()
+        ->assertRedirect()
         ->assertSessionHasNoErrors();
 });

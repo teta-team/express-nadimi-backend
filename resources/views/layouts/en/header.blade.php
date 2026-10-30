@@ -1,3 +1,22 @@
+@php
+    // Language switcher: link to the same page in the other language (falls back to home)
+    $langUrl = function (string $target) {
+        try {
+            $current = request()->route();
+            $name = $current ? $current->getName() : null;
+
+            if ($name && $name !== 'home') {
+                $params = array_filter($current->parameters(), 'is_scalar');
+
+                return route($name, array_merge($params, ['lang' => $target]));
+            }
+        } catch (\Throwable $e) {
+            // fall through to the home page
+        }
+
+        return route('home', ['lang' => $target]);
+    };
+@endphp
   <svg xmlns="http://www.w3.org/2000/svg" class="sprite" aria-hidden="true" focusable="false">
 
       <defs>
@@ -335,11 +354,11 @@
 
           <div class="header-actions">
               <nav class="lang" aria-label="Language">
-                  <a href="{{ route('home', ['lang' => 'en']) }}" hreflang="en" lang="en" title="English"
+                  <a href="{{ $langUrl('en') }}" hreflang="en" lang="en" title="English"
                       aria-current="true">EN</a>
-                  <a href="{{ route('home', ['lang' => 'fa']) }}" hreflang="fa" lang="fa"
+                  <a href="{{ $langUrl('fa') }}" hreflang="fa" lang="fa"
                       title="فارسی">FA</a>
-                  <a href="{{ route('home', ['lang' => 'ar']) }}" hreflang="ar" lang="ar"
+                  <a href="{{ $langUrl('ar') }}" hreflang="ar" lang="ar"
                       title="العربية">AR</a>
               </nav>
               <button class="theme-btn" type="button" data-theme-toggle aria-pressed="false" aria-label="Dark mode"
@@ -397,10 +416,10 @@
                               <use href="#i-arrow" />
                           </svg></a>
                       <div class="mnav-langs">
-                          <a href="{{ route('home', ['lang' => 'en']) }}" hreflang="en" lang="en"
+                          <a href="{{ $langUrl('en') }}" hreflang="en" lang="en"
                               aria-current="true">English</a>
-                          <a href="{{ route('home', ['lang' => 'fa']) }}" hreflang="fa" lang="fa">فارسی</a>
-                          <a href="{{ route('home', ['lang' => 'ar']) }}" hreflang="ar" lang="ar">العربية</a>
+                          <a href="{{ $langUrl('fa') }}" hreflang="fa" lang="fa">فارسی</a>
+                          <a href="{{ $langUrl('ar') }}" hreflang="ar" lang="ar">العربية</a>
                       </div>
                   </div>
               </div>

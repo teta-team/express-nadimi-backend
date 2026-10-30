@@ -1,32 +1,23 @@
 @extends('layouts.en.master')
 
 @section('title')
-    Express Nadimi — Fresh Iranian Fruit &amp;amp; Vegetable Exporter
+    Express Nadimi | Fresh Iranian Fruit & Vegetable Exporter
 @endsection
 
 @section('description')
-    With 15+ years of experience, Nadimi supplies and exports fresh Iranian fruit and vegetables to the Oman market and the
-    region. Direct presence at Souq Silal, stand WMC04. Request today&#x27;s price and availability.
+    With 15+ years of experience, Express Nadimi exports fresh Iranian fruit and vegetables to Oman and the region. Find us at Souq Silal, stand WMC04.
 @endsection
 
+@section('canonical', route('home', ['lang' => 'en']))
+@section('og_image', asset('assets/images/scenes/field-sunrise-1600.webp'))
+
 @section('meta')
-    <link rel="canonical" href="{{ route('home', ['lang' => 'en']) }}">
     <link rel="alternate" hreflang="en" href="{{ route('home', ['lang' => 'en']) }}">
     <link rel="alternate" hreflang="fa" href="{{ route('home', ['lang' => 'fa']) }}">
     <link rel="alternate" hreflang="ar" href="{{ route('home', ['lang' => 'ar']) }}">
     <link rel="alternate" hreflang="x-default" href="{{ route('home', ['lang' => 'en']) }}">
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="Express Nadimi">
-    <meta property="og:title" content="Express Nadimi — Fresh Iranian Fruit &amp;amp; Vegetable Exporter">
-    <meta property="og:description"
-        content="With 15+ years of experience, Nadimi supplies and exports fresh Iranian fruit and vegetables to the Oman market and the region. Direct presence at Souq Silal, stand WMC04. Request today&#x27;s price and availability.">
-    <meta property="og:url" content="{{ route('home', ['lang' => 'en']) }}">
-    <meta property="og:image" content="{{ asset('assets/images/scenes/field-sunrise-1600.webp') }}">
-    <meta property="og:locale" content="en_US">
-    <meta name="twitter:card" content="summary_large_image">
-    <link rel="preload" as="image" href="{{ asset('assets/images/scenes/field-sunrise-800.webp') }}"
-        fetchpriority="high">
-    <script type="application/ld+json">{"@@context":"https://schema.org","@type":"Organization","name":"Nadimi International LLC","alternateName":["Express Nadimi","Express Nadimi"],"url":"{{ url('/') }}","logo":"{{ asset('assets/images/logo/nadimi-logo-512.png') }}","email":"info@nadimi.example","telephone":"+968 9948 2094","address":[{"@type":"PostalAddress","addressLocality":"Tabriz","addressCountry":"IR"},{"@type":"PostalAddress","addressLocality":"Muscat","addressCountry":"OM"}]}</script>
+    <link rel="preload" as="image" href="{{ asset('assets/images/scenes/field-sunrise-800.webp') }}" fetchpriority="high">
+    @include('partials.seo-schema', ['lang' => 'en', 'website' => true])
 @endsection
 
 @section('content')
