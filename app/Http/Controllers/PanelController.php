@@ -19,7 +19,7 @@ class PanelController extends Controller
     private const DEFAULT_PASSWORD = 'admin';
 
     /**
-     * GET /panel: the login form for guests, the panel for the super user.
+     * GET /login: the login form for guests.
      */
     public function index(Request $request)
     {
@@ -33,7 +33,7 @@ class PanelController extends Controller
     }
 
     /**
-     * POST /panel: log in.
+     * POST /login: log in.
      */
     public function login(Request $request): RedirectResponse
     {
@@ -46,7 +46,7 @@ class PanelController extends Controller
         ]);
 
         // Limit guessing: 5 failed attempts per username + IP, then wait a minute.
-        $key = 'panel-login:'.Str::lower($credentials['username']).'|'.$request->ip();
+        $key = 'login:'.Str::lower($credentials['username']).'|'.$request->ip();
 
         if (RateLimiter::tooManyAttempts($key, 5)) {
             $seconds = RateLimiter::availableIn($key);
@@ -77,7 +77,7 @@ class PanelController extends Controller
     }
 
     /**
-     * POST /panel/logout
+     * POST /logout
      */
     public function logout(Request $request): RedirectResponse
     {
@@ -86,11 +86,11 @@ class PanelController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('panel');
+        return redirect()->route('login');
     }
 
     /**
-     * POST /panel/account (JSON): change username and/or password.
+     * POST /admin/account (JSON): change username and/or password.
      */
     public function updateAccount(Request $request): JsonResponse
     {

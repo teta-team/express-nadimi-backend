@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+    <!-- English -->
+    <url>
+        <loc>https://nadimiinternational.com/en</loc>
+    </url>
+    <url>
+        <loc>https://nadimiinternational.com/en/products</loc>
+    </url>
+    <url>
+        <loc>https://nadimiinternational.com/en/about</loc>
+    </url>
+    <url>
+        <loc>https://nadimiinternational.com/en/contact</loc>
+    </url>
+    <url>
+        <loc>https://nadimiinternational.com/en/supplier</loc>
+    </url>
+
+    <!-- Persian -->
+    <url>
+        <loc>https://nadimiinternational.com/fa</loc>
+    </url>
+    <url>
+        <loc>https://nadimiinternational.com/fa/products</loc>
+    </url>
+    <url>
+        <loc>https://nadimiinternational.com/fa/about</loc>
+    </url>
+    <url>
+        <loc>https://nadimiinternational.com/fa/contact</loc>
+    </url>
+    <url>
+        <loc>https://nadimiinternational.com/fa/supplier</loc>
+    </url>
+
+    <!-- Arabic -->
+    <url>
+        <loc>https://nadimiinternational.com/ar</loc>
+    </url>
+    <url>
+        <loc>https://nadimiinternational.com/ar/products</loc>
+    </url>
+    <url>
+        <loc>https://nadimiinternational.com/ar/about</loc>
+    </url>
+    <url>
+        <loc>https://nadimiinternational.com/ar/contact</loc>
+    </url>
+    <url>
+        <loc>https://nadimiinternational.com/ar/supplier</loc>
+    </url>
+
+</urlset>

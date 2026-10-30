@@ -5,7 +5,14 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'پنل مدیریت') - اکسپرس ندیمی</title>
+    <link rel="icon"
+          href="{{ asset('assets/images/logo/favicon.ico') }}"
+          type="image/ico"
+          sizes="64x64">
+
+    <link rel="apple-touch-icon"
+          href="{{ asset('assets/images/logo/apple-touch-icon.png') }}">
+    <title>@yield('title', 'پنل مدیریت') - ندیمی اینترنشنال</title>
     <link rel="icon" href="{{ asset('assets/images/nadimi-logo.png') }}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap">
     <link rel="stylesheet" href="{{ asset('assets/css/admin.min.css') }}">

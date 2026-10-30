@@ -8,9 +8,8 @@
     </div>
     <div class="sbl">منوی اصلی</div>
     <nav>
-        <a class="ni {{ request()->routeIs('panel.products*') ? 'on' : '' }}"
-            href="{{ route('panel.products') }}"><span>محصولات</span></a>
-        <a class="ni" href="{{ route('panel') }}"><span>پنل اصلی (قدیمی)</span></a>
+        <a class="ni {{ request()->routeIs('admin.dashboard') ? 'on' : '' }}"
+            href="{{ route('admin.dashboard') }}"><span>داشبورد</span></a>
     </nav>
     <div class="sbf">
         <form method="POST" action="{{ route('logout') }}">
