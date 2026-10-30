@@ -85,7 +85,7 @@
           href="{{ asset('assets/images/logo/apple-touch-icon.png') }}">
 
     <!-- Language -->
-    <meta http-equiv="content-language" content="fa">
+    <meta http-equiv="content-language" content="en">
 
     <!-- Font Preload -->
     <link rel="preload" href="{{ asset('assets/fonts/dm-serif-display-latin.woff2') }}" as="font" type="font/woff2" crossorigin>
