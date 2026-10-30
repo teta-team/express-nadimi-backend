@@ -81,8 +81,8 @@
 
     <!-- Icons -->
     <link rel="icon"
-          href="{{ asset('assets/images/logo/favicon-64.png') }}"
-          type="image/png"
+          href="{{ asset('assets/images/logo/favicon.ico') }}"
+          type="image/ico"
           sizes="64x64">
 
     <link rel="apple-touch-icon"
