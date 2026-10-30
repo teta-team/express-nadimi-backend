@@ -1,8 +1,8 @@
 <aside class="sb">
     <div class="logo">
-        <img src="{{ asset('assets/images/nadimi-logo.png') }}" alt="">
+        <img src="{{ asset('assets/images/logo/nadimi-logo-512.png') }}" alt="">
         <div>
-            <b>اکسپرس ندیمی</b>
+            <b>ندیمی اینترنشنال</b>
             <small>پنل مدیریت</small>
         </div>
     </div>

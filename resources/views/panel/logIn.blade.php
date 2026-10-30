@@ -5,7 +5,14 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="noindex, nofollow, noarchive">
-    <title>ورود | اکسپرس ندیمی</title>
+    <link rel="icon"
+          href="{{ asset('assets/images/logo/favicon.ico') }}"
+          type="image/ico"
+          sizes="64x64">
+
+    <link rel="apple-touch-icon"
+          href="{{ asset('assets/images/logo/apple-touch-icon.png') }}">
+    <title>ورود | ندیمی اینترنشنال</title>
     <link rel="icon" href="{{ asset('assets/images/nadimi-logo.png') }}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;700&display=swap">
     <link rel="stylesheet" href="{{ asset('assets/css/admin.min.css') }}">
@@ -18,9 +25,9 @@
             @csrf
 
             <div class="login-card__brand">
-                <img src="{{ asset('assets/images/nadimi-logo.png') }}" alt="">
+                <img src="{{ asset('assets/images/logo/nadimi-logo-512.png') }}" alt="">
                 <div>
-                    <b>اکسپرس ندیمی</b>
+                    <b>ندیمی اینترنشنال</b>
                     <small>پنل مدیریت</small>
                 </div>
             </div>
