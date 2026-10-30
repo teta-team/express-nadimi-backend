@@ -335,7 +335,7 @@
           <a href="{{ route('home', ['lang' => 'en']) }}" class="logo" aria-label="Nadimi International — Home">
               <img class="logo-mark" src="{{ asset('assets/images/logo/nadimi-logo-96.png') }}"
                   srcset="{{ asset('assets/images/logo/nadimi-logo-192.png') }} 2x" width="50" height="50"
-                  alt="" decoding="async">
+                  alt="Nadimi International" decoding="async">
               <span class="logo-text">
                   <span class="logo-name">Nadimi</span>
                   <span class="logo-sub">Express · Fresh export</span>

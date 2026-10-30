@@ -46,7 +46,7 @@
                     </ul>
                 </div>
                 <figure class="hero-photo">
-                    <img src="{{ asset('assets/images/scenes/field-sunrise-800.webp') }}" alt="" width="800"
+                    <img src="{{ asset('assets/images/scenes/field-sunrise-800.webp') }}" alt="Field of fresh crops in Iran at sunrise" width="800"
                         height="1000" fetchpriority="high" decoding="async">
                 </figure>
             </div>
@@ -58,7 +58,7 @@
         <section class="section-tight steps-sec" aria-labelledby="steps-h">
             <div class="container">
                 <div class="sec-head">
-                    <h2 id="steps-h" class="h2">How to work with us</h2>
+                    <h2 id="steps-h" class="h2">How to work with us for fruit & vegetable export</h2>
                     <p class="lead">Cooperation starts with understanding your needs and continues through sourcing,
                         quality control, packaging, shipping and delivery.</p>
                 </div>
@@ -235,7 +235,7 @@
         <section class="section mint" aria-labelledby="why-h">
             <div class="container why-grid">
                 <figure class="why-photo">
-                    <img src="{{ asset('assets/images/scenes/tomatoes-vine-800.webp') }}" alt="" width="800"
+                    <img src="{{ asset('assets/images/scenes/tomatoes-vine-800.webp') }}" alt="Fresh tomatoes on the vine" width="800"
                         height="1000" loading="lazy" decoding="async">
                 </figure>
                 <div>

@@ -49,7 +49,7 @@
                     </ul>
                 </div>
                 <figure class="hero-photo">
-                    <img src="{{ asset('assets/images/scenes/field-sunrise-800.webp') }}" alt="" width="800"
+                    <img src="{{ asset('assets/images/scenes/field-sunrise-800.webp') }}" alt="حقل من المحاصيل الطازجة في إيران عند شروق الشمس" width="800"
                         height="1000" fetchpriority="high" decoding="async">
                 </figure>
             </div>
@@ -59,7 +59,7 @@
         <section class="section-tight steps-sec" aria-labelledby="steps-h">
             <div class="container">
                 <div class="sec-head">
-                    <h2 id="steps-h" class="h2">كيف نتعاون معكم</h2>
+                    <h2 id="steps-h" class="h2">كيف نتعاون معكم لتصدير الفواكه والخضروات</h2>
                     <p class="lead">يبدأ التعاون بدراسة احتياجاتكم ويستمر عبر التوريد ومراقبة الجودة والتغليف والشحن
                         والتسليم.</p>
                 </div>
@@ -239,7 +239,7 @@
         <section class="section mint" aria-labelledby="why-h">
             <div class="container why-grid">
                 <figure class="why-photo">
-                    <img src="{{ asset('assets/images/scenes/tomatoes-vine-800.webp') }}" alt="" width="800"
+                    <img src="{{ asset('assets/images/scenes/tomatoes-vine-800.webp') }}" alt="طماطم طازجة على الكرمة" width="800"
                         height="1000" loading="lazy" decoding="async">
                 </figure>
                 <div>

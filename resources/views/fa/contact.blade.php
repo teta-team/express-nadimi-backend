@@ -35,7 +35,7 @@
                         <i></i><span aria-current="page">تماس با ما</span>
                     </nav>
                     <span class="label">تماس با ما</span>
-                    <h1 class="display" style="margin-top: 16px">تماس با ما</h1>
+                    <h1 class="display" style="margin-top: 16px">ارتباط با اکسپرس ندیمی</h1>
                     <p>برای دریافت قیمت روز، موجودی محصولات، درخواست همکاری یا ارتباط با واحد فروش با ما در تماس باشید.
                         می‌توانید پیشنهاد یا شکایت خود را هم ثبت کنید.</p>
                 </div>

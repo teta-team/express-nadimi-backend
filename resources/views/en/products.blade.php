@@ -41,7 +41,7 @@
                     <span class="label">Products</span>
 
                     <h1 class="display" style="margin-top: 16px">
-                        Our products
+                        Our export products
                     </h1>
 
                     <p>
