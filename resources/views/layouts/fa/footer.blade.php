@@ -35,8 +35,8 @@
                     <a href="https://wa.me/989144172605" aria-label="WhatsApp" target="_blank" rel="noopener"><svg
                             class="ic">
                             <use href="#i-whatsapp" />
-                        </svg></a><a href="https://www.instagram.com/" aria-label="Instagram" target="_blank"
-                        rel="noopener"><svg class="ic">
+                        </svg></a><a href="https://www.instagram.com/export_nadimi?mdxt=MTV2cHA3c3NzZmd4bg=="
+                        aria-label="Instagram" target="_blank" rel="noopener"><svg class="ic">
                             <use href="#i-instagram" />
                         </svg></a>
 
@@ -78,15 +78,17 @@
                     @forelse ($footerProducts as $product)
                         @php
                             $productName = is_array($product->name)
-                                ? ($product->name['fa'] ?? $product->name['en'] ?? $product->slug)
-                                : ($product->name ?: $product->slug);
+                                ? $product->name['fa'] ?? ($product->name['en'] ?? $product->slug)
+                                : ($product->name ?:
+                                $product->slug);
                         @endphp
 
                         <li>
-                            <a href="{{ route('product.show', [
-                    'lang' => 'fa',
-                    'slug' => $product->slug,
-                ]) }}">
+                            <a
+                                href="{{ route('product.show', [
+                                    'lang' => 'fa',
+                                    'slug' => $product->slug,
+                                ]) }}">
                                 {{ $productName }}
                             </a>
                         </li>

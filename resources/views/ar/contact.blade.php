@@ -62,7 +62,7 @@
                         <div class="office-head">
                             <div>
                                 <h2>مكتب إيران</h2>
-                                <small>تبريز، أذربيجان الشرقية</small>
+                                <small>کرج، أذربيجان الشرقية</small>
                             </div>
                             <div class="clock" aria-label="الوقت المحلي">
                                 <div class="clock-t" data-clock-time>--:--</div>

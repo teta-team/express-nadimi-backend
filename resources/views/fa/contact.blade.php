@@ -76,7 +76,7 @@
                                     </svg></span>
                                 <div class="row-body">
                                     <small>نشانی</small>
-                                    <span>نشانی دفتر، تبریز (به‌زودی تکمیل می‌شود)</span>
+                                    <span>نشانی دفتر، کرج (به‌زودی تکمیل می‌شود)</span>
                                     <a class="map-link"
                                         href="https://www.google.com/maps/search/?api=1&query=Tabriz%2C%20East%20Azerbaijan%2C%20Iran"
                                         target="_blank" rel="noopener"><svg class="ic">
