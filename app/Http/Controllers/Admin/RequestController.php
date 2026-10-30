@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\PriceInquiry;
 use App\Models\SupplierSubmission;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
@@ -65,6 +66,7 @@ class RequestController extends Controller
                     $item->request_label = 'استعلام قیمت';
                     $item->request_name = $item->name;
                     $item->request_contact = $item->email ?: $item->phone;
+
                     return $item;
                 })
             );
@@ -93,6 +95,7 @@ class RequestController extends Controller
                     $item->request_label = 'درخواست همکاری';
                     $item->request_name = $item->name;
                     $item->request_contact = $item->mobile;
+
                     return $item;
                 })
             );
@@ -107,7 +110,7 @@ class RequestController extends Controller
 
         $items = $requests->forPage($page, $perPage);
 
-        $requests = new \Illuminate\Pagination\LengthAwarePaginator(
+        $requests = new LengthAwarePaginator(
             $items,
             $requests->count(),
             $perPage,
@@ -244,6 +247,7 @@ class RequestController extends Controller
                 $item->request_type = 'price';
                 $item->request_label = 'استعلام قیمت';
                 $item->request_name = $item->name;
+
                 return $item;
             });
 
@@ -254,6 +258,7 @@ class RequestController extends Controller
                 $item->request_type = 'supplier';
                 $item->request_label = 'درخواست همکاری';
                 $item->request_name = $item->name;
+
                 return $item;
             });
 
