@@ -8,7 +8,7 @@
     <title>ورود | اکسپرس ندیمی</title>
     <link rel="icon" href="{{ asset('assets/images/nadimi-logo.png') }}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;700&display=swap">
-    <link rel="stylesheet" href="{{ asset('assets/css/admin.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/admin.min.css') }}">
 </head>
 
 <body>

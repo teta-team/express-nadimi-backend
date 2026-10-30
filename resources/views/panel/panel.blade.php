@@ -9,13 +9,13 @@
     <title>پنل مدیریت اکسپرس ندیمی</title>
     <link rel="icon" href="{{ asset('assets/images/nadimi-logo.png') }}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;700&display=swap">
-    <link rel="stylesheet" href="{{ asset('assets/css/admin.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/admin.min.css') }}">
 </head>
 
 <body>
     <div class="app">
 
-        {{-- Desktop sidebar. The menu items inside #nav are rendered by admin.js. --}}
+        {{-- Desktop sidebar. The menu items inside #nav are rendered by admin.min.js. --}}
         <aside class="sb">
             <div class="logo">
                 <img src="{{ asset('images/nadimi-logo.png') }}" alt="">
@@ -45,13 +45,13 @@
                 <button class="mtg" data-act="theme" data-tb aria-label="تغییر پوسته"></button>
             </header>
 
-            {{-- The pages (home, products, messages, site texts) are rendered here by admin.js. --}}
+            {{-- The pages (home, products, messages, site texts) are rendered here by admin.min.js. --}}
             <main id="main"></main>
         </div>
 
     </div>
 
-    {{-- Hidden logout form (submitted by the "خروج" buttons in admin.js) --}}
+    {{-- Hidden logout form (submitted by the "خروج" buttons in admin.min.js) --}}
     <form id="logout-form" method="POST" action="{{ route('logout') }}" hidden>@csrf</form>
 
     <script>
@@ -63,7 +63,7 @@
             productsUrl: '/panel/products',
         };
     </script>
-    <script src="{{ asset('assets/js/admin.js') }}"></script>
+    <script src="{{ asset('assets/js/admin.min.js') }}"></script>
 </body>
 
 </html>

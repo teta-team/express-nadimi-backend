@@ -5,7 +5,7 @@
 @section('page-subtitle', 'پیام ارسال‌شده از فرم تماس')
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('assets/css/admin-detail.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/admin-detail.min.css') }}">
     <style>
         .rd-badge.is-alert{color:#f87171;border-color:rgba(248,113,113,.3);background:rgba(239,68,68,.12)}
         .rd-hero-icon.is-alert{border-color:rgba(248,113,113,.4);background:rgba(239,68,68,.12);color:#f87171}
@@ -349,5 +349,5 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('assets/js/admin-detail.js') }}" defer></script>
+    <script src="{{ asset('assets/js/admin-detail.min.js') }}" defer></script>
 @endpush
