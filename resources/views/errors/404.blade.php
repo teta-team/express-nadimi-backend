@@ -196,7 +196,7 @@
                                 class="ic flip">
                                 <use href="#i-arrow" />
                             </svg></a>
-                        <a class="btn btn-line" href="{{ route('language.select') }}" data-back>صفحه قبل</a>
+                        <a class="btn btn-line" href="javascript:history.back()" data-back>صفحه قبل</a>
                     </div>
                     <nav class="errp-links" aria-label="پیوندهای مفید">
                         <a href="{{ route('products', ['lang' => 'fa']) }}"><span class="ico"><svg
@@ -234,7 +234,7 @@
                                 class="ic flip">
                                 <use href="#i-arrow" />
                             </svg></a>
-                        <a class="btn btn-line" href="{{ route('language.select') }}" data-back>Go back</a>
+                        <a class="btn btn-line" href="javascript:history.back()" data-back>Go back</a>
                     </div>
                     <nav class="errp-links" aria-label="Helpful links">
                         <a href="{{ route('products', ['lang' => 'en']) }}"><span class="ico"><svg
@@ -271,7 +271,7 @@
                                 class="ic flip">
                                 <use href="#i-arrow" />
                             </svg></a>
-                        <a class="btn btn-line" href="{{ route('language.select') }}" data-back>الصفحة السابقة</a>
+                        <a class="btn btn-line" href="javascript:history.back()" data-back>الصفحة السابقة</a>
                     </div>
                     <nav class="errp-links" aria-label="روابط مفيدة">
                         <a href="{{ route('products', ['lang' => 'ar']) }}"><span class="ico"><svg
