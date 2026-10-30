@@ -335,8 +335,8 @@
 <header class="site-header" data-header>
     <div class="container header-in">
         <a href="{{ route('home', ['lang' => 'fa']) }}" class="logo" aria-label="اکسپرس ندیمی — خانه">
-            <img class="logo-mark" src="{{ asset('assets/images/logo/nadimi-logo-96.png') }}"
-                srcset="{{ asset('assets/images/logo/nadimi-logo-192.png') }} 2x" width="50" height="50"
+            <img class="logo-mark" src="{{ asset('assets/images/logo/nadimi-logo-96.webp') }}"
+                srcset="{{ asset('assets/images/logo/nadimi-logo-192.webp') }} 2x" width="50" height="50"
                 alt="" decoding="async">
             <span class="logo-text">
                 <span class="logo-name">ندیمی</span>
@@ -359,8 +359,7 @@
                 <a href="{{ $langUrl('en') }}" hreflang="en" lang="en" title="English">EN</a>
                 <a href="{{ $langUrl('fa') }}" hreflang="fa" lang="fa" title="فارسی"
                     aria-current="true">FA</a>
-                <a href="{{ $langUrl('ar') }}" hreflang="ar" lang="ar"
-                    title="العربية">AR</a>
+                <a href="{{ $langUrl('ar') }}" hreflang="ar" lang="ar" title="العربية">AR</a>
             </nav>
             <button class="theme-btn" type="button" data-theme-toggle aria-pressed="false" aria-label="حالت تیره"
                 title="حالت تیره"><svg class="ic i-moon">
@@ -418,8 +417,7 @@
                         </svg></a>
                     <div class="mnav-langs">
                         <a href="{{ $langUrl('en') }}" hreflang="en" lang="en">English</a>
-                        <a href="{{ $langUrl('fa') }}" hreflang="fa" lang="fa"
-                            aria-current="true">فارسی</a>
+                        <a href="{{ $langUrl('fa') }}" hreflang="fa" lang="fa" aria-current="true">فارسی</a>
                         <a href="{{ $langUrl('ar') }}" hreflang="ar" lang="ar">العربية</a>
                     </div>
                 </div>

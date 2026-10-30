@@ -335,8 +335,8 @@
 <header class="site-header" data-header>
     <div class="container header-in">
         <a href="{{ route('home', ['lang' => 'ar']) }}" class="logo" aria-label="إكسبرس نديمي — الرئيسية">
-            <img class="logo-mark" src="{{ asset('assets/images/logo/nadimi-logo-96.png') }}"
-                srcset="{{ asset('assets/images/logo/nadimi-logo-192.png') }} 2x" width="50" height="50"
+            <img class="logo-mark" src="{{ asset('assets/images/logo/nadimi-logo-96.webp') }}"
+                srcset="{{ asset('assets/images/logo/nadimi-logo-192.webp') }} 2x" width="50" height="50"
                 alt="" decoding="async">
             <span class="logo-text">
                 <span class="logo-name">نديمي</span>

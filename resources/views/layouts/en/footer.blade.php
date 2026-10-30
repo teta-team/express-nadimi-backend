@@ -7,9 +7,8 @@
             <p class="h2">Need a price? Send us a message.</p>
 
             <a class="btn btn-white" href="{{ route('home', ['lang' => 'en']) }}#inquiry">Request a quote
-                <svg
-                    class="ic flip">
-                    <use href="#i-arrow"/>
+                <svg class="ic flip">
+                    <use href="#i-arrow" />
                 </svg>
             </a>
 
@@ -21,9 +20,9 @@
             <div class="footer-brand">
 
                 <a href="{{ route('home', ['lang' => 'en']) }}" class="logo" aria-label="Nadimi International — Home">
-                    <img class="logo-mark" src="{{ asset('assets/images/logo/nadimi-logo-96.png') }}"
-                         srcset="{{ asset('assets/images/logo/nadimi-logo-192.png') }} 2x" width="50" height="50"
-                         alt="" decoding="async">
+                    <img class="logo-mark" src="{{ asset('assets/images/logo/nadimi-logo-96.webp') }}"
+                        srcset="{{ asset('assets/images/logo/nadimi-logo-192.webp') }} 2x" width="50" height="50"
+                        alt="" decoding="async">
                     <span class="logo-text">
                         <span class="logo-name">Nadimi</span>
                         <span class="logo-sub">Export · Fresh export</span>
@@ -34,14 +33,13 @@
                 <div class="footer-social" aria-label="Follow us">
 
                     <a href="https://wa.me/989144172605" aria-label="WhatsApp" target="_blank" rel="noopener">
-                        <svg
-                            class="ic">
-                            <use href="#i-whatsapp"/>
-                        </svg>
-                    </a><a href="https://www.instagram.com/export_nadimi"
-                           aria-label="Instagram" target="_blank" rel="noopener">
                         <svg class="ic">
-                            <use href="#i-instagram"/>
+                            <use href="#i-whatsapp" />
+                        </svg>
+                    </a><a href="https://www.instagram.com/export_nadimi" aria-label="Instagram" target="_blank"
+                        rel="noopener">
+                        <svg class="ic">
+                            <use href="#i-instagram" />
                         </svg>
                     </a>
 
@@ -111,24 +109,27 @@
 
                     <li>
                         <svg class="ic">
-                            <use href="#i-phone"/>
+                            <use href="#i-phone" />
                         </svg>
-                        <a href="tel:+989124361450" dir="ltr">+98 912 436 1450</a></li>
+                        <a href="tel:+989124361450" dir="ltr">+98 912 436 1450</a>
+                    </li>
 
                     <li>
                         <svg class="ic">
-                            <use href="#i-whatsapp"/>
+                            <use href="#i-whatsapp" />
                         </svg>
                         <a href="https://wa.me/989144172605" dir="ltr" target="_blank" rel="noopener">+98 914
-                            417 2605</a></li>
+                            417 2605</a>
+                    </li>
 
                     <li>
                         <svg class="ic">
-                            <use href="#i-mail"/>
+                            <use href="#i-mail" />
                         </svg>
                         <a href="mailto:info@nadimiinternational.com">
                             info@nadimiinternational.com
-                        </a></li>
+                        </a>
+                    </li>
 
                 </ul>
 
@@ -142,29 +143,33 @@
 
                     <li>
                         <svg class="ic">
-                            <use href="#i-pin"/>
+                            <use href="#i-pin" />
                         </svg>
-                        <span>Souq Silal – WMC04, Sultanate of Oman</span></li>
+                        <span>Souq Silal – WMC04, Sultanate of Oman</span>
+                    </li>
 
                     <li>
                         <svg class="ic">
-                            <use href="#i-phone"/>
+                            <use href="#i-phone" />
                         </svg>
-                        <a href="tel:+96899482094" dir="ltr">+968 9948 2094</a></li>
+                        <a href="tel:+96899482094" dir="ltr">+968 9948 2094</a>
+                    </li>
 
                     <li>
                         <svg class="ic">
-                            <use href="#i-phone"/>
+                            <use href="#i-phone" />
                         </svg>
-                        <a href="tel:+96899504094" dir="ltr">+968 9950 4094</a></li>
+                        <a href="tel:+96899504094" dir="ltr">+968 9950 4094</a>
+                    </li>
 
                     <li>
                         <svg class="ic">
-                            <use href="#i-mail"/>
+                            <use href="#i-mail" />
                         </svg>
                         <a href="mailto:info@nadimiinternational.com">
                             info@nadimiinternational.com
-                        </a></li>
+                        </a>
+                    </li>
 
                 </ul>
 
@@ -181,7 +186,8 @@
 
             <p>Export Nadimi is a brand of Nadimi International.</p>
 
-            <p>Powered by <a href="https://tetateam.com" target="_blank" rel="noopener" style="color: #10B981">TETA Team</a></p>
+            <p>Powered by <a href="https://tetateam.com" target="_blank" rel="noopener" style="color: #10B981">TETA
+                    Team</a></p>
 
         </div>
 
@@ -192,17 +198,17 @@
 <nav class="mbar" aria-label="Request a quote">
     <a href="tel:+96899482094">
         <svg class="ic">
-            <use href="#i-phone"/>
+            <use href="#i-phone" />
         </svg>
         <span>Call</span></a>
     <a href="https://wa.me/989144172605" target="_blank" rel="noopener" class="mbar-wa">
         <svg class="ic">
-            <use href="#i-whatsapp"/>
+            <use href="#i-whatsapp" />
         </svg>
         <span>WhatsApp</span></a>
     <a href="{{ route('home', ['lang' => 'en']) }}#inquiry" class="mbar-quote">
         <svg class="ic">
-            <use href="#i-file"/>
+            <use href="#i-file" />
         </svg>
         <span>Quote</span></a>
 </nav>
