@@ -76,7 +76,7 @@
                                     </svg></span>
                                 <div class="row-body">
                                     <small>Address</small>
-                                    <span>Office address, Tabriz, Iran (to be updated)</span>
+                                    <span>Office address, Karaj, Iran (to be updated)</span>
                                     <a class="map-link"
                                         href="https://www.google.com/maps/search/?api=1&query=Tabriz%2C%20East%20Azerbaijan%2C%20Iran"
                                         target="_blank" rel="noopener"><svg class="ic">
