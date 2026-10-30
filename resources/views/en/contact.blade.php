@@ -5,7 +5,8 @@
 @endsection
 
 @section('description')
-    Reach our Iran (Tabriz) and Oman (Muscat) offices by phone, WhatsApp or email. Send us a message, a suggestion or a complaint.
+    Reach our Iran (Tabriz) and Oman (Muscat) offices by phone, WhatsApp or email. Send us a message, a suggestion or a
+    complaint.
 @endsection
 
 @section('canonical', route('contact', ['lang' => 'en']))
@@ -18,10 +19,7 @@
     <link rel="alternate" hreflang="x-default" href="{{ route('contact', ['lang' => 'en']) }}">
     @include('partials.seo-schema', [
         'lang' => 'en',
-        'crumbs' => [
-            ['Home', route('home', ['lang' => 'en'])],
-            ['Contact', route('contact', ['lang' => 'en'])],
-        ],
+        'crumbs' => [['Home', route('home', ['lang' => 'en'])], ['Contact', route('contact', ['lang' => 'en'])]],
     ])
 @endsection
 
@@ -107,9 +105,9 @@
                                         <use href="#i-mail" />
                                     </svg></span>
                                 <div class="row-body"><small>Email</small><a
-                                        href="mailto:iran@nadimi.example">iran@nadimi.example</a></div>
-                                <button type="button" class="copy" data-copy="iran@nadimi.example" aria-label="Copy"
-                                    data-done="Copied"><svg class="ic">
+                                        href="mailto:info@nadimiinternational.com">info@nadimiinternational.com</a></div>
+                                <button type="button" class="copy" data-copy="info@nadimiinternational.com"
+                                    aria-label="Copy" data-done="Copied"><svg class="ic">
                                         <use href="#i-copy" />
                                     </svg></button>
                             </div>
@@ -178,9 +176,9 @@
                                         <use href="#i-mail" />
                                     </svg></span>
                                 <div class="row-body"><small>Email</small><a
-                                        href="mailto:oman@nadimi.example">oman@nadimi.example</a></div>
-                                <button type="button" class="copy" data-copy="oman@nadimi.example" aria-label="Copy"
-                                    data-done="Copied"><svg class="ic">
+                                        href="mailto:info@nadimiinternational.com">info@nadimiinternational.com</a></div>
+                                <button type="button" class="copy" data-copy="info@nadimiinternational.com"
+                                    aria-label="Copy" data-done="Copied"><svg class="ic">
                                         <use href="#i-copy" />
                                     </svg></button>
                             </div>
@@ -205,10 +203,8 @@
 
 
                         @if (session('success'))
-
-
-
-                            <p role="status" style="padding:12px;margin-bottom:16px;border:1px solid #5D8060;border-radius:8px;color:#315C36">
+                            <p role="status"
+                                style="padding:12px;margin-bottom:16px;border:1px solid #5D8060;border-radius:8px;color:#315C36">
 
 
 
@@ -217,9 +213,6 @@
 
 
                             </p>
-
-
-
                         @endif
 
 

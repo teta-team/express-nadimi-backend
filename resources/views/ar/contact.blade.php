@@ -5,7 +5,8 @@
 @endsection
 
 @section('description')
-    تواصلوا مع مكتبينا في إيران (تبريز) وعُمان (مسقط) عبر الهاتف أو واتساب أو البريد الإلكتروني، وأرسلوا رسالتكم أو اقتراحكم أو شكواكم.
+    تواصلوا مع مكتبينا في إيران (تبريز) وعُمان (مسقط) عبر الهاتف أو واتساب أو البريد الإلكتروني، وأرسلوا رسالتكم أو اقتراحكم
+    أو شكواكم.
 @endsection
 
 @section('canonical', route('contact', ['lang' => 'ar']))
@@ -107,9 +108,9 @@
                                         <use href="#i-mail" />
                                     </svg></span>
                                 <div class="row-body"><small>البريد الإلكتروني</small><a
-                                        href="mailto:iran@nadimi.example">iran@nadimi.example</a></div>
-                                <button type="button" class="copy" data-copy="iran@nadimi.example" aria-label="نسخ"
-                                    data-done="تم النسخ"><svg class="ic">
+                                        href="mailto:info@nadimiinternational.com">info@nadimiinternational.com</a></div>
+                                <button type="button" class="copy" data-copy="info@nadimiinternational.com"
+                                    aria-label="نسخ" data-done="تم النسخ"><svg class="ic">
                                         <use href="#i-copy" />
                                     </svg></button>
                             </div>
@@ -178,9 +179,9 @@
                                         <use href="#i-mail" />
                                     </svg></span>
                                 <div class="row-body"><small>البريد الإلكتروني</small><a
-                                        href="mailto:oman@nadimi.example">oman@nadimi.example</a></div>
-                                <button type="button" class="copy" data-copy="oman@nadimi.example" aria-label="نسخ"
-                                    data-done="تم النسخ"><svg class="ic">
+                                        href="mailto:info@nadimiinternational.com">info@nadimiinternational.com</a></div>
+                                <button type="button" class="copy" data-copy="info@nadimiinternational.com"
+                                    aria-label="نسخ" data-done="تم النسخ"><svg class="ic">
                                         <use href="#i-copy" />
                                     </svg></button>
                             </div>
@@ -205,10 +206,8 @@
 
 
                         @if (session('success'))
-
-
-
-                            <p role="status" style="padding:12px;margin-bottom:16px;border:1px solid #5D8060;border-radius:8px;color:#315C36">
+                            <p role="status"
+                                style="padding:12px;margin-bottom:16px;border:1px solid #5D8060;border-radius:8px;color:#315C36">
 
 
 
@@ -217,9 +216,6 @@
 
 
                             </p>
-
-
-
                         @endif
 
 
