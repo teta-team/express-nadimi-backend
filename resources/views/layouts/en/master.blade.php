@@ -77,12 +77,11 @@
 
     <!-- Icons -->
     <link rel="icon"
-          href="{{ asset('assets/images/logo/favicon.ico') }}"
-          type="image/ico"
-          sizes="64x64">
+          href="{{ asset('favicon.ico') }}"
+          type="image/x-icon">
 
     <link rel="apple-touch-icon"
-          href="{{ asset('assets/images/logo/apple-touch-icon.png') }}">
+          href="{{ asset('assets/images/logo/apple-touch-icon.webp') }}">
 
     <!-- Language -->
     <meta http-equiv="content-language" content="en">
