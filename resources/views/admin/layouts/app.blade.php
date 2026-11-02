@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="icon"
-          href="{{ asset('assets/images/logo/favicon.ico') }}"
-          type="image/ico"
-          sizes="64x64">
+          href="{{ asset('favicon.ico') }}"
+          type="image/x-icon">
+          <link rel="icon" href="{{ asset('assets/images/logo/favicon-64.webp') }}" type="image/webp" sizes="64x64">
 
     <link rel="apple-touch-icon"
           href="{{ asset('assets/images/logo/apple-touch-icon.png') }}">

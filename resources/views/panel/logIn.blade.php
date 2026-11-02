@@ -5,7 +5,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="noindex, nofollow, noarchive">
-    <link rel="icon" href="{{ asset('assets/images/logo/favicon.ico') }}" type="image/ico" sizes="64x64">
+    <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
+          <link rel="icon" href="{{ asset('assets/images/logo/favicon-64.webp') }}" type="image/webp" sizes="64x64">
 
     <link rel="apple-touch-icon" href="{{ asset('assets/images/logo/apple-touch-icon.png') }}">
     <title>ورود | ندیمی اینترنشنال</title>

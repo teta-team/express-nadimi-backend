@@ -23,7 +23,7 @@
     <meta property="og:url" content="{{ url('/') }}" />
     <meta property="og:image" content="{{ asset('assets/images/scenes/field-sunrise-1600.webp') }}" />
     <meta name="twitter:card" content="summary_large_image" />
-    <link rel="icon" href="{{ asset('assets/images/logo/favicon-64.png') }}" type="image/png" sizes="64x64" />
+    <link rel="icon" href="{{ asset('assets/images/logo/favicon-64.webp') }}" type="image/webp" sizes="64x64" />
     <link rel="apple-touch-icon" href="{{ asset('assets/images/logo/apple-touch-icon.png') }}" />
     <script src="{{ asset('assets/js/lang-redirect.js') }}"></script>
     <style>
