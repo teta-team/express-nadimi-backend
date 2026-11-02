@@ -15,7 +15,10 @@ use App\Http\Controllers\SuplierController;
 use App\Http\Controllers\SupplierController;
 use Illuminate\Support\Facades\Route;
 
-Route::view('/', 'index')->name('language.select');
+Route::get('/', [HomeController::class, 'index'])->name('home.root');
+Route::get('/en', function () {
+    return redirect()->route('home.root');
+});
 Route::get('/login', [PanelController::class, 'index'])->name('login');
 Route::post('/login', [PanelController::class, 'login']);
 Route::post('/logout', [PanelController::class, 'logout'])->name('logout');
