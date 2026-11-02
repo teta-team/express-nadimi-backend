@@ -11,7 +11,7 @@ use Illuminate\Validation\Rule;
 
 class HomeController extends Controller
 {
-    public function index($lang)
+    public function index($lang = null)
     {
         $view = match ($lang) {
             'fa' => 'fa.home',

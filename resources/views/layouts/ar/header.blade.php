@@ -4,17 +4,18 @@
         try {
             $current = request()->route();
             $name = $current ? $current->getName() : null;
+            $url = $current ? $current->getUrl() : null;
 
             if ($name && $name !== 'home') {
-                $params = array_filter($current->parameters(), 'is_scalar');
-
-                return route($name, array_merge($params, ['lang' => $target]));
+                // Remove existing lang parameter and add target language to path
+                $cleanUrl = preg_replace('/\?(lang=[^&]*)?/', '', $url);
+                return $cleanUrl . '/' . $target;
             }
         } catch (\Throwable $e) {
             // fall through to the home page
         }
 
-        return route('home', ['lang' => $target]);
+        return '/en';
     };
 @endphp
 <svg xmlns="http://www.w3.org/2000/svg" class="sprite" aria-hidden="true" focusable="false">

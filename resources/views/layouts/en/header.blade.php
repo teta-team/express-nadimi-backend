@@ -5,16 +5,15 @@
             $current = request()->route();
             $name = $current ? $current->getName() : null;
 
-            if ($name && $name !== 'home') {
+            if ($name && !in_array($name, ['home', 'home.root'])) {
                 $params = array_filter($current->parameters(), 'is_scalar');
-
                 return route($name, array_merge($params, ['lang' => $target]));
             }
         } catch (\Throwable $e) {
-            // fall through to the home page
+            // fall through
         }
 
-        return route('home', ['lang' => $target]);
+        return $target === 'en' ? route('home.root') : route('home', ['lang' => $target]);
     };
 @endphp
 <svg xmlns="http://www.w3.org/2000/svg" class="sprite" aria-hidden="true" focusable="false">
