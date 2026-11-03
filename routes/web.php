@@ -15,10 +15,13 @@ use App\Http\Controllers\SuplierController;
 use App\Http\Controllers\SupplierController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [HomeController::class, 'index'])->name('home.root');
+// English routes
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::post('/', [HomeController::class, 'form'])->name('home.post')->middleware('throttle:5,1');
 Route::get('/en', function () {
-    return redirect()->route('home.root');
+    return redirect()->route('home');
 });
+
 Route::get('/login', [PanelController::class, 'index'])->name('login');
 Route::post('/login', [PanelController::class, 'login']);
 Route::post('/logout', [PanelController::class, 'logout'])->name('logout');
@@ -121,7 +124,19 @@ Route::middleware(['web', 'auth'])
         Route::post('/settings', [SettingsController::class, 'update'])->middleware('throttle:10,1')->name('settings.update');
     });
 
-Route::group(['prefix' => '{lang}', 'where' => ['lang' => 'en|fa|ar'], 'middleware' => ['web', 'locale']], function () {
+// English routes
+Route::get('/about', [AboutController::class, 'index'])->name('about');
+Route::get('/contact', [ContactController::class, 'index'])->name('contact');
+Route::post('/contact', [ContactController::class, 'form'])->name('contact.post')->middleware('throttle:5,1');
+Route::get('/product', [ProductCotrller::class, 'index'])->name('product');
+Route::get('/product/{slug}', [ProductCotrller::class, 'index'])->name('product.show');
+Route::post('/product', [ProductCotrller::class, 'form'])->name('product.post')->middleware('throttle:5,1');
+Route::get('/products', [ProductCotrller::class, 'products'])->name('products');
+Route::get('/supplier', [SuplierController::class, 'index'])->name('supplier');
+Route::post('/supplier', [SupplierController::class, 'store'])->name('supplier.store')->middleware('throttle:5,1');
+
+// Persian/Arabic routes
+Route::group(['prefix' => '{lang}', 'where' => ['lang' => 'fa|ar'], 'middleware' => ['web', 'locale'], 'as' => 'lang.'], function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
     Route::post('/', [HomeController::class, 'form'])->name('home.post')->middleware('throttle:5,1');
     Route::get('/about', [AboutController::class, 'index'])->name('about');

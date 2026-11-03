@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 
 class ContactController extends Controller
 {
-    public function index($lang)
+    public function index($lang = null)
     {
         return match ($lang) {
             'ar' => view('ar.contact'),

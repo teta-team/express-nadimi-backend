@@ -6,14 +6,26 @@
             $name = $current ? $current->getName() : null;
 
             if ($name && !in_array($name, ['home', 'home.root'])) {
+                // If it's a 'lang.' route, get the base name
+                $baseName = str_starts_with($name, 'lang.') ? substr($name, 5) : $name;
                 $params = array_filter($current->parameters(), 'is_scalar');
-                return route($name, array_merge($params, ['lang' => $target]));
+
+                if ($target === 'en') {
+                    return route($baseName, array_diff_key($params, ['lang' => '']));
+                }
+
+                return route('lang.'.$baseName, array_merge($params, ['lang' => $target]));
             }
         } catch (\Throwable $e) {
             // fall through
         }
 
-        return $target === 'en' ? route('home.root') : route('home', ['lang' => $target]);
+        return $target === 'en' ? route('home') : route('lang.home', ['lang' => $target]);
+    };
+
+    $isRoute = function ($name) {
+        $current = request()->route() ? request()->route()->getName() : null;
+        return $current === $name || $current === 'lang.'.$name;
     };
 @endphp
 <svg xmlns="http://www.w3.org/2000/svg" class="sprite" aria-hidden="true" focusable="false">
@@ -333,7 +345,7 @@
 
 <header class="site-header" data-header>
     <div class="container header-in">
-        <a href="{{ route('home', ['lang' => 'fa']) }}" class="logo" aria-label="اکسپرس ندیمی — خانه">
+        <a href="{{ route('lang.home', ['lang' => 'fa']) }}" class="logo" aria-label="اکسپرس ندیمی — خانه">
             <img class="logo-mark" src="{{ asset('assets/images/logo/nadimi-logo-96.webp') }}"
                 srcset="{{ asset('assets/images/logo/nadimi-logo-192.webp') }} 2x" width="50" height="50"
                 alt="" decoding="async">
@@ -345,11 +357,11 @@
 
         <nav class="nav" aria-label="Main">
             <ul>
-                <li><a href="{{ route('home', ['lang' => 'fa']) }}" aria-current="page">خانه</a></li>
-                <li><a href="{{ route('products', ['lang' => 'fa']) }}">محصولات</a></li>
-                <li><a href="{{ route('supplier', ['lang' => 'fa']) }}">همکاری</a></li>
-                <li><a href="{{ route('about', ['lang' => 'fa']) }}">درباره ما</a></li>
-                <li><a href="{{ route('contact', ['lang' => 'fa']) }}">تماس با ما</a></li>
+                <li><a href="{{ route('lang.home', ['lang' => 'fa']) }}" {!! $isRoute('home') ? 'aria-current="page"' : '' !!}>خانه</a></li>
+                <li><a href="{{ route('lang.products', ['lang' => 'fa']) }}" {!! $isRoute('products') ? 'aria-current="page"' : '' !!}>محصولات</a></li>
+                <li><a href="{{ route('lang.supplier', ['lang' => 'fa']) }}" {!! $isRoute('supplier') ? 'aria-current="page"' : '' !!}>همکاری</a></li>
+                <li><a href="{{ route('lang.about', ['lang' => 'fa']) }}" {!! $isRoute('about') ? 'aria-current="page"' : '' !!}>درباره ما</a></li>
+                <li><a href="{{ route('lang.contact', ['lang' => 'fa']) }}" {!! $isRoute('contact') ? 'aria-current="page"' : '' !!}>تماس با ما</a></li>
             </ul>
         </nav>
 
@@ -366,7 +378,7 @@
                 </svg><svg class="ic i-sun">
                     <use href="#i-sun" />
                 </svg></button>
-            <a class="btn btn-sm header-quote" href="{{ route('home', ['lang' => 'fa']) }}#inquiry">درخواست
+            <a class="btn btn-sm header-quote" href="{{ route('lang.home', ['lang' => 'fa']) }}#inquiry">درخواست
                 استعلام<svg class="ic flip">
                     <use href="#i-arrow" />
                 </svg></a>
@@ -383,34 +395,34 @@
         <div class="mnav-clip">
             <div class="container mnav-in">
                 <nav class="mnav-links" aria-label="منو">
-                    <a href="{{ route('home', ['lang' => 'fa']) }}" aria-current="page">
+                    <a href="{{ route('lang.home', ['lang' => 'fa']) }}" {!! $isRoute('home') ? 'aria-current="page"' : '' !!}>
                         خانه<svg class="ic flip">
                             <use href="#i-arrow" />
                         </svg>
                     </a>
-                    <a href="{{ route('products', ['lang' => 'fa']) }}">
+                    <a href="{{ route('lang.products', ['lang' => 'fa']) }}" {!! $isRoute('products') ? 'aria-current="page"' : '' !!}>
                         محصولات<svg class="ic flip">
                             <use href="#i-arrow" />
                         </svg>
                     </a>
-                    <a href="{{ route('supplier', ['lang' => 'fa']) }}">
+                    <a href="{{ route('lang.supplier', ['lang' => 'fa']) }}" {!! $isRoute('supplier') ? 'aria-current="page"' : '' !!}>
                         همکاری<svg class="ic flip">
                             <use href="#i-arrow" />
                         </svg>
                     </a>
-                    <a href="{{ route('about', ['lang' => 'fa']) }}">
+                    <a href="{{ route('lang.about', ['lang' => 'fa']) }}" {!! $isRoute('about') ? 'aria-current="page"' : '' !!}>
                         درباره ما<svg class="ic flip">
                             <use href="#i-arrow" />
                         </svg>
                     </a>
-                    <a href="{{ route('contact', ['lang' => 'fa']) }}">
+                    <a href="{{ route('lang.contact', ['lang' => 'fa']) }}" {!! $isRoute('contact') ? 'aria-current="page"' : '' !!}>
                         تماس با ما<svg class="ic flip">
                             <use href="#i-arrow" />
                         </svg>
                     </a>
                 </nav>
                 <div class="mnav-foot">
-                    <a class="btn btn-block" href="{{ route('home', ['lang' => 'fa']) }}#inquiry">درخواست استعلام<svg
+                    <a class="btn btn-block" href="{{ route('lang.home', ['lang' => 'fa']) }}#inquiry">درخواست استعلام<svg
                             class="ic flip">
                             <use href="#i-arrow" />
                         </svg></a>

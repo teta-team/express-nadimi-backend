@@ -9,7 +9,13 @@
             if ($name && $name !== 'home') {
                 // Remove existing lang parameter and add target language to path
                 $cleanUrl = preg_replace('/\?(lang=[^&]*)?/', '', $url);
-                return $cleanUrl . '/' . $target;
+                $newUrl = $cleanUrl . '/' . $target;
+
+                if ($target === 'en' && str_starts_with($newUrl, '/en/')) {
+                    return '/'.substr($newUrl, 3);
+                }
+
+                return $newUrl;
             }
         } catch (\Throwable $e) {
             // fall through to the home page
@@ -345,7 +351,7 @@
             </span>
         </a>
 
-        <nav class="nav" aria-label="Main">
+<nav class="nav" aria-label="Main">
             <ul>
                 <li><a href="{{ route('home', ['lang' => 'ar']) }}" aria-current="page">الرئيسية</a></li>
                 <li><a href="{{ route('products', ['lang' => 'ar']) }}">المنتجات</a></li>
