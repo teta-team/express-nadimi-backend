@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 class SuplierController extends Controller
 {
-    public function index($lang)
+    public function index($lang = null)
     {
         if ($lang == 'ar') {
             return view('ar.supplier');

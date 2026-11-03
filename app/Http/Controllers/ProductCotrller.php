@@ -13,15 +13,23 @@ class ProductCotrller extends Controller
 {
     public function index($lang, $slug = null)
     {
+        // Handle root routes where lang is actually the slug
+        if (in_array($lang, ['fa', 'ar'])) {
+            $currentLang = $lang;
+        } else {
+            $currentLang = app()->getLocale();
+            $slug = $lang;
+        }
+
         $query = Product::query()
             ->where('hidden', false)
             ->whereNull('deleted_at');
 
-        if ($slug === null) {
+        if ($slug === null || $slug === $currentLang) {
             $product = $query->orderBy('sort_order')->orderBy('id')->first();
 
             if (! $product) {
-                return redirect()->route('products', ['lang' => $lang]);
+                return redirect()->route('products', ['lang' => $currentLang]);
             }
         } else {
             $product = $query->where('slug', $slug)->firstOrFail();
@@ -37,7 +45,7 @@ class ProductCotrller extends Controller
             ->limit(4)
             ->get();
 
-        $view = match ($lang) {
+        $view = match ($currentLang) {
             'fa' => 'fa.product',
             'ar' => 'ar.product',
             default => 'en.product',
@@ -46,8 +54,9 @@ class ProductCotrller extends Controller
         return view($view, compact('product', 'relatedProducts'));
     }
 
-    public function products($lang)
+    public function products($lang = null)
     {
+        $currentLang = in_array($lang, ['fa', 'ar']) ? $lang : app()->getLocale();
         $allowedCategories = [
             'vegetables',
             'stone-fruits',
@@ -105,7 +114,7 @@ class ProductCotrller extends Controller
             ->orderBy('id')
             ->get();
 
-        $view = match ($lang) {
+        $view = match ($currentLang) {
             'fa' => 'fa.products',
             'ar' => 'ar.products',
             default => 'en.products',

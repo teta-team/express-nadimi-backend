@@ -6,14 +6,26 @@
             $name = $current ? $current->getName() : null;
 
             if ($name && !in_array($name, ['home', 'home.root'])) {
+                // If it's a 'lang.' route, get the base name
+                $baseName = str_starts_with($name, 'lang.') ? substr($name, 5) : $name;
                 $params = array_filter($current->parameters(), 'is_scalar');
-                return route($name, array_merge($params, ['lang' => $target]));
+
+                if ($target === 'en') {
+                    return route($baseName, array_diff_key($params, ['lang' => '']));
+                }
+
+                return route('lang.'.$baseName, array_merge($params, ['lang' => $target]));
             }
         } catch (\Throwable $e) {
             // fall through
         }
 
-        return $target === 'en' ? route('home.root') : route('home', ['lang' => $target]);
+        return $target === 'en' ? route('home') : route('lang.home', ['lang' => $target]);
+    };
+
+    $isRoute = function ($name) {
+        $current = request()->route() ? request()->route()->getName() : null;
+        return $current === $name || $current === 'lang.'.$name;
     };
 @endphp
 <svg xmlns="http://www.w3.org/2000/svg" class="sprite" aria-hidden="true" focusable="false">
@@ -331,7 +343,7 @@
 
 <header class="site-header" data-header>
     <div class="container header-in">
-        <a href="{{ route('home', ['lang' => 'en']) }}" class="logo" aria-label="Nadimi International — Home">
+        <a href="{{ route('home') }}" class="logo" aria-label="Nadimi International — Home">
             <img class="logo-mark" src="{{ asset('assets/images/logo/nadimi-logo-96.webp') }}"
                 srcset="{{ asset('assets/images/logo/nadimi-logo-192.webp') }} 2x" width="50" height="50"
                 alt="Nadimi International" decoding="async">
@@ -343,11 +355,11 @@
 
         <nav class="nav" aria-label="Main">
             <ul>
-                <li><a href="{{ route('home', ['lang' => 'en']) }}" aria-current="page">Home</a></li>
-                <li><a href="{{ route('products', ['lang' => 'en']) }}">Products</a></li>
-                <li><a href="{{ route('supplier', ['lang' => 'en']) }}">Cooperation</a></li>
-                <li><a href="{{ route('about', ['lang' => 'en']) }}">About us</a></li>
-                <li><a href="{{ route('contact', ['lang' => 'en']) }}">Contact</a></li>
+                <li><a href="{{ route('home') }}" {!! $isRoute('home') ? 'aria-current="page"' : '' !!}>Home</a></li>
+                <li><a href="{{ route('products') }}" {!! $isRoute('products') ? 'aria-current="page"' : '' !!}>Products</a></li>
+                <li><a href="{{ route('supplier') }}" {!! $isRoute('supplier') ? 'aria-current="page"' : '' !!}>Cooperation</a></li>
+                <li><a href="{{ route('about') }}" {!! $isRoute('about') ? 'aria-current="page"' : '' !!}>About us</a></li>
+                <li><a href="{{ route('contact') }}" {!! $isRoute('contact') ? 'aria-current="page"' : '' !!}>Contact</a></li>
             </ul>
         </nav>
 
@@ -364,7 +376,7 @@
                 </svg><svg class="ic i-sun">
                     <use href="#i-sun" />
                 </svg></button>
-            <a class="btn btn-sm header-quote" href="{{ route('home', ['lang' => 'en']) }}#inquiry">Request a
+            <a class="btn btn-sm header-quote" href="{{ route('home') }}#inquiry">Request a
                 quote<svg class="ic flip">
                     <use href="#i-arrow" />
                 </svg></a>
@@ -381,34 +393,34 @@
         <div class="mnav-clip">
             <div class="container mnav-in">
                 <nav class="mnav-links" aria-label="Menu">
-                    <a href="{{ route('home', ['lang' => 'en']) }}" aria-current="page">
+                    <a href="{{ route('home') }}" {!! $isRoute('home') ? 'aria-current="page"' : '' !!}>
                         Home<svg class="ic flip">
                             <use href="#i-arrow" />
                         </svg>
                     </a>
-                    <a href="{{ route('products', ['lang' => 'en']) }}">
+                    <a href="{{ route('products') }}" {!! $isRoute('products') ? 'aria-current="page"' : '' !!}>
                         Products<svg class="ic flip">
                             <use href="#i-arrow" />
                         </svg>
                     </a>
-                    <a href="{{ route('supplier', ['lang' => 'en']) }}">
+                    <a href="{{ route('supplier') }}" {!! $isRoute('supplier') ? 'aria-current="page"' : '' !!}>
                         Cooperation<svg class="ic flip">
                             <use href="#i-arrow" />
                         </svg>
                     </a>
-                    <a href="{{ route('about', ['lang' => 'en']) }}">
+                    <a href="{{ route('about') }}" {!! $isRoute('about') ? 'aria-current="page"' : '' !!}>
                         About us<svg class="ic flip">
                             <use href="#i-arrow" />
                         </svg>
                     </a>
-                    <a href="{{ route('contact', ['lang' => 'en']) }}">
+                    <a href="{{ route('contact') }}" {!! $isRoute('contact') ? 'aria-current="page"' : '' !!}>
                         Contact<svg class="ic flip">
                             <use href="#i-arrow" />
                         </svg>
                     </a>
                 </nav>
                 <div class="mnav-foot">
-                    <a class="btn btn-block" href="{{ route('home', ['lang' => 'en']) }}#inquiry">Request a
+                    <a class="btn btn-block" href="{{ route('home') }}#inquiry">Request a
                         quote<svg class="ic flip">
                             <use href="#i-arrow" />
                         </svg></a>
